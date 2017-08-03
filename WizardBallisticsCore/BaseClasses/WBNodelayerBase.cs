@@ -7,11 +7,11 @@ using WizardBallisticsCore.Interfaces;
 
 namespace WizardBallisticsCore.BaseClasses {
     [Serializable]
-    public abstract class WBNodeLayerBase : IWBNodeLayer {
+    public abstract class WBNodeLayerBase<T> : IWBNodeLayer<T> where T: struct {
         /// <summary>
         /// Узлы
         /// </summary>
-        public List<IWBNode> Nodes { get; set; } = new List<IWBNode>();
+        public T[] Nodes { get; set; }
         /// <summary>
         /// Время слоя
         /// </summary>
@@ -20,11 +20,11 @@ namespace WizardBallisticsCore.BaseClasses {
         /// Клонировать слой
         /// </summary>
         /// <returns></returns>
-        public IWBNodeLayer Clone() {
-            var layerclone = (IWBNodeLayer)this.MemberwiseClone();
-            layerclone.Nodes = new List<IWBNode>(this.Nodes.Capacity);
-            foreach (var nd in Nodes) {
-                layerclone.Nodes.Add(nd.Clone());
+        public IWBNodeLayer<T> Clone() {
+            var layerclone = (WBNodeLayerBase<T>)this.MemberwiseClone();
+            layerclone.Nodes = new T[Nodes.Length];
+            for (int i = 0; i < Nodes.Length; i++) {
+                layerclone.Nodes[i] = Nodes[i];
             }
             CloneLogic();
             return layerclone;

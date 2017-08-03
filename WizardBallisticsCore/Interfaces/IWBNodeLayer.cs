@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WizardBallisticsCore.Interfaces {    
+namespace WizardBallisticsCore.Interfaces {
     /// <summary>
     /// Интерфейс для временнОго слоя узлов
     /// </summary>
-    public interface IWBNodeLayer {
+    public interface IWBNodeLayer<T> where T : struct {
         /// <summary>
         /// Узлы
         /// </summary>
-        List<IWBNode> Nodes { get; set; }
+        T[] Nodes {get;set;}
         /// <summary>
         /// Время слоя
         /// </summary>
@@ -21,6 +21,6 @@ namespace WizardBallisticsCore.Interfaces {
         /// Клонировать слой
         /// </summary>
         /// <returns></returns>
-        IWBNodeLayer Clone();
+        IWBNodeLayer<T> Clone();
     }
 }

@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 using WizardBallisticsCore.Interfaces;
 
 namespace WizardBallisticsCore.BaseClasses {
-    public abstract class WBGridBase: IWBGrid  {
+    public abstract class WBGridBase<T>: IWBGrid<T> where T:struct  {
         #region Constructors
-        public WBGridBase(string name, IWBNodeLayer initLayer) {
-            SaveTactic = new WBGridSaveTacticBase();
-            SaveTactic.OwnerGrid = this;
+        public WBGridBase(string name, IWBNodeLayer<T> initLayer) {
+            SaveTactic = new WBGridSaveTacticBase() {
+                OwnerGrid = this
+            };
             LayerList.AddFirst(initLayer);
             Name = name;
         }
@@ -20,11 +21,11 @@ namespace WizardBallisticsCore.BaseClasses {
         /// <summary>
         /// Здесь хранятся текущий временной слой узллов и несколько предыдущих
         /// </summary>
-        public LinkedList<IWBNodeLayer> LayerList { get; } = new LinkedList<IWBNodeLayer>();
+        public LinkedList<IWBNodeLayer<T>> LayerList { get; } = new LinkedList<IWBNodeLayer<T>>();
         /// <summary>
         /// Здесь можно получить самый актуальный по времени слой узлов
         /// </summary>
-        public IWBNodeLayer CurrLayer => LayerList.First();
+        public IWBNodeLayer<T> CurrLayer => LayerList.First();
         /// <summary>
         /// тактика сохранения данных / контрля памяти
         /// </summary>
