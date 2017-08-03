@@ -7,7 +7,7 @@ using WizardBallisticsCore.Interfaces;
 
 namespace WizardBallisticsCore.BaseClasses {
     [Serializable]
-    public class WBNodelayerBase : IWBNodeLayer {
+    public abstract class WBNodeLayerBase : IWBNodeLayer {
         /// <summary>
         /// Узлы
         /// </summary>
@@ -26,7 +26,13 @@ namespace WizardBallisticsCore.BaseClasses {
             foreach (var nd in Nodes) {
                 layerclone.Nodes.Add(nd.Clone());
             }
+            CloneLogic();
             return layerclone;
         }
+
+        /// <summary>
+        /// логика/действия при копировании
+        /// </summary>
+        public abstract void CloneLogic();
     }
 }

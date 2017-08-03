@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using WizardBallisticsCore.Interfaces;
 
 namespace WizardBallisticsCore.BaseClasses {
-    public abstract class WBGridBase : IWBGrid {
+    public abstract class WBGridBase: IWBGrid  {
         #region Constructors
         public WBGridBase(string name, IWBNodeLayer initLayer) {
             SaveTactic = new WBGridSaveTacticBase();
