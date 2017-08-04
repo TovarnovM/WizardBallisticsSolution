@@ -9,7 +9,7 @@ namespace WizardBallisticsCore.BaseClasses {
     public abstract class WBGridBase<T>: IWBGrid<T> where T:struct  {
         #region Constructors
         public WBGridBase(string name, IWBNodeLayer<T> initLayer) {
-            SaveTactic = new WBGridSaveTacticBase() {
+            SaveTactic = new WBGridSaveTacticBase<T>() {
                 OwnerGrid = this
             };
             LayerList.AddFirst(initLayer);
@@ -29,7 +29,7 @@ namespace WizardBallisticsCore.BaseClasses {
         /// <summary>
         /// тактика сохранения данных / контрля памяти
         /// </summary>
-        public WBGridSaveTacticBase SaveTactic { get; set; }
+        public WBGridSaveTacticBase<T> SaveTactic { get; set; }
         /// <summary>
         /// Текущее время
         /// </summary>

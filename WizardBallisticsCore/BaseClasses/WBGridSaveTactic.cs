@@ -9,11 +9,11 @@ namespace WizardBallisticsCore.BaseClasses {
     /// <summary>
     /// Базовый класс для описания тактики сохранения данных / контрля памяти у IWBGrid
     /// </summary>
-    public class WBGridSaveTacticBase {
+    public class WBGridSaveTacticBase<T> where T : struct {
         /// <summary>
         /// Собственно какую IWBGrid обслуживаем
         /// </summary>
-        public IWBGrid OwnerGrid { get; set; }
+        public IWBGrid<T> OwnerGrid { get; set; }
         /// <summary>
         /// Что делать на каждом шаге?
         /// </summary>
