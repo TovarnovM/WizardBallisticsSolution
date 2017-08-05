@@ -23,7 +23,7 @@ namespace WizardBallisticsCoreTests.OneDemCellGrid {
         }
 
         [TestMethod]
-        public void thisTest() {
+        public void ThisTest() {
             var tst = new WBOneDemCell<DataDummy>() {
                 Index = 1,
                 X = 2,

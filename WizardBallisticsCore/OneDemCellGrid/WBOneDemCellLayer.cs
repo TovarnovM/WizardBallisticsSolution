@@ -25,7 +25,7 @@ namespace WizardBallisticsCore.OneDemCellGrid {
                 Nodes[i].V = v0 + i * dv;
             }
         }
-        public ref WBOneDemCell<T> LeftBorder { get { return ref Nodes[0]; } }
+        public ref WBOneDemCell<T> LeftBorder => ref Nodes[0];  
         public ref WBOneDemCell<T> RightBorder => ref Nodes[Nodes.Length-1];
         //public ref WBOneDemCell<T> Cells(int index) {
 

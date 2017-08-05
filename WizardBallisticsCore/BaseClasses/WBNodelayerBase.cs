@@ -23,9 +23,7 @@ namespace WizardBallisticsCore.BaseClasses {
         public IWBNodeLayer<T> Clone() {
             var layerclone = (WBNodeLayerBase<T>)this.MemberwiseClone();
             layerclone.Nodes = new T[Nodes.Length];
-            for (int i = 0; i < Nodes.Length; i++) {
-                layerclone.Nodes[i] = Nodes[i];
-            }
+            Array.Copy(Nodes, layerclone.Nodes, Nodes.Length);
             CloneLogic();
             return layerclone;
         }

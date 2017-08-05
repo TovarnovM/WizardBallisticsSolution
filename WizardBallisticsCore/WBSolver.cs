@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using WizardBallisticsCore.Interfaces;
 
 namespace WizardBallisticsCore {
+
     /// <summary>
     /// Базовый класс для решения/вычисления
     /// </summary>
+    /// <typeparam name="T">тип ячейки/узла</typeparam>
     public class WBSolver<T> where T : struct {
 
         string _stopReason = "";
