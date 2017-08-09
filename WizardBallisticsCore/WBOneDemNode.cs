@@ -5,29 +5,29 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WizardBallisticsCore.OneDemCellGrid {
+namespace WizardBallisticsCore {
     /// <summary>
     /// Структура одномерной подвижной эйлеровой сетки
     /// </summary>
     /// <typeparam name="T">структура данных для конкретной задачи</typeparam>
-    public struct WBOneDemCell<T> where T:struct {
+    public struct WBOneDemNode<T> where T : struct {
         /// <summary>
         /// Индекс данного УЗЛА в массиве Nodes в IWBNodeLayer
         /// </summary>
         public int IndexInArray;
-        
+
         /// <summary>
         /// Индекс узла, показывающий тип узла, елси индекс кратен только 5, то это граница между ячеек, 
         /// если кратен только 10, то этот узел показывает значения в эйлеровой ячейке
         /// Пример индексов: -5, 0, 5, 10, 15, 20, 25. -5,25 - левая и правая границы сетки, 0,10,20 - ячейки, 5,15 - границы, между ячейками
         /// </summary>
         public int Index;
-        
+
         /// <summary>
         /// координата узла в одномерном пространстве
         /// </summary>
         public double X;
-        
+
         /// <summary>
         /// скорость узла в одномерном пространстве
         /// </summary>
@@ -57,7 +57,7 @@ namespace WizardBallisticsCore.OneDemCellGrid {
         /// <returns>значение поля</returns>
         public object this[string fieldKey] {
             get {
-                var firstTry = typeof(WBOneDemCell<T>).GetField(fieldKey, BindingFlags.Public | BindingFlags.Instance);
+                var firstTry = typeof(WBOneDemNode<T>).GetField(fieldKey, BindingFlags.Public | BindingFlags.Instance);
                 if (firstTry == null) {
                     var secondTry = typeof(T).GetField(fieldKey, BindingFlags.Public | BindingFlags.Instance);
                     return secondTry?.GetValue(Data);
@@ -68,17 +68,26 @@ namespace WizardBallisticsCore.OneDemCellGrid {
         }
 
         /// <summary>
-        /// Получает все имена полей в ячейке
+        /// Получает все имена double полей в ячейке
         /// </summary>
         /// <returns>имена всех полей</returns>
         public static List<string> GetDataFieldsNames() {
-            return typeof(WBOneDemCell<T>)
+            return GetDataFieldsNames<double>();
+        }
+
+        /// <summary>
+        /// Получает все имена полей типа T1 в ячейке
+        /// </summary>
+        /// <typeparam name="T1">тип полей</typeparam>
+        /// <returns>имена всех полей</returns>
+        public static List<string> GetDataFieldsNames<T1>() {
+            return typeof(WBOneDemNode<T>)
                 .GetFields(BindingFlags.Public | BindingFlags.Instance)
                 .Concat(typeof(T).GetFields(BindingFlags.Public | BindingFlags.Instance))
+                .Where(ti => ti.FieldType == typeof(T1))
                 .Select(ti => ti.Name)
                 .ToList();
         }
-
 
         /// <summary>
         /// Получение значений полей fieldName у набора узлов cells, приведенных к типу T1
@@ -88,8 +97,8 @@ namespace WizardBallisticsCore.OneDemCellGrid {
         /// <param name="cells">набор узлов у которых нужно получить значения полей</param>
         /// <param name="fieldName">имя поля</param>
         /// <returns>значения полей fieldName</returns>
-        public static IEnumerable<T1> GetValues<T1>(IEnumerable<WBOneDemCell<T>> cells, string fieldName) {
-            var firstTry = typeof(WBOneDemCell<T>).GetField(fieldName, BindingFlags.Public | BindingFlags.Instance);
+        public static IEnumerable<T1> GetValues<T1>(IEnumerable<WBOneDemNode<T>> cells, string fieldName) {
+            var firstTry = typeof(WBOneDemNode<T>).GetField(fieldName, BindingFlags.Public | BindingFlags.Instance);
             if (firstTry == null) {
                 var secondTry = typeof(T).GetField(fieldName, BindingFlags.Public | BindingFlags.Instance);
                 if (secondTry == null) {
@@ -98,10 +107,39 @@ namespace WizardBallisticsCore.OneDemCellGrid {
                 return cells.Select(c => (T1)secondTry.GetValue(c.Data));
             }
             return cells.Select(c => (T1)firstTry.GetValue(c));
-        } 
+        }
 
 
     }
-        
+
+    public static class CellExtentions {
+        /// <summary>
+        /// Лениво выводит значения поля fieldName у коллекции cells
+        /// </summary>
+        /// <typeparam name="T">структура данных для конкретной задачи</typeparam>
+        /// <typeparam name="T1">тип данных поля fieldName</typeparam>
+        /// <param name="cells">коллекция узлов WBOneDemNode</param>
+        /// <param name="fieldName">имя поля у WBOneDemNode, которое надо выводить</param>
+        /// <returns>Ленивое перечисление значений полей </returns>
+        public static IEnumerable<T1> Values<T, T1>(this IEnumerable<WBOneDemNode<T>> cells, string fieldName) where T : struct {
+            return WBOneDemNode<T>.GetValues<T1>(cells, fieldName);
+        }
+
+        /// <summary>
+        /// Лениво выводит значения double поля fieldName у коллекции cells
+        /// </summary>
+        /// <typeparam name="T">структура данных для конкретной задачи</typeparam>
+        /// <param name="cells">коллекция узлов WBOneDemNode</param>
+        /// <param name="fieldName">имя поля у WBOneDemNode, которое надо выводить</param>
+        /// <returns>Ленивое перечисление значений полей </returns>
+        public static IEnumerable<double> Values<T>(this IEnumerable<WBOneDemNode<T>> cells, string fieldName) where T : struct {
+            try {
+                return WBOneDemNode<T>.GetValues<double>(cells, fieldName);
+            } catch (Exception) {
+                return Enumerable.Repeat<double>(0d, 1);
+            }
+
+        }
+    }
 
 }

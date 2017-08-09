@@ -14,7 +14,7 @@ namespace WizardBallisticsCore.OneDemCellGrid {
     /// Шаблон для одномерной подвижной эйлеровой сетки
     /// </summary>
     /// <typeparam name="T">Структура данных для ячейки/задачи</typeparam>
-    public class WBOneDemCellLayer<T> : WBNodeLayerBase<WBOneDemCell<T>> where T : struct {
+    public class WBOneDemCellLayer<T> : WBNodeLayerBase<WBOneDemNode<T>> where T : struct {
         public void SynchXV() {
             var x0 = LeftBorder.X;
             var dx = (RightBorder.X - x0) / Nodes.Length;
@@ -25,8 +25,8 @@ namespace WizardBallisticsCore.OneDemCellGrid {
                 Nodes[i].V = v0 + i * dv;
             }
         }
-        public ref WBOneDemCell<T> LeftBorder => ref Nodes[0];  
-        public ref WBOneDemCell<T> RightBorder => ref Nodes[Nodes.Length-1];
+        public ref WBOneDemNode<T> LeftBorder => ref Nodes[0];  
+        public ref WBOneDemNode<T> RightBorder => ref Nodes[Nodes.Length-1];
         //public ref WBOneDemCell<T> Cells(int index) {
 
         //}

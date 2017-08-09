@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WizardBallisticsCore.OneDemCellGrid;
 using System.Linq;
+using WizardBallisticsCore;
 
 namespace WizardBallisticsCoreTests.OneDemCellGrid {
     [TestClass]
@@ -11,11 +12,12 @@ namespace WizardBallisticsCoreTests.OneDemCellGrid {
             public double Ro;
             public double p;
         }
-        static string[] trueNames = new string[] { "Index", "IndexInArray", "X", "V", "P", "Ro", "p" };
+        static string[] trueNames = new string[] { "X", "V", "P", "Ro", "p" };
 
         [TestMethod]
         public void GetDataFieldsNamesTest() {
-            var names = WBOneDemCell<DataDummy>.GetDataFieldsNames();
+            var names = WBOneDemNode<DataDummy>.GetDataFieldsNames();
+            Assert.AreEqual(trueNames.Length, names.Count);
             foreach (var tn in trueNames) {
                 Assert.IsTrue(names.Contains(tn));
             }
@@ -24,7 +26,7 @@ namespace WizardBallisticsCoreTests.OneDemCellGrid {
 
         [TestMethod]
         public void ThisTest() {
-            var tst = new WBOneDemCell<DataDummy>() {
+            var tst = new WBOneDemNode<DataDummy>() {
                 Index = 1,
                 X = 2,
                 V = 3,
@@ -49,7 +51,7 @@ namespace WizardBallisticsCoreTests.OneDemCellGrid {
         [TestMethod]
         public void GetValuesTest() {
             var tst = Enumerable.Range(0, 100)
-                .Select(i => new WBOneDemCell<DataDummy>() {
+                .Select(i => new WBOneDemNode<DataDummy>() {
                     Index = 1,
                     X = 2,
                     V = 3,
@@ -61,8 +63,35 @@ namespace WizardBallisticsCoreTests.OneDemCellGrid {
                     }
                 });
 
-            var Ps = WBOneDemCell<DataDummy>.GetValues<double>(tst, "P").ToList();
+            var Ps = WBOneDemNode<DataDummy>.GetValues<double>(tst, "P").ToList();
             foreach (var i in Enumerable.Range(0, 100).Select(ii => (double)ii)) {
+                Assert.IsTrue(Ps.Contains(i));
+
+            }
+
+        }
+
+        [TestMethod]
+        public void GetValuesTest2()
+        {
+            var tst = Enumerable.Range(0, 100)
+                .Select(i => new WBOneDemNode<DataDummy>()
+                {
+                    Index = 1,
+                    X = 2,
+                    V = 3,
+                    IndexInArray = -1,
+                    Data = new DataDummy()
+                    {
+                        P = 1 * i,
+                        Ro = 200,
+                        p = 300
+                    }
+                });
+
+            var Ps = tst.Values<DataDummy,double>("P").ToList();
+            foreach (var i in Enumerable.Range(0, 100).Select(ii => (double)ii))
+            {
                 Assert.IsTrue(Ps.Contains(i));
 
             }
