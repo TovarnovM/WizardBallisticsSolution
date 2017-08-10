@@ -13,7 +13,7 @@ namespace WizardBallisticsCore.BaseClasses {
         /// <summary>
         /// Собственно какую IWBGrid обслуживаем
         /// </summary>
-        public IWBGrid<T> OwnerGrid { get; set; }
+        public ILayerCollection<T> OwnerGrid { get; set; }
         /// <summary>
         /// Что делать на каждом шаге?
         /// </summary>

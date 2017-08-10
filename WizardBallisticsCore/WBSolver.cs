@@ -11,14 +11,14 @@ namespace WizardBallisticsCore {
     /// Базовый класс для решения/вычисления
     /// </summary>
     /// <typeparam name="T">тип ячейки/узла</typeparam>
-    public class WBSolver<T> where T : struct {
+    public class WBSolver {
 
         string _stopReason = "";
 
         /// <summary>
         /// Здесь хранятся все сетки для вычисления
         /// </summary>
-        public List<IWBGrid<T>> Grids { get; set; }
+        public List<IWBGrid> Grids { get; set; }
 
         /// <summary>
         /// Текущий статус решателя
@@ -30,9 +30,9 @@ namespace WizardBallisticsCore {
         /// </summary>
         public double MaxTimeStep { get; set; } = 100;
 
-        public WBSolver(IEnumerable<IWBGrid<T>> grids) {
+        public WBSolver(IEnumerable<IWBGrid> grids) {
             State = "initial";
-            Grids = new List<IWBGrid<T>>(grids);
+            Grids = new List<IWBGrid>(grids);
         }
 
         

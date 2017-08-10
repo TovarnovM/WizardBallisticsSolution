@@ -8,15 +8,8 @@ namespace WizardBallisticsCore.Interfaces {
     /// <summary>
     /// Интерфейс для расчетной сетки
     /// </summary>
-    public interface IWBGrid<T> where T:struct {
-        /// <summary>
-        /// Здесь хранятся текущий временной слой узллов и несколько предыдущих
-        /// </summary>
-        LinkedList<IWBNodeLayer<T>> LayerList { get; }
-        /// <summary>
-        /// Здесь можно получить самый актуальный по времени слой узлов
-        /// </summary>
-        IWBNodeLayer<T> CurrLayer { get; }
+    public interface IWBGrid {
+
         /// <summary>
         /// Функция для получения текущего максимального шага по времени
         /// </summary>
