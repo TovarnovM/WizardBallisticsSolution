@@ -38,4 +38,15 @@ namespace WizardBallisticsCore.Interfaces {
         /// </summary>
         void InfoСommunication();
     }
+
+    public interface IWBGrid<T>:IWBGrid where T : struct {
+        /// <summary>
+        /// Здесь хранятся текущий временной слой узллов и несколько предыдущих
+        /// </summary>
+        LinkedList<IWBNodeLayer<T>> LayerList { get; }
+        /// <summary>
+        /// Здесь можно получить самый актуальный по времени слой узлов
+        /// </summary>
+        IWBNodeLayer<T> CurrLayer { get; }
+    }
 }

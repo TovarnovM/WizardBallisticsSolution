@@ -44,11 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseClasses\WBGridBase.cs" />
-    <Compile Include="BaseClasses\WBGridSaveTactic.cs" />
+    <Compile Include="BaseClasses\WBGridSlaverBase.cs" />
     <Compile Include="BaseClasses\WBNodeLayerBase.cs" />
     <Compile Include="Interfaces\IWBGrid.cs" />
+    <Compile Include="Interfaces\IWBGridSlaver.cs" />
     <Compile Include="Interfaces\IWBNodeLayer.cs" />
-    <Compile Include="Interfaces\ILayerCollection.cs" />
     <Compile Include="WBOneDemNode.cs" />
     <Compile Include="OneDemCellGrid\WBOneDemCellLayer.cs" />
     <Compile Include="Program.cs" />

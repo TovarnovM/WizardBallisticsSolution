@@ -41,8 +41,24 @@ namespace WizardBallisticsCore {
         /// </summary>
         public Func<bool> MyStopFunc;
 
+        private object locker = new object();
+        private bool stopFlag;
+
+        public void Stop() {
+            lock (locker) {
+                stopFlag = true;
+            }
+        }
+
         bool StopCalculating() {
             bool flag = false;
+            if (stopFlag) {
+                lock (locker) {
+                    flag = true;
+                    _stopReason += " Stopped";
+                }
+
+            }
             foreach (var gr in Grids) {
                 if (gr.StopCalculating()) {
                     _stopReason += " " + gr.Name;
@@ -72,6 +88,7 @@ namespace WizardBallisticsCore {
             try {
 
                 State = "calculating";
+                stopFlag = false;
                 var timeSteps = new double[Grids.Count + 1]; //хранятся максимальные шаги по времени для каждой сетки
                 timeSteps[timeSteps.Length - 1] = MaxTimeStep;
                 while (!StopCalculating()) {

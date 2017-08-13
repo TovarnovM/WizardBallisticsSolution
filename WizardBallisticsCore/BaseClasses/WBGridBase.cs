@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 using WizardBallisticsCore.Interfaces;
 
 namespace WizardBallisticsCore.BaseClasses {
-    public abstract class WBGridBase<T>: IWBGrid, ILayerCollection<T> where T:struct  {
+    public abstract class WBGridBase<T>: IWBGrid, IWBGrid<T> where T:struct  {
         #region Constructors
-        public WBGridBase(string name, IWBNodeLayer<T> initLayer) {
-            SaveTactic = new WBGridSaveTacticBase<T>() {
-                OwnerGrid = this
-            };
+        public WBGridBase(string name, IWBNodeLayer<T> initLayer, IWBGridSlaver<T> slaver) {
+            Slaver = slaver;
             LayerList.AddFirst(initLayer);
             Name = name;
+        }
+
+        public WBGridBase(string name, IWBNodeLayer<T> initLayer):this(name,initLayer, null) {
+            Slaver = new WBGridSlaverBase<T>(this);
         }
         #endregion
 
@@ -29,7 +31,7 @@ namespace WizardBallisticsCore.BaseClasses {
         /// <summary>
         /// тактика сохранения данных / контрля памяти
         /// </summary>
-        public WBGridSaveTacticBase<T> SaveTactic { get; set; }
+        public IWBGridSlaver<T> Slaver { get; set; }
         /// <summary>
         /// Текущее время
         /// </summary>
@@ -60,7 +62,7 @@ namespace WizardBallisticsCore.BaseClasses {
         /// <param name="deltaTau">шаг по времени</param>
         public void StepUp(double deltaTau) {
             StepUpLogic(deltaTau);
-            SaveTactic.WhatToDo();
+            Slaver.StepWhatToDo();
         }
 
         /// <summary>
