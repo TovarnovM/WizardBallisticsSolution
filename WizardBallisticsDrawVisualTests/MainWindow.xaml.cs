@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WizardBallisticsCore;
-using WizardBallisticsCore.OneDemCellGrid;
+using WizardBallisticsCore.OneDemGrid;
 using WizardBallisticsDraw;
 
 namespace WizardBallisticsDrawVisualTests {

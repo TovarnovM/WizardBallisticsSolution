@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WizardBallisticsCore {
+namespace WizardBallisticsCore.OneDemGrid {
     /// <summary>
     /// Структура одномерной подвижной эйлеровой сетки
     /// </summary>

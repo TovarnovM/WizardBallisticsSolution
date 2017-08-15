@@ -18,7 +18,7 @@ namespace WizardBallisticsCore.Interfaces {
         /// <summary>
         /// Текущее время
         /// </summary>
-        double TimeCurr { get; }
+        double TimeCurr { get; set; }
         /// <summary>
         /// Имя сетки
         /// </summary>
@@ -37,16 +37,19 @@ namespace WizardBallisticsCore.Interfaces {
         /// функция обмена/получения внешней информации
         /// </summary>
         void InfoСommunication();
-    }
 
-    public interface IWBGrid<T>:IWBGrid where T : struct {
+        object GetSaveObj();
+
+        bool Load(object loadObj, double objTime);
         /// <summary>
         /// Здесь хранятся текущий временной слой узллов и несколько предыдущих
         /// </summary>
-        LinkedList<IWBNodeLayer<T>> LayerList { get; }
+        LinkedList<IWBNodeLayer> LayerList { get; }
         /// <summary>
         /// Здесь можно получить самый актуальный по времени слой узлов
         /// </summary>
-        IWBNodeLayer<T> CurrLayer { get; }
+        IWBNodeLayer CurrLayer { get; }
     }
+
+
 }

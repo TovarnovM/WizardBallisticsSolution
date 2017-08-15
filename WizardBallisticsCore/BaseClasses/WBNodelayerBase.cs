@@ -20,7 +20,7 @@ namespace WizardBallisticsCore.BaseClasses {
         /// Клонировать слой
         /// </summary>
         /// <returns></returns>
-        public IWBNodeLayer<T> Clone() {
+        public IWBNodeLayer Clone() {
             var layerclone = (WBNodeLayerBase<T>)this.MemberwiseClone();
             layerclone.Nodes = new T[Nodes.Length];
             Array.Copy(Nodes, layerclone.Nodes, Nodes.Length);
@@ -32,5 +32,6 @@ namespace WizardBallisticsCore.BaseClasses {
         /// логика/действия при копировании
         /// </summary>
         public abstract void CloneLogic();
+
     }
 }

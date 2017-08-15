@@ -6,16 +6,12 @@ using System.Threading.Tasks;
 using WizardBallisticsCore.Interfaces;
 
 namespace WizardBallisticsCore.BaseClasses {
-    public abstract class WBGridBase<T>: IWBGrid, IWBGrid<T> where T:struct  {
+    public abstract class WBGridBase: IWBGrid  {
         #region Constructors
-        public WBGridBase(string name, IWBNodeLayer<T> initLayer, IWBGridSlaver<T> slaver) {
-            Slaver = slaver;
+        public WBGridBase(string name, IWBNodeLayer initLayer) {
+            Slaver = new WBMemTacticBase(this);
             LayerList.AddFirst(initLayer);
             Name = name;
-        }
-
-        public WBGridBase(string name, IWBNodeLayer<T> initLayer):this(name,initLayer, null) {
-            Slaver = new WBGridSlaverBase<T>(this);
         }
         #endregion
 
@@ -23,23 +19,24 @@ namespace WizardBallisticsCore.BaseClasses {
         /// <summary>
         /// Здесь хранятся текущий временной слой узллов и несколько предыдущих
         /// </summary>
-        public LinkedList<IWBNodeLayer<T>> LayerList { get; } = new LinkedList<IWBNodeLayer<T>>();
+        public LinkedList<IWBNodeLayer> LayerList { get; } = new LinkedList<IWBNodeLayer>();
         /// <summary>
         /// Здесь можно получить самый актуальный по времени слой узлов
         /// </summary>
-        public IWBNodeLayer<T> CurrLayer => LayerList.First();
+        public IWBNodeLayer CurrLayer => LayerList.First();
         /// <summary>
-        /// тактика сохранения данных / контрля памяти
+        /// тактика для контрля памяти
         /// </summary>
-        public IWBGridSlaver<T> Slaver { get; set; }
+        public WBMemTacticBase Slaver { get; set; }
         /// <summary>
         /// Текущее время
         /// </summary>
-        public double TimeCurr => CurrLayer.Time;
+        public double TimeCurr { get; set; }
         /// <summary>
         /// Имя сетки
         /// </summary>
         public string Name { get; set; }
+
         /// <summary>
         /// Список функция для остановки расчета
         /// </summary>
@@ -63,6 +60,7 @@ namespace WizardBallisticsCore.BaseClasses {
         public void StepUp(double deltaTau) {
             StepUpLogic(deltaTau);
             Slaver.StepWhatToDo();
+            TimeCurr += deltaTau;
         }
 
         /// <summary>
@@ -82,6 +80,38 @@ namespace WizardBallisticsCore.BaseClasses {
                     return true;
             }
             return false;
+        }
+        #endregion
+
+        #region IO
+        public class SaveLoadObj {
+            public double Time { get; set; }
+            public IWBNodeLayer Layer { get; set; }
+            public WBMemTacticBase MemTactic { get; set; }
+        }
+
+        public object GetSaveObj() {
+            return new SaveLoadObj() {
+                Time = this.TimeCurr,
+                Layer = CurrLayer,
+                MemTactic = Slaver
+            };
+        }
+
+        public bool Load(object loadObj, double objTime) {
+            try {
+                var obj = (SaveLoadObj)loadObj;
+                TimeCurr = obj.Time;
+                obj.Layer.Time = objTime;
+                LayerList.AddLast(obj.Layer);
+                Slaver = obj.MemTactic;
+
+                Slaver.LoadWhatToDo();
+
+            } catch (Exception) {
+                return false;
+            }
+            return true;
         }
         #endregion
 

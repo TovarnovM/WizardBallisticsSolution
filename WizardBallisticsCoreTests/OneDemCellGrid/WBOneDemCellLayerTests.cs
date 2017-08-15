@@ -1,12 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WizardBallisticsCore.OneDemCellGrid;
+using WizardBallisticsCore.OneDemGrid;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WizardBallisticsCore.OneDemCellGrid.Tests {
+namespace WizardBallisticsCore.OneDemGrid.Tests {
     [TestClass()]
     public class WBOneDemCellLayerTests {
     }

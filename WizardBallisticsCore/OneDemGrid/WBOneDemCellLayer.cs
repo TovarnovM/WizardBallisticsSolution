@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using WizardBallisticsCore.BaseClasses;
 using WizardBallisticsCore.Interfaces;
 
-namespace WizardBallisticsCore.OneDemCellGrid {
+namespace WizardBallisticsCore.OneDemGrid {
     //===========================================================================
     //В процессе
 

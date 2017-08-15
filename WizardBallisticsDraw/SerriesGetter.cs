@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WizardBallisticsCore;
-using WizardBallisticsCore.OneDemCellGrid;
+using WizardBallisticsCore.OneDemGrid;
 
 namespace WizardBallisticsDraw {
     public static class SerriesGetter {
