@@ -24,14 +24,14 @@ namespace WizardBallisticsCore.BaseClasses {
         }
 
         public virtual void LoadWhatToDo() {
-            var currAndPastlayers = OwnerGrid.LayerList
-                .Where(lr => lr.Time <= OwnerGrid.TimeCurr)
-                .OrderBy(lr => lr.Time)
-                .ToList();
-            OwnerGrid.LayerList.Clear();
-            foreach (var lr in currAndPastlayers) {
-                OwnerGrid.LayerList.AddFirst(lr);
-            }
+            //var currAndPastlayers = OwnerGrid.LayerList
+            //    .Where(lr => lr.Time <= OwnerGrid.TimeCurr)
+            //    .OrderBy(lr => lr.Time)
+            //    .ToList();
+            //OwnerGrid.LayerList.Clear();
+            //foreach (var lr in currAndPastlayers) {
+            //    OwnerGrid.LayerList.AddFirst(lr);
+            //}
         }
 
         public WBMemTacticBase(IWBGrid OwnerGrid) {

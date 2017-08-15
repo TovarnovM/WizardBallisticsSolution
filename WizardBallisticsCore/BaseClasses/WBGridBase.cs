@@ -86,14 +86,14 @@ namespace WizardBallisticsCore.BaseClasses {
         #region IO
         public class SaveLoadObj {
             public double Time { get; set; }
-            public IWBNodeLayer Layer { get; set; }
+            public LinkedList<IWBNodeLayer> Layers { get; set; }
             public WBMemTacticBase MemTactic { get; set; }
         }
 
         public object GetSaveObj() {
             return new SaveLoadObj() {
                 Time = this.TimeCurr,
-                Layer = CurrLayer,
+                Layers = LayerList,
                 MemTactic = Slaver
             };
         }
@@ -102,8 +102,10 @@ namespace WizardBallisticsCore.BaseClasses {
             try {
                 var obj = (SaveLoadObj)loadObj;
                 TimeCurr = obj.Time;
-                obj.Layer.Time = objTime;
-                LayerList.AddLast(obj.Layer);
+                LayerList.Clear();
+                foreach (var lr in obj.Layers.OrderBy(ll => ll.Time)) {
+                    LayerList.AddFirst(lr);
+                }
                 Slaver = obj.MemTactic;
 
                 Slaver.LoadWhatToDo();
