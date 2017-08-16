@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WizardBallisticsCore;
+using WizardBallisticsCore.BaseClasses;
 using WizardBallisticsCore.OneDemGrid;
 
 namespace WizardBallisticsDraw {
@@ -17,22 +18,22 @@ namespace WizardBallisticsDraw {
                 Y = y;
             }
         }
-        static List<DataDummy> GetDataDummiesList<T>(this IEnumerable<WBOneDemNode<T>> nodes, 
+        static List<DataDummy> GetDataDummiesList(this IEnumerable<WBOneDemNode> nodes, 
             string yAxisFieldName, 
-            string xAxisFieldName = nameof(WBOneDemNode<T>.X), 
+            string xAxisFieldName = nameof(WBOneDemNode.X), 
             double yScaler = 1d,
-            double xScaler = 1d) where T : struct 
+            double xScaler = 1d) 
         {
             
-            var xPoints = nodes.Values<T>(xAxisFieldName);
-            var yPoints = nodes.Values<T>(yAxisFieldName);
+            var xPoints = nodes.Values(xAxisFieldName);
+            var yPoints = nodes.Values(yAxisFieldName);
             return xPoints.Zip(yPoints, (x, y) => new DataDummy(x*xScaler, y*yScaler)).ToList();
         }
-        public static ScatterSeries GetScatterSerries<T>(this IEnumerable<WBOneDemNode<T>> nodes,
+        public static ScatterSeries GetScatterSerries(this IEnumerable<WBOneDemNode> nodes,
             string yAxisFieldName,
-            string xAxisFieldName = nameof(WBOneDemNode<T>.X),
+            string xAxisFieldName = nameof(WBOneDemNode.X),
             double yScaler = 1d,
-            double xScaler = 1d) where T : struct {
+            double xScaler = 1d)  {
 
             try {
                 return new ScatterSeries() {
@@ -45,11 +46,11 @@ namespace WizardBallisticsDraw {
 
             }
         }
-        public static LineSeries GetLineSerries<T>(this IEnumerable<WBOneDemNode<T>> nodes,
+        public static LineSeries GetLineSerries(this IEnumerable<WBOneDemNode> nodes,
             string yAxisFieldName,
-            string xAxisFieldName = nameof(WBOneDemNode<T>.X),
+            string xAxisFieldName = nameof(WBOneDemNode.X),
             double yScaler = 1d,
-            double xScaler = 1d) where T : struct {
+            double xScaler = 1d)  {
 
             try {
                 return new LineSeries() {

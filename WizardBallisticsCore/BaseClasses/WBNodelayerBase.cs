@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WizardBallisticsCore.Interfaces;
-
 namespace WizardBallisticsCore.BaseClasses {
     [Serializable]
-    public abstract class WBNodeLayerBase<T> : IWBNodeLayer<T> where T: struct {
+    public abstract class WBNodeLayerBase<T> : IWBNodeLayer<T> where T : IWBNode {
         /// <summary>
         /// Узлы
         /// </summary>
-        public T[] Nodes { get; set; }
+        public List<T> Nodes { get; set; }
         /// <summary>
         /// Время слоя
         /// </summary>
@@ -22,8 +20,10 @@ namespace WizardBallisticsCore.BaseClasses {
         /// <returns></returns>
         public IWBNodeLayer Clone() {
             var layerclone = (WBNodeLayerBase<T>)this.MemberwiseClone();
-            layerclone.Nodes = new T[Nodes.Length];
-            Array.Copy(Nodes, layerclone.Nodes, Nodes.Length);
+            layerclone.Nodes = new List<T>(Nodes.Capacity);
+            foreach (var node in Nodes) {
+                layerclone.Nodes.Add(node.Clone<T>());
+            }
             CloneLogic();
             return layerclone;
         }

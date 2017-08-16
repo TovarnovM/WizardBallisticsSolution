@@ -23,8 +23,9 @@ namespace WizardBallisticsDrawVisualTests {
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        struct TestStruct {
-            public double sin, cos2, c_33, d_77;
+        class TestClass11: WBOneDemNode {
+            public double  cos2, c_33, d_77;
+            public double sin { get; set; }
         }
 
 
@@ -38,17 +39,15 @@ namespace WizardBallisticsDrawVisualTests {
         }
 
         public void Test1() {
-            var tstLst = GetTestNodes(-3, 5, 19, x => new WBOneDemNode<TestStruct>() {
+            var tstLst = GetTestNodes(-3, 5, 19, x => new TestClass11() {
                 X = x,
                 V = x * x,
-                Data = new TestStruct() {
-                    sin = Math.Sin(x),
-                    cos2 = Math.Cos(x),
-                    c_33 = 33,
-                    d_77 = x * x * x
-                }
+                sin = Math.Sin(x),
+                cos2 = Math.Cos(x),
+                c_33 = 33,
+                d_77 = x * x * x
             });
-            var flds = WBOneDemNode<TestStruct>.GetDataFieldsNames();
+            var flds = tstLst[0].GetDataFieldsNames();
             for (int i = 0; i < flds.Count; i++) {
                 if (i % 2 == 0) {
                     vm.PM.Series.Add(tstLst.GetScatterSerries(flds[i]));
@@ -60,7 +59,7 @@ namespace WizardBallisticsDrawVisualTests {
            
         }
 
-        List<WBOneDemNode<TestStruct>> GetTestNodes(double x1, double x2, int n, Func<double, WBOneDemNode<TestStruct>> f) {
+        List<TestClass11> GetTestNodes(double x1, double x2, int n, Func<double, TestClass11> f) {
             return Enumerable.Range(0, n)
                 .Select(i => f(x1 + (x2 - x1) * i / n))
                 .ToList();

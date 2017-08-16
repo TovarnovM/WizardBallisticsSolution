@@ -49,8 +49,10 @@
     <Compile Include="BaseClasses\SolversFactory.cs" />
     <Compile Include="BaseClasses\WBGridBase.cs" />
     <Compile Include="BaseClasses\WBMemTacticBase.cs" />
+    <Compile Include="BaseClasses\WBNodeBase.cs" />
     <Compile Include="BaseClasses\WBNodeLayerBase.cs" />
     <Compile Include="Interfaces\IWBGrid.cs" />
+    <Compile Include="Interfaces\IWBNode.cs" />
     <Compile Include="Interfaces\IWBNodeLayer.cs" />
     <Compile Include="OneDemGrid\WBOneDemNode.cs" />
     <Compile Include="OneDemGrid\WBOneDemCellLayer.cs" />
@@ -63,8 +65,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="OneDemTemperature\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

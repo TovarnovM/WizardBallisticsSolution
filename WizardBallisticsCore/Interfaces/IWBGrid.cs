@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WizardBallisticsCore.Interfaces {
+namespace WizardBallisticsCore {
     /// <summary>
     /// Интерфейс для расчетной сетки
     /// </summary>

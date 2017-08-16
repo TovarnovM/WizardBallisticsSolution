@@ -12,6 +12,7 @@ namespace WizardBallisticsCore.BaseClasses {
         static Lazy<Dictionary<string, Func<WBProjectOptions, WBSolver>>> generDict = new Lazy<Dictionary<string, Func<WBProjectOptions, WBSolver>>>(
             LazyFactory, true);
         static Dictionary<string, Func<WBProjectOptions, WBSolver>> LazyFactory() {
+
             return AppDomain.CurrentDomain
                 .GetAssemblies()
                 .SelectMany(ass => ass.GetTypes())

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WizardBallisticsCore.Interfaces {
+namespace WizardBallisticsCore {
     public interface IWBNodeLayer {
         /// <summary>
         /// Время слоя
@@ -19,10 +19,10 @@ namespace WizardBallisticsCore.Interfaces {
     /// <summary>
     /// Интерфейс для временнОго слоя узлов
     /// </summary>
-    public interface IWBNodeLayer<T>: IWBNodeLayer where T : struct {
+    public interface IWBNodeLayer<T>: IWBNodeLayer where T : IWBNode {
         /// <summary>
         /// Узлы
         /// </summary>
-        T[] Nodes {get;set;}
+        List<T> Nodes {get;set;}
     }
 }

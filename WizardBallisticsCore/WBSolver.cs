@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WizardBallisticsCore.BaseClasses;
-using WizardBallisticsCore.Interfaces;
 
 namespace WizardBallisticsCore {
 
@@ -138,13 +137,32 @@ namespace WizardBallisticsCore {
             }
         }
 
-        void SaveStuff() {
+        double SaveTime;
+        int SaveIteration;
+        void SynchIterTauSave() {
+            SaveTime = TimeCurr;
+            SaveIteration = Iteration;
+        }
+        void SaveStuff(bool forceSave = false) {
             switch (Options.SaveMode) {
                 case WBProjectOptions.SaveModeVariants.dontSave:
+                    if (forceSave) {
+                        SaveToFile();
+                    }
                     return;
                 case WBProjectOptions.SaveModeVariants.tau:
+                    if (forceSave || TimeCurr >= SaveTime) {
+                        SaveToFile();
+                        SynchIterTauSave();
+                        SaveTime += Options.TauSave;
+                    }
                     break;
                 case WBProjectOptions.SaveModeVariants.iter:
+                    if(forceSave || Iteration >= SaveIteration) {
+                        SaveToFile();
+                        SynchIterTauSave();
+                        SaveIteration += Options.IterSave;
+                    }
                     break;
                 default:
                     break;
@@ -168,7 +186,9 @@ namespace WizardBallisticsCore {
             public int Iter { get; set; }
             public double Time { get; set; }
         }
-
+        public void SaveToFile() {
+            SaveToFile(ValidFileName);
+        }
         public void SaveToFile(string filePath) {
             var slc = new SaveLoadClass() {
                 GridObj = new Dictionary<string, object>(),
