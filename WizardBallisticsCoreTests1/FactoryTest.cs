@@ -12,12 +12,12 @@ namespace WizardBallisticsCoreTests1 {
     public static class SolversFactory {
         [SolverGeneratorMethod("TstZadacha1")]
         public static WBSolver TimeStopFunc(WBProjectOptions options) {
-            return new WBSolver(null, options);
+            return new WBSolver(grids: null, Options: options);
         }
 
         [SolverGeneratorMethod("TstZadacha2")]
         public static WBSolver TimeStopFunc2(WBProjectOptions options) {
-            return new WBSolver(null, options);
+            return new WBSolver(grids:null, Options: options);
         }
     }
     [TestClass()]

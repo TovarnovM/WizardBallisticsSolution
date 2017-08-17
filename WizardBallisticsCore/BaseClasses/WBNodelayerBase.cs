@@ -9,7 +9,7 @@ namespace WizardBallisticsCore.BaseClasses {
         /// <summary>
         /// Узлы
         /// </summary>
-        public List<T> Nodes { get; set; }
+        public List<T> Nodes { get; set; } = new List<T>();
         /// <summary>
         /// Время слоя
         /// </summary>
@@ -24,14 +24,14 @@ namespace WizardBallisticsCore.BaseClasses {
             foreach (var node in Nodes) {
                 layerclone.Nodes.Add(node.Clone<T>());
             }
-            CloneLogic();
+            CloneLogic(layerclone);
             return layerclone;
         }
 
         /// <summary>
         /// логика/действия при копировании
         /// </summary>
-        public abstract void CloneLogic();
+        public abstract void CloneLogic(IWBNodeLayer clone);
 
     }
 }

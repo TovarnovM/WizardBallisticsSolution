@@ -38,6 +38,10 @@ namespace WizardBallisticsCore {
 
         public WBProjectOptions Options { get; set; }
 
+        public WBSolver(IWBGrid grid, WBProjectOptions Options):this(new IWBGrid[] { grid }, Options) {
+
+        }
+
         public WBSolver(IEnumerable<IWBGrid> grids, WBProjectOptions Options) {
             State = "initial";
             if(grids != null) {

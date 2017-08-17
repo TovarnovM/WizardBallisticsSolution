@@ -4,9 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WBRimanTest"
+        xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="337.394" Width="467.903">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="47"/>
+        </Grid.RowDefinitions>
+        <oxy:PlotView x:Name="tstPV" Model="{Binding vm.PM}" Grid.Row="0" Grid.Column="0"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="10,0,0,1" Grid.Row="1" Width="75" Click="Button_Click" Height="20" VerticalAlignment="Bottom"/>
+        <TextBox Name="tb1" HorizontalAlignment="Left" Margin="88,0,0,1" Grid.Row="1" TextWrapping="Wrap" Text="0.5" Width="120" Height="20" VerticalAlignment="Bottom"/>
+        <Slider Name="slider" Margin="0,5,0,0" Grid.Row="1" VerticalAlignment="Top" ValueChanged="slider_ValueChanged"/>
     </Grid>
 </Window>

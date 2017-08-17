@@ -29,19 +29,19 @@ namespace WizardBallisticsDrawVisualTests {
         }
 
 
-        public ViewModel1 vm { get; set; } 
+        public StandartVM vm { get; set; } 
 
         public MainWindow() {
             DataContext = this;
-            vm = new ViewModel1();
+            vm = new StandartVM();
             InitializeComponent();
             Test1();
         }
 
         public void Test1() {
             var tstLst = GetTestNodes(-3, 5, 19, x => new TestClass11() {
-                X = x,
-                V = x * x,
+                x = x,
+                u = x * x,
                 sin = Math.Sin(x),
                 cos2 = Math.Cos(x),
                 c_33 = 33,

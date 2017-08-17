@@ -36,6 +36,16 @@ namespace WizardBallisticsCore.BaseClasses {
         /// </summary>
         public string Name { get; set; }
 
+        public IWBNodeLayer this[int index] {
+            get {
+                var ll = LayerList.Last;
+                for (int i = 0; i < index; i++) {
+                    ll = ll.Previous;
+                }
+                return ll.Value;
+            }
+        }
+
         /// <summary>
         /// Список функция для остановки расчета
         /// </summary>
@@ -44,13 +54,14 @@ namespace WizardBallisticsCore.BaseClasses {
 
         #region Methods
         /// <summary>
-        /// добавляет еще один слой в начало LayerList, клонирует с CurrLayer, добавляет deltaTau
+        /// добавляет еще один слой в начало LayerList
         /// </summary>
         /// <param name="deltaTau"></param>
-        void CloneUp(double deltaTau = 0d) {
-            LayerList.AddFirst(CurrLayer.Clone());
-            CurrLayer.Time += deltaTau;
+        public void AddLayer(IWBNodeLayer layer) {
+            LayerList.AddFirst(layer);
         }
+
+        
 
         /// <summary>
         /// функция эволюции секти за шаг по времени с применением логики сохранения/контроля памяти

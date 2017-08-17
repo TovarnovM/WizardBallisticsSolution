@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="SerriesGetter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StandartVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WizardBallisticsCore\WizardBallisticsCore.csproj">
