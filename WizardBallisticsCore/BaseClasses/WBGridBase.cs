@@ -94,23 +94,19 @@ namespace WizardBallisticsCore.BaseClasses {
         #endregion
 
         #region IO
-        public class SaveLoadObj {
-            public double Time { get; set; }
-            public LinkedList<IWBNodeLayer> Layers { get; set; }
-            public WBMemTacticBase MemTactic { get; set; }
-        }
 
-        public object GetSaveObj() {
-            return new SaveLoadObj() {
+
+        public GridSaveLoadObj GetSaveObj() {
+            return new GridSaveLoadObj() {
                 Time = this.TimeCurr,
                 Layers = LayerList,
                 MemTactic = Slaver
             };
         }
 
-        public bool Load(object loadObj, double objTime) {
+        public bool Load(GridSaveLoadObj loadObj, double objTime) {
             try {
-                var obj = (SaveLoadObj)loadObj;
+                var obj = (GridSaveLoadObj)loadObj;
                 TimeCurr = obj.Time;
                 LayerList.Clear();
                 foreach (var lr in obj.Layers.OrderBy(ll => ll.Time)) {
@@ -143,5 +139,11 @@ namespace WizardBallisticsCore.BaseClasses {
         /// <param name="deltaTau">шаг по времени</param>
         public abstract void StepUpLogic(double deltaTau);
         #endregion
+    }
+
+    public class GridSaveLoadObj {
+        public double Time { get; set; }
+        public LinkedList<IWBNodeLayer> Layers { get; set; }
+        public WBMemTacticBase MemTactic { get; set; }
     }
 }

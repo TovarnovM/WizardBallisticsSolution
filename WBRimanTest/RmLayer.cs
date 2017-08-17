@@ -44,13 +44,13 @@ namespace WBRimanTest {
             var nxtLayer = (RmLayer)Clone();
             nxtLayer.Time = Time + tau;
 
-            var s12 = new Vec3[Opt.RealNodesCount + 1];
+            var s12 = new WBVec[Opt.RealNodesCount + 1];
             for (int n = 0; n < Nodes.Count -1; n++) {
                 s12[n] = 0.5 * (Nodes[n].s + Nodes[n + 1].s) - tau / 2 / Opt.H * (Nodes[n + 1].f - Nodes[n].f);
             }
 
             for (int n = Opt.LeftNodesCount; n < nxtLayer.Nodes.Count - Opt.RightNodesCount; n++) {
-                var s_k1 = Nodes[n].s - tau / Opt.H * (RmNode.F_func(s12[n]) - RmNode.F_func(s12[n - 1])) + RmNode.vyaz*(Nodes[n+1].s - 2* Nodes[n].s+ Nodes[n-1].s);
+                var s_k1 = Nodes[n].s - tau / Opt.H * (RmNode.F_func(s12[n]) - RmNode.F_func(s12[n - 1])) + RmNode.vyaz*(Nodes[n+1].s - 2d* Nodes[n].s+ Nodes[n-1].s);
                 nxtLayer.Nodes[n].F(s_k1);
             }
             return nxtLayer;

@@ -185,7 +185,7 @@ namespace WizardBallisticsCore {
 
         #region Save/Load
         class SaveLoadClass {
-            public Dictionary<string, object> GridObj { get; set; } 
+            public Dictionary<string, GridSaveLoadObj> GridObj { get; set; } 
             public WBProjectOptions Opts { get; set; }
             public int Iter { get; set; }
             public double Time { get; set; }
@@ -195,7 +195,9 @@ namespace WizardBallisticsCore {
         }
         public void SaveToFile(string filePath) {
             var slc = new SaveLoadClass() {
-                GridObj = new Dictionary<string, object>(),
+                GridObj = new Dictionary<string, GridSaveLoadObj>(),
+                Iter = Iteration,
+                Time = TimeCurr,
                 Opts = Options
             };
             foreach (var gr in Grids.Values) {
@@ -203,7 +205,8 @@ namespace WizardBallisticsCore {
             }
             using (var jsw = new JsonTextWriter(new StreamWriter(filePath))) {
                 var settings = new JsonSerializerSettings() {
-                    TypeNameHandling = TypeNameHandling.Objects
+                    TypeNameHandling = TypeNameHandling.All,
+                    Formatting = Formatting.Indented
                 };
                 var ser = JsonSerializer.Create(settings);
                 ser.Serialize(jsw, slc);
@@ -211,8 +214,12 @@ namespace WizardBallisticsCore {
         }
 
         public void LoadFromFile(string filePath) {
-            using (var jstr = new JsonTextReader(new StreamReader(filePath))) {              
-                var ser = JsonSerializer.Create();
+            using (var jstr = new JsonTextReader(new StreamReader(filePath))) {
+                var settings = new JsonSerializerSettings() {
+                    TypeNameHandling = TypeNameHandling.All,
+                    Formatting = Formatting.Indented
+                };
+                var ser = JsonSerializer.Create(settings);
                 var slc = ser.Deserialize<SaveLoadClass>(jstr);
                 foreach (var obj in slc.GridObj) {
                     Grids[obj.Key].Load(obj.Value, slc.Time);

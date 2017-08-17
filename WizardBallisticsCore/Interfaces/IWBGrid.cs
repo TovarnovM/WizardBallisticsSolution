@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WizardBallisticsCore.BaseClasses;
 
 namespace WizardBallisticsCore {
     /// <summary>
@@ -38,9 +39,9 @@ namespace WizardBallisticsCore {
         /// </summary>
         void InfoСommunication();
 
-        object GetSaveObj();
+        GridSaveLoadObj GetSaveObj();
 
-        bool Load(object loadObj, double objTime);
+        bool Load(GridSaveLoadObj loadObj, double objTime);
         /// <summary>
         /// Здесь хранятся текущий временной слой узллов и несколько предыдущих
         /// </summary>

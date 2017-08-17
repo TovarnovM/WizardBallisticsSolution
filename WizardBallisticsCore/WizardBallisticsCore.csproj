@@ -51,6 +51,7 @@
     <Compile Include="BaseClasses\WBMemTacticBase.cs" />
     <Compile Include="BaseClasses\WBNodeBase.cs" />
     <Compile Include="BaseClasses\WBNodeLayerBase.cs" />
+    <Compile Include="BaseClasses\WBVec.cs" />
     <Compile Include="Interfaces\IWBGrid.cs" />
     <Compile Include="Interfaces\IWBNode.cs" />
     <Compile Include="Interfaces\IWBNodeLayer.cs" />

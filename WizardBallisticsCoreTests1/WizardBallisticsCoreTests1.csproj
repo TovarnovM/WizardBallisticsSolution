@@ -56,6 +56,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="BaseClasses\UnitTest1.cs" />
     <Compile Include="BaseClasses\WBNodeBaseTests.cs" />
     <Compile Include="FactoryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -27,8 +27,8 @@ namespace WBRimanTest {
                     RightNodesCount = 1,
                     X_left = -1,
                     X_right = 1,
-                    RealNodesCount = 200,
-                    H = 0.01
+                    RealNodesCount = 100,
+                    H = 0.02
                 };
             }
         }

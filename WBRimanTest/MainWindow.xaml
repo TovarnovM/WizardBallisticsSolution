@@ -13,8 +13,10 @@
             <RowDefinition Height="47"/>
         </Grid.RowDefinitions>
         <oxy:PlotView x:Name="tstPV" Model="{Binding vm.PM}" Grid.Row="0" Grid.Column="0"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="10,0,0,1" Grid.Row="1" Width="75" Click="Button_Click" Height="20" VerticalAlignment="Bottom"/>
+        <Button Content="Run" HorizontalAlignment="Left" Margin="10,0,0,1" Grid.Row="1" Width="75" Click="Button_Click" Height="20" VerticalAlignment="Bottom"/>
         <TextBox Name="tb1" HorizontalAlignment="Left" Margin="88,0,0,1" Grid.Row="1" TextWrapping="Wrap" Text="0.5" Width="120" Height="20" VerticalAlignment="Bottom"/>
         <Slider Name="slider" Margin="0,5,0,0" Grid.Row="1" VerticalAlignment="Top" ValueChanged="slider_ValueChanged"/>
+        <Button Content="Save" HorizontalAlignment="Left" Margin="269,0,0,0" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Click="Button_Click_1"/>
+        <Button Content="Load" HorizontalAlignment="Left" Margin="349,0,0,-1" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Click="Button_Click_2" />
     </Grid>
 </Window>

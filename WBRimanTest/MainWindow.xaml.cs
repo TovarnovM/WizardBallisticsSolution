@@ -27,7 +27,7 @@ namespace WBRimanTest {
         public MainWindow() {
             DataContext = this;
             vm = new StandartVM();
-
+            solver = WBSolver.Factory("RimanTest", WBProjectOptions.Default);
             InitializeComponent();
         }
 
@@ -37,14 +37,17 @@ namespace WBRimanTest {
             double timeMax = GetDouble(tb1.Text, 0.5);
             solver.MyStopFunc = slv => slv.TimeCurr >= timeMax;
             solver.RunCalc();
+            SynchSlider();
 
+
+        }
+
+        void SynchSlider() {
             slider.Minimum = 0;
             slider.Maximum = solver.Grids["RimanGrid"].LayerList.Count-1;
 
             slider.Value = slider.Maximum;
         }
-
-
 
         void DrawSituation(RmLayer lr) {
             var nodes = lr.Nodes;
@@ -74,6 +77,40 @@ namespace WBRimanTest {
         private void slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
             var lr = ((solver.Grids["RimanGrid"] as RmGrid)[(int)e.NewValue] as RmLayer);
             DrawSituation(lr);
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e) {
+            try {
+                var sd = new Microsoft.Win32.SaveFileDialog() {
+                    Filter = "json Files|*.json",
+                    FileName = "testy"
+                };
+                if (sd.ShowDialog() == true) {
+                    solver.SaveToFile(sd.FileName);
+                }
+
+
+            } finally {
+
+            }
+            
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e) {
+            try {
+                var sd = new Microsoft.Win32.OpenFileDialog() {
+                    Filter = "json Files|*.json",
+                    FileName = "testy"
+                };
+                if (sd.ShowDialog() == true) {
+                    solver.LoadFromFile(sd.FileName);
+                    SynchSlider();
+                }
+
+
+            } finally {
+
+            }
         }
     }
 }
