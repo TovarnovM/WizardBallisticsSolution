@@ -8,7 +8,7 @@ using WizardBallisticsCore.OneDemGrid;
 
 namespace WBRimanTest {
     public class RmNode : WBOneDemNode {
-        public double ro, p, e;
+        public double u,ro, p, e;
         public static double k = 1.4;
         public static double vyaz = 0.016;
 

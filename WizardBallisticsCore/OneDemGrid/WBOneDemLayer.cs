@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace WizardBallisticsCore.OneDemGrid {
     /// <typeparam name="T">Структура данных для ячейки/задачи</typeparam>
     public class WBOneDemLayer<T> : WBNodeLayerBase<T> where T: WBOneDemNode {
         public WBOneDemLayerOptions Opt { get; set; }
+        [JsonIgnore]
         public List<T> LeftNodes, RightNodes, RealNodes;
 
         public IEnumerable<T> GetRealNodes() {
@@ -80,7 +82,7 @@ namespace WizardBallisticsCore.OneDemGrid {
                 .Select(ind => {
                     double x = Opt.X_left + ind * Opt.H;
                     var nd = initCondFunc(Time, x);
-                    nd.x = x;
+                    nd.X = x;
                     nd.Index = ind * 10;
                     return nd;
                 });

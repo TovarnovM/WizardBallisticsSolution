@@ -40,7 +40,7 @@ namespace WizardBallisticsDrawVisualTests {
 
         public void Test1() {
             var tstLst = GetTestNodes(-3, 5, 19, x => new TestClass11() {
-                x = x,
+                X = x,
                 u = x * x,
                 sin = Math.Sin(x),
                 cos2 = Math.Cos(x),

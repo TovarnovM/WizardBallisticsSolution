@@ -15,7 +15,7 @@ namespace WizardBallisticsCore.BaseClasses.Tests {
             public double Ro;
             public double p;
         }
-        static string[] trueNames = new string[] { "x", "u", "P", "Ro", "p" };
+        static string[] trueNames = new string[] { "X", "V", "P", "Ro", "p" };
 
         [TestMethod]
         public void GetDataFieldsNamesTest() {
@@ -32,8 +32,8 @@ namespace WizardBallisticsCore.BaseClasses.Tests {
         public void ThisTest() {
             var tst = new DataDummy() {
                 Index = 1,
-                x = 2,
-                u = 3,
+                X = 2,
+                V = 3,
                 IndexInList = -1,
                 P = 100,
                 Ro = 200,
@@ -43,8 +43,8 @@ namespace WizardBallisticsCore.BaseClasses.Tests {
 
             Assert.AreEqual(1, tst["Index"]);
             Assert.AreEqual(-1, tst["IndexInList"]);
-            Assert.AreEqual(2d, tst["x"]);
-            Assert.AreEqual(3d, tst["u"]);
+            Assert.AreEqual(2d, tst["X"]);
+            Assert.AreEqual(3d, tst["V"]);
             Assert.AreEqual(100d, tst["P"]);
             Assert.AreEqual(200d, tst["Ro"]);
             Assert.AreEqual(300d, tst["p"]);
@@ -56,8 +56,8 @@ namespace WizardBallisticsCore.BaseClasses.Tests {
             var tst = Enumerable.Range(0, 100)
                 .Select(i => new DataDummy() {
                     Index = 1,
-                    x = 2,
-                    u = 3,
+                    X = 2,
+                    V = 3,
                     IndexInList = -1,
                     P = 1 * i,
                     Ro = 200,
@@ -78,8 +78,8 @@ namespace WizardBallisticsCore.BaseClasses.Tests {
             var tst = Enumerable.Range(0, 100)
                 .Select(i => new DataDummy() {
                     Index = 1,
-                    x = 2,
-                    u = 3,
+                    X = 2,
+                    V = 3,
                     IndexInList = -1,
                     P = 1 * i,
                     Ro = 200,

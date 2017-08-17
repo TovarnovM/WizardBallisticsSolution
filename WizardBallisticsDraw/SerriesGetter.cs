@@ -20,7 +20,7 @@ namespace WizardBallisticsDraw {
         }
         static List<DataDummy> GetDataDummiesList(this IEnumerable<WBOneDemNode> nodes, 
             string yAxisFieldName, 
-            string xAxisFieldName = nameof(WBOneDemNode.x), 
+            string xAxisFieldName = nameof(WBOneDemNode.X), 
             double yScaler = 1d,
             double xScaler = 1d) 
         {
@@ -31,7 +31,7 @@ namespace WizardBallisticsDraw {
         }
         public static ScatterSeries GetScatterSerries(this IEnumerable<WBOneDemNode> nodes,
             string yAxisFieldName,
-            string xAxisFieldName = nameof(WBOneDemNode.x),
+            string xAxisFieldName = nameof(WBOneDemNode.X),
             double yScaler = 1d,
             double xScaler = 1d)  {
 
@@ -49,7 +49,7 @@ namespace WizardBallisticsDraw {
         }
         public static LineSeries GetLineSerries(this IEnumerable<WBOneDemNode> nodes,
             string yAxisFieldName,
-            string xAxisFieldName = nameof(WBOneDemNode.x),
+            string xAxisFieldName = nameof(WBOneDemNode.X),
             double yScaler = 1d,
             double xScaler = 1d)  {
 

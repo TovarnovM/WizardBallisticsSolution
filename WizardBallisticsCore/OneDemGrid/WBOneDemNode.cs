@@ -26,12 +26,12 @@ namespace WizardBallisticsCore.OneDemGrid {
         /// <summary>
         /// координата узла в одномерном пространстве
         /// </summary>
-        public double x;
+        public double X;
 
         /// <summary>
         /// скорость узла в одномерном пространстве
         /// </summary>
-        public double u;        
+        public double V;        
     }
 
 }
