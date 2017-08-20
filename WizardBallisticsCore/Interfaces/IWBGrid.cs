@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WizardBallisticsCore.BaseClasses;
 
-namespace WizardBallisticsCore {
+namespace WizardBallistics.Core {
     /// <summary>
     /// Интерфейс для расчетной сетки
     /// </summary>

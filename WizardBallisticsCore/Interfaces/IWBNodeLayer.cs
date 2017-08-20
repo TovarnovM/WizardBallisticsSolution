@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WizardBallisticsCore {
+namespace WizardBallistics {
     public interface IWBNodeLayer {
         /// <summary>
         /// Время слоя

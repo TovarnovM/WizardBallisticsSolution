@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WizardBallisticsCore.BaseClasses {
+namespace WizardBallistics.Core {
     /// <summary>Vector implementation. This is thin wrapper over 1D array</summary>
     public struct WBVec {
         public double[] v;

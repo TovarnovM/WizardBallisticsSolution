@@ -4,9 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using WizardBallisticsCore.BaseClasses;
+using WizardBallistics.Core;
 
-namespace WizardBallisticsCore.OneDemGrid {
+namespace WizardBallistics.Core {
     /// <summary>
     /// Структура одномерной подвижной эйлеровой сетки
     /// </summary>

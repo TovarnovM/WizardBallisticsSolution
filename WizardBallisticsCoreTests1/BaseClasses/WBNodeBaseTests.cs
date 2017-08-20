@@ -1,13 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WizardBallisticsCore.BaseClasses;
+using WizardBallistics.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WizardBallisticsCore.OneDemGrid;
 
-namespace WizardBallisticsCore.BaseClasses.Tests {
+namespace WizardBallistics.Core.Tests {
     [TestClass()]
     public class WBNodeBaseTests {
         public class DataDummy : WBOneDemNode {

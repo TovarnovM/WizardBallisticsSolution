@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WizardBallisticsCore;
-using WizardBallisticsCore.BaseClasses;
+using WizardBallistics;
+using WizardBallistics.Core;
 
 namespace WBRimanTest {
     public class RmGrid : WBGridBase {
@@ -14,7 +14,7 @@ namespace WBRimanTest {
             if(TimeCurr> 0.1) {
                 return 0.7d;
             }
-            return 0.2+ TimeCurr/0.1*(0.7-0.2);
+            return 0.05+ TimeCurr/0.1*(0.7-0.05);
         }
         public override double GetMaxTimeStep() {
             return GetMnozj() * ((RmLayer)CurrLayer).GetTauMax();

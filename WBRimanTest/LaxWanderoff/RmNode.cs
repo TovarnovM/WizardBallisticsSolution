@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WizardBallisticsCore.BaseClasses;
-using WizardBallisticsCore.OneDemGrid;
+using WizardBallistics.Core;
+using WizardBallistics.Core;
 
 namespace WBRimanTest {
     public class RmNode : WBOneDemNode {
         public double u,ro, p, e;
         public static double k = 1.4;
-        public static double vyaz = 0.016;
+        public static double vyaz = 0.06;
 
         public double GetE() {
             return p / (ro * (k - 1));

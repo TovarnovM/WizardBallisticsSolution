@@ -14,8 +14,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WizardBallisticsCore;
-using WizardBallisticsDraw;
+using WizardBallistics.Core;
+using WizardBallistics.Draw;
 
 namespace WBRimanTest {
     /// <summary>

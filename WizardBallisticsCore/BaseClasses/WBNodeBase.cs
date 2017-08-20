@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WizardBallisticsCore.BaseClasses {
+namespace WizardBallistics.Core {
     public class WBNodeBase : IWBNode {
         public IWBNode Clone() {
             return (IWBNode)this.MemberwiseClone();

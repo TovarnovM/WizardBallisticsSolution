@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WizardBallisticsCore.BaseClasses {
+namespace WizardBallistics.Core {
     /// <summary>
     /// Базовый класс для описания тактики сохранения данных / контрля памяти у IWBGrid
     /// </summary>

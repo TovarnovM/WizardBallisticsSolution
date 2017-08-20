@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WizardBallisticsCore;
-using WizardBallisticsCore.BaseClasses;
+using WizardBallistics.Core;
 
 namespace WizardBallisticsCoreTests1 {
     [SolversFactory]

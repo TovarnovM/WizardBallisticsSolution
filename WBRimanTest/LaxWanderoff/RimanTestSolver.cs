@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WizardBallisticsCore;
-using WizardBallisticsCore.BaseClasses;
-using WizardBallisticsCore.OneDemGrid;
+using WizardBallistics;
+using WizardBallistics.Core;
+using WizardBallistics.Core;
 
 namespace WBRimanTest {
     [SolversFactory]
@@ -27,8 +27,8 @@ namespace WBRimanTest {
                     RightNodesCount = 1,
                     X_left = -1,
                     X_right = 1,
-                    RealNodesCount = 100,
-                    H = 0.02
+                    RealNodesCount = 200,
+                    H = 0.01
                 };
             }
         }

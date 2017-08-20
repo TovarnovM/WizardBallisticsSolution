@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WizardBallisticsDraw {
+namespace WizardBallistics.Draw {
     public class StandartVM {
         public PlotModel PM { get; set; }
         public StandartVM() {

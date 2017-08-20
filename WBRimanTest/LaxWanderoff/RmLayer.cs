@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WizardBallisticsCore;
-using WizardBallisticsCore.BaseClasses;
-using WizardBallisticsCore.OneDemGrid;
+using WizardBallistics;
+using WizardBallistics.Core;
+using WizardBallistics.Core;
 using static System.Math;
 
 namespace WBRimanTest {

@@ -5,9 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WizardBallisticsCore.BaseClasses;
 
-namespace WizardBallisticsCore {
+namespace WizardBallistics.Core {
 
     /// <summary>
     /// Базовый класс для решения/вычисления

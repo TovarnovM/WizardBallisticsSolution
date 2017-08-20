@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-namespace WizardBallisticsCore.BaseClasses {
+namespace WizardBallistics.Core {
     [Serializable]
     public abstract class WBNodeLayerBase<T> : IWBNodeLayer<T> where T : IWBNode {
         /// <summary>

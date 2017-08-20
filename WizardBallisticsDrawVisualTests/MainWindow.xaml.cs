@@ -12,9 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WizardBallisticsCore;
-using WizardBallisticsCore.OneDemGrid;
-using WizardBallisticsDraw;
+using WizardBallistics.Core;
+using WizardBallistics.Draw;
 
 namespace WizardBallisticsDrawVisualTests {
     
@@ -41,7 +40,7 @@ namespace WizardBallisticsDrawVisualTests {
         public void Test1() {
             var tstLst = GetTestNodes(-3, 5, 19, x => new TestClass11() {
                 X = x,
-                u = x * x,
+                V = x * x,
                 sin = Math.Sin(x),
                 cos2 = Math.Cos(x),
                 c_33 = 33,

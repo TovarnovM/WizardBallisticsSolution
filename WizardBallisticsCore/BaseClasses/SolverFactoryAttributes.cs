@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WizardBallisticsCore.BaseClasses {
+namespace WizardBallistics.Core {
     [AttributeUsage(AttributeTargets.Method)]
     public class SolverGeneratorMethodAttribute: Attribute {
         public string Name { get; set; }

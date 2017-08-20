@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WizardBallisticsCore.BaseClasses;
+using WizardBallistics.Core;
 
 namespace WizardBallisticsCoreTests1.BaseClasses {
     [TestClass]

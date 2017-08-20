@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WizardBallisticsCore.BaseClasses {
+namespace WizardBallistics.Core {
 
     static class SolversFactory {
         static Lazy<Dictionary<string, Func<WBProjectOptions, WBSolver>>> generDict = new Lazy<Dictionary<string, Func<WBProjectOptions, WBSolver>>>(

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WizardBallisticsCore.BaseClasses {
+namespace WizardBallistics.Core {
     public abstract class WBGridBase: IWBGrid  {
         #region Constructors
         public WBGridBase(string name, IWBNodeLayer initLayer) {
