@@ -270,11 +270,26 @@ namespace WizardBallistics.Core {
             return new WBVec(result);
         }
 
+        public static WBVec operator *(WBVec v, int a) {
+            double[] av = v;
+            double[] result = new double[av.Length];
+            for (int i = 0; i < av.Length; i++)
+                result[i] = a * av[i];
+            return new WBVec(result);
+        }
+
         /// <summary>Multiplies a vector by a scalar (per component)</summary>
         /// <param name="v">Vector</param>
         /// <param name="a">Scalar</param>
         /// <returns>Vector with all components multiplied by scalar</returns>
         public static WBVec operator *(double a, WBVec v) {
+            double[] av = v;
+            double[] result = new double[av.Length];
+            for (int i = 0; i < av.Length; i++)
+                result[i] = a * av[i];
+            return new WBVec(result);
+        }
+        public static WBVec operator *(int a, WBVec v) {
             double[] av = v;
             double[] result = new double[av.Length];
             for (int i = 0; i < av.Length; i++)
