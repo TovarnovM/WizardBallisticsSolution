@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WizardBallistics.Core;
+using WizardBallistics;
 using WizardBallistics.Core;
 
 namespace WBRimanTest {
     public class RmNode : WBOneDemNode {
         public double u,ro, p, e;
         public static double k = 1.4;
-        public static double vyaz = 0.06;
+        public static double vyaz = 0.02;
 
         public double GetE() {
             return p / (ro * (k - 1));
@@ -57,7 +57,12 @@ namespace WBRimanTest {
                 s[2] * (s[3] + p) / s[1]);
         }
 
-
+        public override IWBNode Clone() {
+            var cl = (RmNode)base.Clone();
+            cl.s = s.Clone();
+            cl.f = f.Clone();
+            return cl;
+        }
     }
   
 

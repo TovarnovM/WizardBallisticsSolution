@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using WizardBallistics;
 using WizardBallistics.Core;
-using WizardBallistics.Core;
 
 namespace WBRimanTest {
     [SolversFactory]

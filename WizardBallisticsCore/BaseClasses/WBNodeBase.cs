@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace WizardBallistics.Core {
     public class WBNodeBase : IWBNode {
-        public IWBNode Clone() {
+        public virtual IWBNode Clone() {
             return (IWBNode)this.MemberwiseClone();
         }
 
-        public T Clone<T>() {
+        public virtual T Clone<T>() {
             return (T)this.MemberwiseClone();
         }
         /// <summary>
