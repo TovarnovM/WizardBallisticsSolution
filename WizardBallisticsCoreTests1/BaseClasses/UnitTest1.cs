@@ -8,9 +8,9 @@ namespace WizardBallisticsCoreTests1.BaseClasses {
         [TestMethod]
         public void TestMethod1() {
             WBVec a = new WBVec(1, 2, 3, 4, 5);
-            var b = a;
-            b[0] = 999;
-            Assert.AreNotEqual(a[0], b[0]);
+            var b = a.Clone();
+            b[1] = 999;
+            Assert.AreNotEqual(a[1], b[1]);
         }
     }
 }
