@@ -11,7 +11,7 @@ namespace MiracleGun.OvBallistic {
     public class OvNodes : WBOneDemNode {
 
         public double u, rho, p, e, z;
-
+        public WBVec vect_f = new WBVec(0d, 0d, 0d, 0d), vect_q = new WBVec(0d, 0d, 0d, 0d);
         public OvPowder powder;
 
         public double GetE() {
@@ -37,7 +37,7 @@ namespace MiracleGun.OvBallistic {
             Init_q();
         }
 
-        public WBVec vect_f = new WBVec(0, 0, 0), vect_q = new WBVec(0, 0, 0);
+        
 
         public override IWBNode Clone() {
             var cl = (OvNodes)base.Clone();
