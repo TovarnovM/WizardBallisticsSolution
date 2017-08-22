@@ -14,6 +14,9 @@ namespace WizardBallistics.Core {
         /// Время слоя
         /// </summary>
         public double Time { get; set; } = 0d;
+
+        
+
         /// <summary>
         /// Клонировать слой
         /// </summary>
@@ -32,6 +35,7 @@ namespace WizardBallistics.Core {
         /// логика/действия при копировании
         /// </summary>
         public abstract void CloneLogic(IWBNodeLayer clone);
+        public abstract void ActionWhenLoad();
 
     }
 }

@@ -11,12 +11,6 @@ namespace MiracleGun.OvBallistic.Tests
     [TestClass()]
     public class OvNodesTests
     {
-        [TestMethod()]
-        public void GetIntTest()
-        {
-            var n = new OvNodes();
-            int i = n.GetInt();
-            Assert.Fail();
-        }
+
     }
 }

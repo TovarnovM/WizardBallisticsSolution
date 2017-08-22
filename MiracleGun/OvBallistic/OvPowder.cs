@@ -112,5 +112,8 @@ namespace MiracleGun.OvBallistic
         }
         #endregion
 
+        public OvPowder Factory(string powderName) {
+            return OvPowderFactory.GetPowder(powderName);
+        }
     }
 }

@@ -88,6 +88,10 @@ namespace WizardBallistics.Core {
             Nodes.AddRange(nds);
             InitLists();
         }
+
+        public override void ActionWhenLoad() {
+            InitLists();
+        }
     }
     public class WBOneDemLayerOptions {
         public int RealNodesCount { get; set; }

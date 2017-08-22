@@ -69,8 +69,8 @@ namespace WizardBallistics.Core {
         /// <param name="deltaTau">шаг по времени</param>
         public void StepUp(double deltaTau) {
             StepUpLogic(deltaTau);
-            Slaver.StepWhatToDo();
             TimeCurr += deltaTau;
+            Slaver.StepWhatToDo();           
         }
 
         /// <summary>
@@ -111,6 +111,7 @@ namespace WizardBallistics.Core {
                 LayerList.Clear();
                 foreach (var lr in obj.Layers.OrderBy(ll => ll.Time)) {
                     LayerList.AddFirst(lr);
+                    lr.ActionWhenLoad();
                 }
                 Slaver = obj.MemTactic;
 

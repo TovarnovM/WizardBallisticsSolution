@@ -15,6 +15,8 @@ namespace WizardBallistics {
         /// </summary>
         /// <returns></returns>
         IWBNodeLayer Clone();
+
+        void ActionWhenLoad();
     }
     /// <summary>
     /// Интерфейс для временнОго слоя узлов
