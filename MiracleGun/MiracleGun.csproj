@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FortranPort\FortranFuncs.cs" />
+    <Compile Include="FortranPort\GasNode.cs" />
     <Compile Include="GunShape.cs" />
     <Compile Include="OvBallistic\OvPowder.cs" />
     <Compile Include="OvBallistic\OvNodes.cs" />

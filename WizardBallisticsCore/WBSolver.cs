@@ -192,6 +192,13 @@ namespace WizardBallistics.Core {
         public void SaveToFile() {
             SaveToFile(ValidFileName);
         }
+
+        JsonSerializerSettings JsonSerSettings => new JsonSerializerSettings() {
+            TypeNameHandling = TypeNameHandling.All,
+            Formatting = Formatting.Indented,
+            PreserveReferencesHandling = PreserveReferencesHandling.All
+        };
+
         public void SaveToFile(string filePath) {
             var slc = new SaveLoadClass() {
                 GridObj = new Dictionary<string, GridSaveLoadObj>(),
@@ -202,23 +209,16 @@ namespace WizardBallistics.Core {
             foreach (var gr in Grids.Values) {
                 slc.GridObj.Add(gr.Name,gr.GetSaveObj());
             }
-            using (var jsw = new JsonTextWriter(new StreamWriter(filePath))) {
-                var settings = new JsonSerializerSettings() {
-                    TypeNameHandling = TypeNameHandling.All,
-                    Formatting = Formatting.Indented
-                };
-                var ser = JsonSerializer.Create(settings);
+            using (var jsw = new JsonTextWriter(new StreamWriter(filePath))) {              
+                var ser = JsonSerializer.Create(JsonSerSettings);
                 ser.Serialize(jsw, slc);
             }
         }
 
         public void LoadFromFile(string filePath) {
             using (var jstr = new JsonTextReader(new StreamReader(filePath))) {
-                var settings = new JsonSerializerSettings() {
-                    TypeNameHandling = TypeNameHandling.All,
-                    Formatting = Formatting.Indented
-                };
-                var ser = JsonSerializer.Create(settings);
+
+                var ser = JsonSerializer.Create(JsonSerSettings);
                 var slc = ser.Deserialize<SaveLoadClass>(jstr);
                 foreach (var obj in slc.GridObj) {
                     Grids[obj.Key].Load(obj.Value, slc.Time);
