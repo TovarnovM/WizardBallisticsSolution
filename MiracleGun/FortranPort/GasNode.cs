@@ -37,6 +37,8 @@ namespace MiracleGun.FortranPort {
             e = q[3] / ro - 0.5 * u * u;
             p = GetPressure();
         }
+        public double CSound => Math.Sqrt(p / (g[8] * ro * (1d - g.covolume * ro)));
+        public double H => e + 0.5 * u * u + p / ro;
 
     }
 
