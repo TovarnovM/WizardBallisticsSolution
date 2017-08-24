@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using WizardBallistics.Core;
 
-namespace MiracleGun.FortranPort {
+namespace MiracleGun.IdealGas {
     public class GasBound:WBOneDemNode {
         public GasCell LeftCell, RightCell;
-        public GunShape geom;
+        public GunShape Geom;
     }
 }

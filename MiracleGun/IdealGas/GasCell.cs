@@ -1,11 +1,12 @@
-﻿using System;
+﻿using MiracleGun.Invariants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WizardBallistics.Core;
 
-namespace MiracleGun.FortranPort {
+namespace MiracleGun.IdealGas {
     /// <summary>
     /// 
     /// </summary>
@@ -18,7 +19,12 @@ namespace MiracleGun.FortranPort {
         public double p;
         public double e;
         public GasConstants g;
+        public GunShape Geom;
+        public GasBound LeftBound, RightBound;
         public WBVec q = new WBVec(0, 0, 0);
+        public GasCell(GasConstants g) {
+            this.g = g;
+        }
         public double GetE() {
             return (p / g[9]) * (1 / ro - g.covolume);
         }

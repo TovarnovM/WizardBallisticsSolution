@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using WizardBallistics.Core;
 using static System.Math;
 
-namespace MiracleGun.FortranPort {
+namespace MiracleGun.IdealGas {
     public static class FortranFuncs {
         /// <summary>
         /// Согласно AUSMp.f90
