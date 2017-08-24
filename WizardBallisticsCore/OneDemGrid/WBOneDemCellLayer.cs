@@ -10,15 +10,34 @@ namespace WizardBallistics.Core {
         where TCell : WBOneDemNode 
         where TBound : WBOneDemNode {
 
-        [JsonIgnore]
-        public List<TCell> RealCells, RealCellsRev ,LeftCells, RightCells;
+        public static int GetNumOfRealNodes(int CellCount) {
+            return CellCount * 2 + 1;
+        }
 
         [JsonIgnore]
-        public List<TBound> RealBounds, RealBoundsRev, LeftBounds, RightBounds;
+        public List<TCell> RealCells, RealCellsRev ,LeftCells, RightCells, AllCells, AllCellsRev;
+
+        [JsonIgnore]
+        public List<TBound> RealBounds, RealBoundsRev, LeftBounds, RightBounds, AllBounds, AllBoundsRev;
 
         #region ListGenerators
+        public IEnumerable<TCell> GetAllCells() {
+            int indexOfFirstCell = Opt.LeftNodesCount % 2 == 0
+                ? 1
+                : 0;
+            for (int i = indexOfFirstCell; i < Nodes.Count; i+=2) {
+                yield return (TCell)Nodes[i];
+            }
+        }
+        public IEnumerable<TBound> GetAllBounds() {
+            int indexOfFirstBound = Opt.LeftNodesCount % 2 == 0
+                ? 0
+                : 1;
+            for (int i = indexOfFirstBound; i < Nodes.Count; i += 2) {
+                yield return (TBound)Nodes[i];
+            }
+        }
 
-        
         public IEnumerable<TCell> GetLeftCells() {
             int realBoundsIndexLeft = Opt.LeftNodesCount;
             for (int i = realBoundsIndexLeft - 1; i >= 0; i-=2) {
@@ -72,8 +91,19 @@ namespace WizardBallistics.Core {
 
         public override void InitLists() {
             base.InitLists();
-            RealCells = new List<TCell>(GetRealCells());
+            AllBounds = new List<TBound>(GetAllBounds());
+            AllBoundsRev = new List<TBound>(AllBounds.Count);
+            for (int i = AllBounds.Count - 1; i >= 0; i--) {
+                AllBoundsRev.Add(AllBounds[i]);
+            }
 
+            AllCells = new List<TCell>(GetAllCells());
+            AllCellsRev = new List<TCell>(AllCells.Count);
+            for (int i = AllCells.Count - 1; i >= 0; i--) {
+                AllCellsRev.Add(AllCells[i]);
+            }
+
+            RealCells = new List<TCell>(GetRealCells());
             RealCellsRev = new List<TCell>(RealCells.Capacity);
             for (int i = RealCells.Count - 1; i >= 0; i--) {
                 RealCellsRev.Add(RealCells[i]);
@@ -91,6 +121,28 @@ namespace WizardBallistics.Core {
 
             RightBounds = new List<TBound>(GetRightBounds());
             RightCells = new List<TCell>(GetRightCells());
+        }
+
+        public void InitLayer(double time, WBOneDemLayerOptions opts, Func<double, double, TCell> initCellFunc, Func<double, double, TBound> initBoundFunc) {
+            Opt = opts;
+            Time = time;
+            Nodes?.Clear();
+            int indexOfFirstBound = Opt.LeftNodesCount % 2 == 0
+                    ? 1
+                    : 0;
+            var nds = Enumerable.Range(0, Opt.AllNodesCount)
+                .Select(ind => {
+                    double x = Opt.X_left + ind * Opt.H;
+                    WBOneDemNode nd = ind % 2 == indexOfFirstBound
+                      ? (WBOneDemNode)initCellFunc(Time, x)
+                      : (WBOneDemNode)initBoundFunc(Time, x);
+                    nd.X = x;
+                    return nd;
+                });
+            Nodes.AddRange(nds);
+
+            InitLists();
+            NodeIndexing();
         }
     }
 }

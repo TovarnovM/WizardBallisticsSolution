@@ -11,22 +11,16 @@ namespace MiracleGun.OvBallistic.Tests {
     public class OvPowderTests {
         [TestMethod()]
         public void PsiTest() {
-            var powder = new OvPowder() {
-                f = 1.047,
-                k = 1.236,
-                alpha_k = 1.039,
-                T1 = 3000,
-                dest = 1.6,
-                Ik = 0.17,
-                zk = 1.331,
-                kappa_1 = 0.309,
-                lambda_1 = 1.7,
-                kappa_2 = 0.743,
-                lambda_2 = -0.996
-            };
-
-            powder.Psi(0.3);
-            Assert.Fail();
+            var powders = OvPowderFactory.GetAllPowderNames();
+            var badPowders = new List<string>();
+            for (int i = 0; i < powders.Length; i++) {
+                var powder = OvPowder.Factory(powders[i]);
+                bool goodPwdr = powder.Psi(-10) == 0d &&
+                    powder.Psi(999) == 1d;
+                if (!goodPwdr)
+                    badPowders.Add(powders[i]);
+            }
+            Assert.AreEqual(0, badPowders.Count);
         }
     }
 }

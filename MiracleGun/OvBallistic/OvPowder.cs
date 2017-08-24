@@ -69,14 +69,14 @@ namespace MiracleGun.OvBallistic
         /// </summary>
         /// <param name="z"> Относительная толщина сгоревшего слоя </param>
         public double Psi(double z) {
+            if (z < 0) {
+                return 0;
+            } 
             if (z < 1) {
                 return kappa_1 * z * (1 + 2 * lambda_1 * z);
             }
             else if (z >= 1 & z < zk) {
                 return kappa_1 * (1 + lambda_1) + kappa_2 * (z - 1) * (1 + lambda_2 * (z - 1));
-            }
-            else if (z < 0) {
-                return 0;
             }
             else {
                 return 1;
@@ -112,8 +112,9 @@ namespace MiracleGun.OvBallistic
         }
         #endregion
 
-        public OvPowder Factory(string powderName) {
+        public static OvPowder Factory(string powderName) {
             return OvPowderFactory.Get(powderName);
         }
+
     }
 }

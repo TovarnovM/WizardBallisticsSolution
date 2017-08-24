@@ -8,5 +8,6 @@ using WizardBallistics.Core;
 namespace MiracleGun.OvBallistic {
     public class OvBound: WBOneDemNode {
         public OvCell LeftCell, RightCell;
+        public OvGunShape geom;
     }
 }

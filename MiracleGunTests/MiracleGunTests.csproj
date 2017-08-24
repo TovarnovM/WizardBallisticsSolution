@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="GunDTests.cs" />
     <Compile Include="GunShapeTests.cs" />
+    <Compile Include="OvBallistic\OvLayerTests.cs" />
     <Compile Include="OvBallistic\OvPowderFactoryTests.cs" />
     <Compile Include="OvBallistic\OvPowderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,6 +70,10 @@
     <ProjectReference Include="..\MiracleGun\MiracleGun.csproj">
       <Project>{A01DA796-7BF8-4FC0-B956-87B5A827C263}</Project>
       <Name>MiracleGun</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WizardBallisticsCore\WizardBallisticsCore.csproj">
+      <Project>{26476633-6EA1-464A-B808-E03CBD9191CE}</Project>
+      <Name>WizardBallisticsCore</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

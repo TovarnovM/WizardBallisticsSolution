@@ -22,6 +22,7 @@ namespace MiracleGun.OvBallistic {
             public double lambda_2 { get; set; }
             public double k_f { get; set; }
             public double k_l { get; set; }
+  
             public OvPowder ConvertToOvPowder() {
                 var res = new OvPowder();
                 res.f = f;
@@ -67,5 +68,6 @@ namespace MiracleGun.OvBallistic {
         public static string[] GetAllPowderNames() {
             return dict.Value.Keys.ToArray();
         }
+
     }
 }

@@ -85,7 +85,7 @@ namespace WizardBallistics.Core {
             (clone as WBOneDemLayer<T>).InitLists();
         }
 
-        public void InitLayer(double time, WBOneDemLayerOptions opts, Func<double, double, T> initCondFunc) {
+        public virtual void InitLayer(double time, WBOneDemLayerOptions opts, Func<double, double, T> initCondFunc) {
             Opt = opts;
             Time = time;
             Nodes?.Clear();
