@@ -16,7 +16,7 @@ namespace MiracleGun.OvBallistic {
 
         public OvGunShape geom;
 
-        
+        public OvBound LeftBound, RightBound;
 
         public double Get_E() {
             return (p / (powder.k - 1)) *

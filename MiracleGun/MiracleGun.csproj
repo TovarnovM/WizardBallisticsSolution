@@ -50,10 +50,10 @@
     <Compile Include="FortranPort\FortranFuncs.cs" />
     <Compile Include="FortranPort\GasNode.cs" />
     <Compile Include="GunShape.cs" />
+    <Compile Include="OvBallistic\OvBound.cs" />
     <Compile Include="OvBallistic\OvLayer.cs" />
     <Compile Include="OvBallistic\OvGunShape.cs" />
     <Compile Include="OvBallistic\OvPowder.cs" />
-    <Compile Include="OvBallistic\OvNodes.cs" />
     <Compile Include="OvBallistic\OvPowderFactory.cs" />
     <Compile Include="OvBallistic\OvCell.cs" />
     <Compile Include="PowderGrids.cs" />

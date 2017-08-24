@@ -46,7 +46,10 @@ namespace WizardBallistics.Core {
             }
 
         }
-        public void NodeIndexing() {
+        public virtual void NodeIndexing() {
+            for (int i = 0; i < Nodes.Count; i++) {
+                Nodes[i].IndexInList = i;
+            }
             int ind = 0;
             foreach (var ln in LeftNodes) {
                 ln.Index = (--ind) * 10;
@@ -60,7 +63,7 @@ namespace WizardBallistics.Core {
             }
         }
 
-        public void InitLists() {
+        public virtual void InitLists() {
             RealNodes = new List<T>(Opt.RealNodesCount);
             RealNodes.AddRange(GetRealNodes());
 
@@ -95,10 +98,9 @@ namespace WizardBallistics.Core {
                     return nd;
                 });
             Nodes.AddRange(nds);
-            for (int i = 0; i < Nodes.Count; i++) {
-                Nodes[i].IndexInList = i;
-            }
+            
             InitLists();
+            NodeIndexing();
         }
 
         public override void ActionWhenLoad() {

@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using WizardBallistics.Core;
 
 namespace MiracleGun.OvBallistic {
-
-    public class OvLayer : WBOneDemCellLayer<OvCell,OvBound> {
-
+    public class OvBound: WBOneDemNode {
+        public OvCell LeftCell, RightCell;
     }
 }

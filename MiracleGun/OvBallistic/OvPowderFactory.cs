@@ -57,7 +57,7 @@ namespace MiracleGun.OvBallistic {
 
 
         }
-        public static OvPowder GetPowder(string powderName) {
+        public static OvPowder Get(string powderName) {
             if (dict.Value.ContainsKey(powderName)) {
                 return dict.Value[powderName].ConvertToOvPowder();
             } else {
