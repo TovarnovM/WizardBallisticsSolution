@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace MiracleGun.Invariants
 {
+    /// <summary>
+    /// Порох
+    /// </summary>
     public class GunPowder {
         #region Поля
         /// <summary>

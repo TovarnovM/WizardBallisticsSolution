@@ -7,16 +7,15 @@ namespace WizardBallistics.Core {
     [Serializable]
     public abstract class WBNodeLayerBase<T> : IWBNodeLayer<T> where T : IWBNode {
         /// <summary>
-        /// Узлы
+        /// Все все все Узлы
         /// </summary>
         public List<T> Nodes { get; set; } = new List<T>();
+
         /// <summary>
         /// Время слоя
         /// </summary>
         public double Time { get; set; } = 0d;
-
-        
-
+      
         /// <summary>
         /// Клонировать слой
         /// </summary>
@@ -35,6 +34,9 @@ namespace WizardBallistics.Core {
         /// логика/действия при копировании
         /// </summary>
         public abstract void CloneLogic(IWBNodeLayer clone);
+        /// <summary>
+        /// логика/действия при загрузке из файла
+        /// </summary>
         public abstract void ActionWhenLoad();
 
     }

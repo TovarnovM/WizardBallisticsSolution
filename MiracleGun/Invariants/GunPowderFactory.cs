@@ -6,6 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MiracleGun.Invariants {
+    /// <summary>
+    /// Фабрика порохов. Получить новый порох можно с помощью GunPowder.Factory(string PowderName)
+    /// </summary>
     public static class GunPowderFactory {
         class PowderDummy {
             public string name { get; set; }

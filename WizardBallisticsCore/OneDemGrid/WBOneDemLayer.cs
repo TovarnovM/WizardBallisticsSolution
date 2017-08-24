@@ -6,107 +6,50 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WizardBallistics.Core {
-    //===========================================================================
-    //В процессе
 
     /// <summary>
     /// Шаблон для одномерной подвижной эйлеровой сетки
     /// </summary>
     /// <typeparam name="T">Структура данных для ячейки/задачи</typeparam>
     public class WBOneDemLayer<T> : WBNodeLayerBase<T> where T : WBOneDemNode {
+
+        #region Поля/Свойства
+        /// <summary>
+        /// Опции слоя
+        /// </summary>
         public WBOneDemLayerOptions Opt { get; set; }
+
+        /// <summary>
+        /// Список узлов (которые все еще находятся и в Nodes), играющих роль фиктивных узлов, расплолженных слева. Нумерация идет справа налево
+        /// </summary>
         [JsonIgnore]
-        public List<T> LeftNodes, RightNodes, RealNodes, RealNodesRev;
-
-        public IEnumerable<T> GetRealNodes() {
-            for (int i = Opt.LeftNodesCount; i < Nodes.Count - Opt.RightNodesCount; i++) {
-                yield return Nodes[i];
-            }
-        }
+        public List<T> LeftNodes;
 
         /// <summary>
-        /// Получить левые псевдо узлы (справа налево)
+        /// Список узлов (которые все еще находятся и в Nodes), играющих роль фиктивных узлов, расплолженных справа. Нумерация идет слева направо
         /// </summary>
-        /// <returns></returns>
-        public IEnumerable<T> GetLeftNodes() {
-
-            for (int i = Opt.LeftNodesCount - 1; i >= 0; i--) {
-                yield return Nodes[i];
-            }
-        }
+        [JsonIgnore]
+        public List<T> RightNodes;
 
         /// <summary>
-        /// Получить правые псевдо узлы (слева направо)
+        /// Список узлов (которые все еще находятся и в Nodes), играющих роль основной сетки. Нумерация идет слева направо
         /// </summary>
-        /// <returns></returns>
-        public IEnumerable<T> GetRightNodes() {
+        [JsonIgnore]
+        public List<T> RealNodes;
 
-            for (int i = Nodes.Count - Opt.RightNodesCount; i < Nodes.Count; i++) {
-                yield return Nodes[i];
-            }
-
-        }
-        public virtual void NodeIndexing() {
-            for (int i = 0; i < Nodes.Count; i++) {
-                Nodes[i].IndexInList = i;
-            }
-            int ind = 0;
-            foreach (var ln in LeftNodes) {
-                ln.Index = (--ind) * 10;
-            }
-            ind = 0;
-            foreach (var realNd in RealNodes) {
-                realNd.Index = (ind++) * 10;
-            }
-            foreach (var realNd in RightNodes) {
-                realNd.Index = (ind++) * 10;
-            }
-        }
-
-        public virtual void InitLists() {
-            RealNodes = new List<T>(Opt.RealNodesCount);
-            RealNodes.AddRange(GetRealNodes());
-
-            RealNodesRev = new List<T>(Opt.RealNodesCount);
-            for (int i = RealNodes.Count - 1; i >= 0; i--) {
-                RealNodesRev.Add(RealNodes[i]);
-            }
-
-            LeftNodes = new List<T>(Opt.LeftNodesCount);
-            LeftNodes.AddRange(GetLeftNodes());
-
-            RightNodes = new List<T>(Opt.RightNodesCount);
-            RightNodes.AddRange(GetRightNodes());
+        /// <summary>
+        /// Список узлов (которые все еще находятся и в Nodes), играющих роль основной сетки. Нумерация идет справа налево
+        /// </summary>
+        [JsonIgnore]
+        public List<T> RealNodesRev;
 
 
-        }
+        #endregion
 
-        public override void CloneLogic(IWBNodeLayer clone) {
-            (clone as WBOneDemLayer<T>).InitLists();
-        }
-
-        public virtual void InitLayer(double time, WBOneDemLayerOptions opts, Func<double, double, T> initCondFunc) {
-            Opt = opts;
-            Time = time;
-            Nodes?.Clear();
-            var nds = Enumerable.Range(-Opt.LeftNodesCount, Opt.AllNodesCount)
-                .Select(ind => {
-                    double x = Opt.X_left + ind * Opt.H;
-                    var nd = initCondFunc(Time, x);
-                    nd.X = x;
-                    nd.Index = ind * 10;
-                    return nd;
-                });
-            Nodes.AddRange(nds);
-            
-            InitLists();
-            NodeIndexing();
-        }
-
-        public override void ActionWhenLoad() {
-            InitLists();
-        }
-
+        #region Методы
+        /// <summary>
+        /// функция Синхронизации значений Х и V у узлов. При этом значения крайних реальных узлов не меняются
+        /// </summary>
         public void SynchNodes_X_V() {
             double xLeft = RealNodes[0].X;
             double dx = (RealNodesRev[0].X - xLeft) / (RealNodes.Count - 1);
@@ -125,6 +68,13 @@ namespace WizardBallistics.Core {
                 LeftNodes[0].V = RealNodesRev[0].V + dv * i;
             }
         }
+
+        /// <summary>
+        /// Получить соседний узел
+        /// </summary>
+        /// <param name="fromWho">от кого</param>
+        /// <param name="indDiff">на сколько далеко стоит сосед</param>
+        /// <returns>соседа</returns>
         public T GetNeib(T fromWho, int indDiff) {
             return fromWho.IndexInList + indDiff > 0 && fromWho.IndexInList < Nodes.Count
                 ? Nodes[fromWho.IndexInList + indDiff]
@@ -136,24 +86,120 @@ namespace WizardBallistics.Core {
         public T NeibR(T node) {
             return GetNeib(node, 1);
         }
-    }
-    public class WBOneDemLayerOptions {
-        public int RealNodesCount { get; set; }
-        public int LeftNodesCount { get; set; }
-        public int RightNodesCount { get; set; }
-        public int AllNodesCount => RealNodesCount + LeftNodesCount + RightNodesCount;
-        public double X_left { get; set; }
-        public double X_right { get; set; }
-        public double H { get; set; }
-        public void SynchH() {
-            H = (X_right - X_left) / RealNodesCount;
-        }
-        public void SynchX_right() {
-            X_right = X_left + RealNodesCount * H;
-        }
-        public void SynchX_left() {
-            X_left = X_right - RealNodesCount * H;
-        }
-    }
 
+        /// <summary>
+        /// Получить перечисление настоящих узлов
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<T> GetRealNodes() {
+            for (int i = Opt.LeftNodesCount; i < Nodes.Count - Opt.RightNodesCount; i++) {
+                yield return Nodes[i];
+            }
+        }
+
+        /// <summary>
+        /// Получить левые псевдо узлы (справа налево)
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<T> GetLeftNodes() {
+            for (int i = Opt.LeftNodesCount - 1; i >= 0; i--) {
+                yield return Nodes[i];
+            }
+        }
+
+        /// <summary>
+        /// Получить правые псевдо узлы (слева направо)
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<T> GetRightNodes() {
+
+            for (int i = Nodes.Count - Opt.RightNodesCount; i < Nodes.Count; i++) {
+                yield return Nodes[i];
+            }
+
+        }
+        #endregion
+
+        #region Виртуальные методы
+        /// <summary>
+        /// Индексирования узлов, первый реальный узел имеет индекс 0, второй = 10, третий = 20 и т.д.
+        /// </summary>
+        public virtual void NodeIndexing() {
+            for (int i = 0; i < Nodes.Count; i++) {
+                Nodes[i].IndexInList = i;
+            }
+            int ind = 0;
+            foreach (var ln in LeftNodes) {
+                ln.Index = (--ind) * 10;
+            }
+            ind = 0;
+            foreach (var realNd in RealNodes) {
+                realNd.Index = (ind++) * 10;
+            }
+            foreach (var realNd in RightNodes) {
+                realNd.Index = (ind++) * 10;
+            }
+        }
+
+        /// <summary>
+        /// функция инициализации списков
+        /// </summary>
+        public virtual void InitLists() {
+            RealNodes = new List<T>(Opt.RealNodesCount);
+            RealNodes.AddRange(GetRealNodes());
+
+            RealNodesRev = new List<T>(Opt.RealNodesCount);
+            for (int i = RealNodes.Count - 1; i >= 0; i--) {
+                RealNodesRev.Add(RealNodes[i]);
+            }
+
+            LeftNodes = new List<T>(Opt.LeftNodesCount);
+            LeftNodes.AddRange(GetLeftNodes());
+
+            RightNodes = new List<T>(Opt.RightNodesCount);
+            RightNodes.AddRange(GetRightNodes());
+
+
+        }
+
+        /// <summary>
+        /// ЧТо сделать с клоном при клонировании
+        /// </summary>
+        /// <param name="clone">клон</param>
+        public override void CloneLogic(IWBNodeLayer clone) {
+            (clone as WBOneDemLayer<T>).InitLists();
+        }
+
+        /// <summary>
+        /// Инициализация слоя
+        /// </summary>
+        /// <param name="time">время слоя</param>
+        /// <param name="opts">опции слоя</param>
+        /// <param name="initCondFunc">функция генерации узлов (на вход идет время и координата Х, возвращаемое значение = новый узел</param>
+        public virtual void InitLayer(double time, WBOneDemLayerOptions opts, Func<double, double, T> initCondFunc) {
+            Opt = opts;
+            Time = time;
+            Nodes?.Clear();
+            var nds = Enumerable.Range(-Opt.LeftNodesCount, Opt.AllNodesCount)
+                .Select(ind => {
+                    double x = Opt.X_left + ind * Opt.H;
+                    var nd = initCondFunc(Time, x);
+                    nd.X = x;
+                    nd.Index = ind * 10;
+                    return nd;
+                });
+            Nodes.AddRange(nds);
+
+            InitLists();
+            NodeIndexing();
+        }
+
+        /// <summary>
+        /// действие при загрузке слоя
+        /// </summary>
+        public override void ActionWhenLoad() {
+            InitLists();
+        }
+        #endregion      
+    }
 }
