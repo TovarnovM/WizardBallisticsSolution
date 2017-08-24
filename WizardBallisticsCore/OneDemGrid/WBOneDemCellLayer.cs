@@ -123,7 +123,7 @@ namespace WizardBallistics.Core {
             RightCells = new List<TCell>(GetRightCells());
         }
 
-        public void InitLayer(double time, WBOneDemLayerOptions opts, Func<double, double, TCell> initCellFunc, Func<double, double, TBound> initBoundFunc) {
+        public virtual void InitLayer(double time, WBOneDemLayerOptions opts, Func<double, double, TCell> initCellFunc, Func<double, double, TBound> initBoundFunc) {
             Opt = opts;
             Time = time;
             Nodes?.Clear();

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WizardBallistics;
 using WizardBallistics.Core;
 
 namespace MiracleGun.OvBallistic {
 
     public class OvLayer : WBOneDemCellLayer<OvCell,OvBound> {
-        public OvGunShape Shape { get; set; }
+        public OvGunShape geom;
         public OvPowder powder;
 
         public void InitBoundCellRefs() {
@@ -52,6 +53,34 @@ namespace MiracleGun.OvBallistic {
             }
 
 
+        }
+        public override void InitLayer(double time, WBOneDemLayerOptions opts, Func<double, double, WBOneDemNode> initCondFunc) {
+            base.InitLayer(time, opts, initCondFunc);
+            foreach (var c in AllCells) {
+                c.geom = geom;
+                c.powder = powder;
+            }
+            foreach (var b in AllBounds) {
+                b.geom = geom;
+            }
+        }
+        public override void InitLayer(double time, WBOneDemLayerOptions opts, Func<double, double, OvCell> initCellFunc, Func<double, double, OvBound> initBoundFunc) {
+            base.InitLayer(time, opts, initCellFunc, initBoundFunc);
+            foreach (var c in AllCells) {
+                c.geom = geom;
+                c.powder = powder;
+            }
+            foreach (var b in AllBounds) {
+                b.geom = geom;
+            }
+        }
+        public override void ActionWhenLoad() {
+            base.ActionWhenLoad();
+            InitBoundCellRefs();
+        }
+        public override void CloneLogic(IWBNodeLayer clone) {
+            base.CloneLogic(clone);
+            (clone as OvLayer).InitBoundCellRefs();
         }
 
 
