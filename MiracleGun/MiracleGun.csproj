@@ -45,8 +45,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GunShape.cs" />
+    <Compile Include="OvBallistic\OvLayer.cs" />
+    <Compile Include="OvBallistic\OvGunShape.cs" />
     <Compile Include="OvBallistic\OvPowder.cs" />
-    <Compile Include="OvBallistic\OvNodes.cs" />
+    <Compile Include="OvBallistic\OvCell.cs" />
     <Compile Include="PowderGrids.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

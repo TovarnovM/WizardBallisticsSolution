@@ -53,7 +53,7 @@ namespace MiracleGun
         /// <summary>
         /// флаг, показывающий синхронизированы ли массивы и xd_lst?
         /// </summary>
-        bool isSynch = false;
+        protected bool isSynch = false;
         #endregion
 
         #region public fields
@@ -130,7 +130,7 @@ namespace MiracleGun
         /// <summary>
         /// Создание массивов на основе данных xd_lst
         /// </summary>
-        public void Synch() {
+        public virtual void Synch() {
             Clear(false);
             x_arr = xd_lst
                 .OrderBy(xs => xs.x)
