@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WizardBallistics.Core {
-    public class WBOneDemCellLayer<TCell,TBound>: WBOneDemLayer<WBOneDemNode> 
+    public abstract class WBOneDemCellLayer<TCell,TBound>: WBOneDemLayer<WBOneDemNode> 
         where TCell : WBOneDemNode 
         where TBound : WBOneDemNode {
 
@@ -143,6 +143,84 @@ namespace WizardBallistics.Core {
 
             InitLists();
             NodeIndexing();
+
+            InitBoundCellRefs();
+            InitDataRefs();
         }
+
+        public override void InitLayer(double time, WBOneDemLayerOptions opts, Func<double, double, WBOneDemNode> initCondFunc) {
+            base.InitLayer(time, opts, initCondFunc);
+            InitBoundCellRefs();
+            InitDataRefs();
+        }
+
+        public class CellBoundNeibs {
+            public TCell cell;
+            public TBound leftB, rightB;
+        }
+
+        public abstract void InitBoundCellRefs();
+        public abstract void InitDataRefs();
+
+        public IEnumerable<CellBoundNeibs> GetCellBoundNeibs() {
+            int indexOfFirstCell = Opt.LeftNodesCount % 2 == 0
+                ? 1
+                : 0;
+            int indShifter = 0;
+            switch (indexOfFirstCell) {
+                case 0:
+                    yield return new CellBoundNeibs() {
+                        cell = AllCells[0],
+                        leftB = null,
+                        rightB = AllBounds[0]
+                    };
+                    indShifter = 1;
+                    break;
+                default:
+                    yield return new CellBoundNeibs() {
+                        cell = AllCells[0],
+                        leftB = AllBounds[0],
+                        rightB = AllBounds[1]
+                    };
+                    break;
+            }
+
+            for (int i = 1; i < AllCells.Count - 1; i++) {
+                yield return new CellBoundNeibs() {
+                    cell = AllCells[i],
+                    leftB = AllBounds[i- indShifter],
+                    rightB = AllBounds[i+1- indShifter]
+                };
+            }
+
+            bool cellLast = AllCells.Count == (AllBounds.Count + indShifter);
+            if (cellLast) {
+                yield return new CellBoundNeibs() {
+                    cell = AllCellsRev[0],
+                    leftB = AllBoundsRev[0],
+                    rightB = null
+                };
+            } else {
+                yield return new CellBoundNeibs() {
+                    cell = AllCellsRev[0],
+                    leftB = AllBoundsRev[1],
+                    rightB = AllBoundsRev[0]
+                };
+            }
+
+
+        }
+
+        public override void ActionWhenLoad() {
+            base.ActionWhenLoad();
+            InitBoundCellRefs();
+        }
+
+        public override void CloneLogic(IWBNodeLayer clone) {
+            base.CloneLogic(clone);
+            (clone as WBOneDemCellLayer<TCell, TBound>).InitBoundCellRefs();
+        }
+
+
     }
 }
