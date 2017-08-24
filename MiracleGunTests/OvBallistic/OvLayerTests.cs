@@ -50,6 +50,13 @@ namespace MiracleGun.OvBallistic.Tests {
 
             Assert.IsNull(lr.AllBoundsRev[0].RightCell);
             Assert.IsNotNull(lr.AllBounds[0].LeftCell);
+
+            foreach (var c in lr.AllCells) {
+                Assert.IsTrue(c.RightBound != null || c.LeftBound != null);
+            }
+            foreach (var b in lr.AllBounds) {
+                Assert.IsTrue(b.RightCell != null || b.LeftCell != null);
+            }
         }
 
         [TestMethod()]
@@ -92,6 +99,13 @@ namespace MiracleGun.OvBallistic.Tests {
 
             Assert.IsNull(lr.AllBoundsRev[0].RightCell);
             Assert.IsNull(lr.AllBounds[0].LeftCell);
+
+            foreach (var c in lr.AllCells) {
+                Assert.IsTrue(c.RightBound != null || c.LeftBound != null);
+            }
+            foreach (var b in lr.AllBounds) {
+                Assert.IsTrue(b.RightCell != null || b.LeftCell != null);
+            }
         }
 
         [TestMethod()]
@@ -134,6 +148,13 @@ namespace MiracleGun.OvBallistic.Tests {
 
             Assert.IsNotNull(lr.AllBoundsRev[0].RightCell);
             Assert.IsNull(lr.AllBounds[0].LeftCell);
+
+            foreach (var c in lr.AllCells) {
+                Assert.IsTrue(c.RightBound != null || c.LeftBound != null);
+            }
+            foreach (var b in lr.AllBounds) {
+                Assert.IsTrue(b.RightCell != null || b.LeftCell != null);
+            }
         }
 
         [TestMethod()]
@@ -176,6 +197,13 @@ namespace MiracleGun.OvBallistic.Tests {
 
             Assert.IsNotNull(lr.AllBoundsRev[0].RightCell);
             Assert.IsNotNull(lr.AllBounds[0].LeftCell);
+
+            foreach (var c in lr.AllCells) {
+                Assert.IsTrue(c.RightBound != null || c.LeftBound != null);
+            }
+            foreach (var b in lr.AllBounds) {
+                Assert.IsTrue(b.RightCell != null || b.LeftCell != null);
+            }
         }
     }
 }
