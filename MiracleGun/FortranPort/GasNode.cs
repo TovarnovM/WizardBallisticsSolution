@@ -9,7 +9,7 @@ namespace MiracleGun.FortranPort {
     /// <summary>
     /// 
     /// </summary>
-    public class GasNode:WBOneDemNode {
+    public class GasCell:WBOneDemNode {
         public double u;
         /// <summary>
         /// d(i)  Согласно constants.f90  

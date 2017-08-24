@@ -15,7 +15,7 @@ namespace MiracleGun.FortranPort {
         /// <param name="nodeR"></param>
         /// <param name="vbi"></param>
         /// <returns>flux</returns>
-        public static WBVec AUSMp(GasNode nodeL, GasNode nodeR, double vbi) {
+        public static WBVec AUSMp(GasCell nodeL, GasCell nodeR, double vbi) {
             double r1 = nodeL.ro;
             double u1 = nodeL.u;
             double e1 = nodeL.e;

@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MiracleGun.OvBallistic {
-    public static class OvPowderFactory {
+namespace MiracleGun.Invariants {
+    public static class GunPowderFactory {
         class PowderDummy {
             public string name { get; set; }
             public double f { get; set; }
@@ -23,8 +23,8 @@ namespace MiracleGun.OvBallistic {
             public double k_f { get; set; }
             public double k_l { get; set; }
   
-            public OvPowder ConvertToOvPowder() {
-                var res = new OvPowder();
+            public GunPowder ConvertToOvPowder() {
+                var res = new GunPowder();
                 res.f = f;
                 res.Ik = I_k;
                 res.alpha_k = alpha_k;
@@ -58,7 +58,7 @@ namespace MiracleGun.OvBallistic {
 
 
         }
-        public static OvPowder Get(string powderName) {
+        public static GunPowder Get(string powderName) {
             if (dict.Value.ContainsKey(powderName)) {
                 return dict.Value[powderName].ConvertToOvPowder();
             } else {

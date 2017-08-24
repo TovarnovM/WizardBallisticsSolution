@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MiracleGun.Invariants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,8 @@ using WizardBallistics.Core;
 namespace MiracleGun.OvBallistic {
 
     public class OvLayer : WBOneDemCellLayer<OvCell,OvBound> {
-        public OvGunShape geom;
-        public OvPowder powder;
+        public GunShape geom;
+        public GunPowder powder;
 
 
         public override void InitDataRefs() {

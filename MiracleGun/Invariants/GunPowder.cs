@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace MiracleGun.OvBallistic
+namespace MiracleGun.Invariants
 {
-    public class OvPowder {
+    public class GunPowder {
         #region Поля
         /// <summary>
         /// Сила пороха [MДж/кг]
@@ -112,8 +112,8 @@ namespace MiracleGun.OvBallistic
         }
         #endregion
 
-        public static OvPowder Factory(string powderName) {
-            return OvPowderFactory.Get(powderName);
+        public static GunPowder Factory(string powderName) {
+            return GunPowderFactory.Get(powderName);
         }
 
     }

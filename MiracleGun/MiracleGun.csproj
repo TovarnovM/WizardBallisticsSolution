@@ -48,13 +48,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FortranPort\FortranFuncs.cs" />
+    <Compile Include="FortranPort\GasBound.cs" />
     <Compile Include="FortranPort\GasNode.cs" />
-    <Compile Include="GunShape.cs" />
+    <Compile Include="Invariants\AbstractShape.cs" />
     <Compile Include="OvBallistic\OvBound.cs" />
     <Compile Include="OvBallistic\OvLayer.cs" />
-    <Compile Include="OvBallistic\OvGunShape.cs" />
-    <Compile Include="OvBallistic\OvPowder.cs" />
-    <Compile Include="OvBallistic\OvPowderFactory.cs" />
+    <Compile Include="Invariants\MuzzleShape.cs" />
+    <Compile Include="Invariants\GunPowder.cs" />
+    <Compile Include="Invariants\GunPowderFactory.cs" />
     <Compile Include="OvBallistic\OvCell.cs" />
     <Compile Include="PowderGrids.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -82,5 +83,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
