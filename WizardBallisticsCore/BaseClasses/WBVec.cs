@@ -5,7 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace WizardBallistics.Core {
-    /// <summary>Vector implementation. This is thin wrapper over 1D array</summary>
+
+
+    /// <summary>
+    ///  Vector implementation. This is thin wrapper over 1D array
+    ///  В основном скопировано с Sharp.Math3D
+    /// </summary>
     public struct WBVec {
         public double[] v;
 

@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using WizardBallistics.Core;
 
-namespace MiracleGun.OvBallistic {
-    public class OvBound: WBOneDemNode {
-        public OvCell LeftCell, RightCell;
-        public GunShape geom;
+namespace MiracleGun.IdealGas {
+    public class GasBound:WBOneDemNode {
+        public GasCell LeftCell, RightCell;
+        public GunShape Geom;
     }
 }

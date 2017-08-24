@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MiracleGun.Invariants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,9 +13,9 @@ namespace MiracleGun.OvBallistic {
 
         public double u, rho, p, e, z;
 
-        public OvPowder powder;
+        public GunPowder powder;
 
-        public OvGunShape geom;
+        public GunShape geom;
 
         public OvBound LeftBound, RightBound;
 
@@ -71,9 +72,6 @@ namespace MiracleGun.OvBallistic {
             cl.vect_h = vect_h.Clone();
             return cl;
         }
-
-        public OvGunShape S = new OvGunShape();
-        
-        
+       
     }
 }

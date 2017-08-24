@@ -4,11 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MiracleGun.OvBallistic {
-    public class OvGunShape: GunShape {
-        GunShape sShape;
-        public OvGunShape() : base() {
-            sShape = new GunShape(d => Math.PI * d * d * 0.25);
+namespace MiracleGun.Invariants {
+    /// <summary>
+    /// Класс для хранения формы ствола в двумерной осисимметрической СК.
+    /// В метод AddPoint нужно передавать (координата Х, диаметр d)
+    /// </summary>
+    public class GunShape: AbstractShape {
+        AbstractShape sShape;
+        public GunShape() : base() {
+            sShape = new AbstractShape(d => Math.PI * d * d * 0.25);
         }
         public double Square(double x) {
             return sShape.GetV(x);

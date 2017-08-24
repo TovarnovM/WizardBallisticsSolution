@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Math;
 
-namespace MiracleGun
+namespace MiracleGun.Invariants
 {
     /// <summary>
     /// Интерфейс для класса при помощи которого можно получить значения геометрии в точке X
@@ -28,7 +28,7 @@ namespace MiracleGun
     /// Геометрия ствола задается точками на плоскости x-y 
     /// Класс предоставляет возможность быстрой линейной интерполяции значений между заданными точками
     /// </summary>
-    public class GunShape: ISx, IDSx {
+    public class AbstractShape: ISx, IDSx {
         #region private data
         /// <summary>
         /// отсортированный массив с координатами X
@@ -89,14 +89,14 @@ namespace MiracleGun
         /// 
         /// </summary>
         /// <param name="F_preobr">Функция преобразования переданных значений y при добавлении данных при помощи AddPoint(x,y) Например мы задаем функцию y => PI*0.25*y*y, добавляем диаметры, а в итоге записываются и сохраняются площади</param>
-        public GunShape(Func<double, double> F_preobr) {
+        public AbstractShape(Func<double, double> F_preobr) {
             this.F_preobr = F_preobr;
         }
 
         /// <summary>
         /// По умолчанию преобразования нет
         /// </summary>
-        public GunShape():this(y=>y) {
+        public AbstractShape():this(y=>y) {
 
         }
         #endregion
