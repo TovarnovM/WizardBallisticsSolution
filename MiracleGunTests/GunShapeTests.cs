@@ -17,6 +17,7 @@ namespace MiracleGun.Tests {
             gs.AddPoint(3, 2);
             gs.AddPoint(-2, 1);
             gs.AddPoint(7, 2);
+
             Assert.AreEqual(0d, gs.GetV(-10));
             Assert.AreEqual(0d, gs.GetV(10));
             Assert.AreEqual(1d, gs.GetV(-2));
