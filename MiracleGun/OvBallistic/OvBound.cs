@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MiracleGun.Invariants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ using WizardBallistics.Core;
 namespace MiracleGun.OvBallistic {
     public class OvBound: WBOneDemNode {
         public OvCell LeftCell, RightCell;
-        public MuzzleShape geom;
+        public GunShape geom;
     }
 }
