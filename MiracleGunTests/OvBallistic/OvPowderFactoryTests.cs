@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MiracleGun.Invariants;
 using MiracleGun.OvBallistic;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace MiracleGun.OvBallistic.Tests {
         public void GetPowderTest() {
             string[] allp = null;
             try {
-                allp = OvPowderFactory.GetAllPowderNames();
+                allp = GunPowderFactory.GetAllPowderNames();
             } catch (Exception) {
                 Assert.Fail("Фабрика не создается");
             }
