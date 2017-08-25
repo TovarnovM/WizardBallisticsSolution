@@ -25,6 +25,6 @@
         <Button Content="Load" HorizontalAlignment="Left" Margin="297,0,0,-1" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Click="Button_Click_2" Grid.Column="2" />
         <GridSplitter Grid.Column="1" Grid.Row="0"  Width="5"/>
         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
-        <ListBox Name="lb"/>
+        <ListBox Name="lb" SelectionChanged="lb_SelectionChanged"/>
     </Grid>
 </Window>

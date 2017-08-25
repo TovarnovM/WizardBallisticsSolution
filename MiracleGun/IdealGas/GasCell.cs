@@ -29,7 +29,7 @@ namespace MiracleGun.IdealGas {
             return (p / g[9]) * (1 / ro - g.covolume);
         }
         public double GetPressure() {
-            return g[9]*e *(1 / ro - g.covolume);
+            return g[9]*e /(1 / ro - g.covolume);
         }
         public void InitQ() {
             q[1] = ro;
@@ -70,7 +70,7 @@ namespace MiracleGun.IdealGas {
     /// Согласно constants.f90
     /// </summary>
     public class GasConstants {
-        public double[] g = new double[9];
+        public double[] g = new double[10];
         public double gamma;
         /// <summary>
         /// Согласно constants.f90   c(1,8)
@@ -81,6 +81,7 @@ namespace MiracleGun.IdealGas {
         }
         public void SynchArr(double gamma) {
             this.gamma = gamma;
+            g[0] = gamma;
             g[1] = 0.5 * (gamma - 1d) / gamma;
             g[2] = 0.5 * (gamma + 1d) / gamma;
             g[3] = 2d* gamma / (gamma - 1d);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MiracleGun.Invariants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +10,14 @@ namespace MiracleGun.IdealGas {
 
     [SolversFactory]
     public class GasSolverFactory {
-        [SolverGeneratorMethod("IdealGasTest1")]
+        [SolverGeneratorMethod("Euler-AUSMp-IdealGas-RimanTest")]
         public static WBSolver GetNewSolver(WBProjectOptions options) {
             var layerOpts = StandartOpts;
+            var geom = new GunShape();
+            geom.AddPoint(layerOpts.X_left-10, 0.2);
+            geom.AddPoint(layerOpts.X_right+10, 0.2);
             var initLayer = new GasLayer();
+            initLayer.Geom = geom;
             initLayer.InitLayer(0d, layerOpts, InitGasCell, InitGasBound);
             var grid = new GasGrid("GasGrid_tst1", initLayer);
             var solver = new WBSolver(grid, options);
@@ -26,7 +31,7 @@ namespace MiracleGun.IdealGas {
                     RightNodesCount = 1,
                     X_left = -1,
                     X_right = 1,
-                    RealNodesCount = 200,                  
+                    RealNodesCount = GasLayer.GetNumOfRealNodes(700),                  
                 };
                 lo.SynchH();
                 return lo;
@@ -47,11 +52,10 @@ namespace MiracleGun.IdealGas {
             }
             answ.X = x;
             answ.V = 0;
-            answ.Sync();
             return answ;
         }
         public static GasBound InitGasBound(double t, double x) {
-            return new GasBound();
+            return new GasBound() { X = x };
         }
     }
 }

@@ -45,6 +45,7 @@ namespace SolverDrawTsts {
             this.solName = solName;
             solver = WBSolver.Factory(solName, WBProjectOptions.Default);
             gridname = solver.Grids.Keys.First();
+            SynchSlider();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e) {
@@ -67,9 +68,13 @@ namespace SolverDrawTsts {
         void DrawSituation(IWBNodeLayer lr) {
             var nodes = lr.GetNodesForDraw("").ToList();
             vm.PM.Series.Clear();
-            foreach (var s in nodes[0].GetDataFieldsNames<double>().Where(ss => ss.ToUpper() != "X")) {
-                vm.PM.Series.Add(nodes.GetLineSerries(s));
-            }
+            //foreach (var s in nodes[0].GetDataFieldsNames<double>().Where(ss => ss.ToUpper() != "X")) {
+            //    vm.PM.Series.Add(nodes.GetLineSerries(s));
+            //}
+            vm.PM.Series.Add(nodes.GetLineSerries("ro"));
+            vm.PM.Series.Add(nodes.GetLineSerries("u"));
+            vm.PM.Series.Add(nodes.GetLineSerries("p"));
+            vm.PM.Series.Add(nodes.GetLineSerries("e"));
             vm.PM.Title = $"{lr.Time} sec";
             vm.PM.InvalidatePlot(true);
         }
@@ -108,6 +113,11 @@ namespace SolverDrawTsts {
 
             }
             
+        }
+
+        private void lb_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            var s = (string)e.AddedItems[0];
+            fillStrs(s);
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e) {

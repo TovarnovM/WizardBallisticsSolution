@@ -43,6 +43,11 @@ namespace MiracleGun.IdealGas {
         }
 
         public void InitBoundaryCells_wall() {
+            if (Time > 0.083) {
+                int sss = 99;
+            }
+                
+
             //Согласно godstep.f90 строка 172
             var ql = RealCells[0].q;
             var qr = ql;
@@ -105,6 +110,13 @@ namespace MiracleGun.IdealGas {
             }
 
             return lr1;
+        }
+
+        public override void InitLayer(double time, WBOneDemLayerOptions opts, Func<double, double, GasCell> initCellFunc, Func<double, double, GasBound> initBoundFunc) {
+            base.InitLayer(time, opts, initCellFunc, initBoundFunc);
+            foreach (var c in AllCells) {
+                c.Sync();
+            }
         }
     }
 }

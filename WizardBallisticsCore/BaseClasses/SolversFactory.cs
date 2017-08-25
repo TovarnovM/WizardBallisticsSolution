@@ -42,7 +42,10 @@ namespace WizardBallistics.Core {
             //var m1 = sss[0];
             //var attr = (SolverGeneratorAttribute)m1.GetCustomAttributes(typeof(SolverGeneratorAttribute), false)[0];
             //var f = DelegateBuilder.BuildDelegate<Func<WBProjectOptions, WBSolver>>(m1);
-            return generDict.Value[name](options);
+            if (generDict.Value.ContainsKey(name))
+                return generDict.Value[name](options);
+            else
+                throw new ArgumentException("Нет такого решателя");
         }
 
         public static string[] Variants {
