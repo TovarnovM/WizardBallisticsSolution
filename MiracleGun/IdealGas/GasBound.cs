@@ -31,8 +31,8 @@ namespace MiracleGun.IdealGas {
             double c2 = RightCell.CSound;
 
             double cs = 0.5 * (c1 + c2);
-            double Mr1 = (u1 - V) / cs;
-            double Mr2 = (u2 - V) / cs;
+            double Mr1 = (u1 -V) / cs;
+            double Mr2 = (u2 -V) / cs;
             double du = u2 - u1;
 
             double M4p = Abs(Mr1) >= 1d

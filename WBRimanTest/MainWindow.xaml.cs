@@ -68,13 +68,13 @@ namespace SolverDrawTsts {
         void DrawSituation(IWBNodeLayer lr) {
             var nodes = lr.GetNodesForDraw("").ToList();
             vm.PM.Series.Clear();
-            foreach (var s in nodes[0].GetDataFieldsNames<double>().Where(ss => ss.ToUpper() != "X")) {
-                vm.PM.Series.Add(nodes.GetLineSerries(s));
-            }
-            //vm.PM.Series.Add(nodes.GetLineSerries("ro"));
-            //vm.PM.Series.Add(nodes.GetLineSerries("u"));
-            //vm.PM.Series.Add(nodes.GetLineSerries("p"));
-            //vm.PM.Series.Add(nodes.GetLineSerries("e"));
+            //foreach (var s in nodes[0].GetDataFieldsNames<double>().Where(ss => ss.ToUpper() != "X")) {
+            //    vm.PM.Series.Add(nodes.GetLineSerries(s));
+            //}
+            vm.PM.Series.Add(nodes.GetLineSerries("ro"));
+            vm.PM.Series.Add(nodes.GetLineSerries("u"));
+            vm.PM.Series.Add(nodes.GetLineSerries("p"));
+            vm.PM.Series.Add(nodes.GetLineSerries("e"));
             vm.PM.Title = $"{lr.Time} sec";
             vm.PM.InvalidatePlot(true);
         }

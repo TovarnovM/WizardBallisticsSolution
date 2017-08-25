@@ -24,6 +24,24 @@ namespace MiracleGun.IdealGas {
             return solver;
         }
 
+        [SolverGeneratorMethod("Euler-AUSMp-IdealGas-RimanTest-movingMesh")]
+        public static WBSolver GetNewSolver1(WBProjectOptions options) {
+            var layerOpts = StandartOpts;
+            var geom = new GunShape();
+            geom.AddPoint(layerOpts.X_left - 10, 0.2);
+            geom.AddPoint(layerOpts.X_right + 10, 0.2);
+            var initLayer = new GasLayer();
+            initLayer.Geom = geom;
+            initLayer.InitLayer(0d, layerOpts, InitGasCell, InitGasBound);
+            var grid = new GasGrid("GasGrid_tst1", initLayer);
+            var solver = new WBSolver(grid, options);
+            initLayer.RealBoundsRev[0].V = 1;
+            initLayer.RealBounds[0].V = 1;
+            initLayer.RealCells.ForEach(n => n.u = -0.5);
+            initLayer.SynchNodes_X_V();
+            return solver;
+        }
+
         public static WBOneDemLayerOptions StandartOpts {
             get {
                 var lo =  new WBOneDemLayerOptions() {
@@ -31,7 +49,7 @@ namespace MiracleGun.IdealGas {
                     RightNodesCount = 1,
                     X_left = -1,
                     X_right = 1,
-                    RealNodesCount = GasLayer.GetNumOfRealNodes(300),                  
+                    RealNodesCount = GasLayer.GetNumOfRealNodes(200),                  
                 };
                 lo.SynchH();
                 return lo;
