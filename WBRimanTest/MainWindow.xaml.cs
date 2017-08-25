@@ -16,24 +16,39 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WizardBallistics.Core;
 using WizardBallistics.Draw;
+using MiracleGun.IdealGas;
+using MiracleGun;
 
-namespace WBRimanTest {
+namespace SolverDrawTsts {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
         public StandartVM vm { get; set; }
         WBSolver solver;
+        string solName, gridname;
         public MainWindow() {
             DataContext = this;
             vm = new StandartVM();
-            solver = WBSolver.Factory("RimanTest", WBProjectOptions.Default);
+            //solver = WBSolver.Factory("RimanTest", WBProjectOptions.Default);
             InitializeComponent();
+            var gn = new GasBound();
+            FillLB();
         }
 
+        void FillLB() {
+            var s = WBSolver.FactoryVariants;
+            lb.ItemsSource = s;
+            fillStrs(s[0]);
+        }
+        void fillStrs(string solName) {
+            this.solName = solName;
+            solver = WBSolver.Factory(solName, WBProjectOptions.Default);
+            gridname = solver.Grids.Keys.First();
+        }
 
         private void Button_Click(object sender, RoutedEventArgs e) {
-            solver = WBSolver.Factory("RimanTest", WBProjectOptions.Default);
+            
             double timeMax = GetDouble(tb1.Text, 0.5);
             solver.MyStopFunc = slv => slv.TimeCurr >= timeMax;
             solver.RunCalc();
@@ -44,18 +59,17 @@ namespace WBRimanTest {
 
         void SynchSlider() {
             slider.Minimum = 0;
-            slider.Maximum = solver.Grids["RimanGrid"].LayerList.Count-1;
+            slider.Maximum = solver.Grids[gridname].LayerList.Count-1;
 
             slider.Value = slider.Maximum;
         }
 
-        void DrawSituation(RmLayer lr) {
-            var nodes = lr.Nodes;
+        void DrawSituation(IWBNodeLayer lr) {
+            var nodes = lr.GetNodesForDraw("").ToList();
             vm.PM.Series.Clear();
-            vm.PM.Series.Add(nodes.GetLineSerries("ro"));
-            vm.PM.Series.Add(nodes.GetLineSerries("p"));
-            vm.PM.Series.Add(nodes.GetLineSerries("u"));
-            vm.PM.Series.Add(nodes.GetLineSerries("e"));
+            foreach (var s in nodes[0].GetDataFieldsNames<double>().Where(ss => ss.ToUpper() != "X")) {
+                vm.PM.Series.Add(nodes.GetLineSerries(s));
+            }
             vm.PM.Title = $"{lr.Time} sec";
             vm.PM.InvalidatePlot(true);
         }
@@ -75,7 +89,7 @@ namespace WBRimanTest {
         }
 
         private void slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-            var lr = ((solver.Grids["RimanGrid"] as RmGrid)[(int)e.NewValue] as RmLayer);
+            var lr = solver.Grids[gridname][(int)e.NewValue];
             DrawSituation(lr);
         }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using WizardBallistics;
 using WizardBallistics.Core;
 
-namespace WBRimanTest {
+namespace SolverDrawTsts {
     public class RmGrid : WBGridBase {
         public RmGrid(string name, RmLayer initLayer) : base(name, initLayer) {
         }

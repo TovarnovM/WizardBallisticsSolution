@@ -9,7 +9,7 @@ using WizardBallistics.Core;
 
 namespace WizardBallistics.Draw {
     public static class SerriesGetter {
-        class DataDummy {
+        public class DataDummy {
             public double X { get; set; }
             public double Y { get; set; }
             public DataDummy(double x, double y) {
@@ -17,7 +17,7 @@ namespace WizardBallistics.Draw {
                 Y = y;
             }
         }
-        static List<DataDummy> GetDataDummiesList(this IEnumerable<WBOneDemNode> nodes, 
+        public static List<DataDummy> GetDataDummiesList(this IEnumerable<WBNodeBase> nodes, 
             string yAxisFieldName, 
             string xAxisFieldName = nameof(WBOneDemNode.X), 
             double yScaler = 1d,
@@ -28,7 +28,7 @@ namespace WizardBallistics.Draw {
             var yPoints = nodes.Values(yAxisFieldName);
             return xPoints.Zip(yPoints, (x, y) => new DataDummy(x*xScaler, y*yScaler)).ToList();
         }
-        public static ScatterSeries GetScatterSerries(this IEnumerable<WBOneDemNode> nodes,
+        public static ScatterSeries GetScatterSerries(this IEnumerable<WBNodeBase> nodes,
             string yAxisFieldName,
             string xAxisFieldName = nameof(WBOneDemNode.X),
             double yScaler = 1d,
@@ -46,7 +46,7 @@ namespace WizardBallistics.Draw {
 
             }
         }
-        public static LineSeries GetLineSerries(this IEnumerable<WBOneDemNode> nodes,
+        public static LineSeries GetLineSerries(this IEnumerable<WBNodeBase> nodes,
             string yAxisFieldName,
             string xAxisFieldName = nameof(WBOneDemNode.X),
             double yScaler = 1d,
@@ -59,6 +59,59 @@ namespace WizardBallistics.Draw {
                     ItemsSource = nodes.GetDataDummiesList(yAxisFieldName, xAxisFieldName, yScaler, xScaler),
                     Title = yAxisFieldName
                 };
+            } catch (Exception e) {
+                return new LineSeries() { Title = $"{yAxisFieldName} Ошибка: {e.Message}" };
+
+            }
+        }
+        public static LineSeries GetLineSerries(this IWBNodeLayer layer, string variantName, string yAxisFieldName,
+            string xAxisFieldName = nameof(WBOneDemNode.X),
+            double yScaler = 1d,
+            double xScaler = 1d) {
+
+            try {
+                return layer.GetNodesForDraw(variantName).GetLineSerries(yAxisFieldName, xAxisFieldName, yScaler, xScaler);
+
+            } catch (Exception e) {
+                return new LineSeries() { Title = $"{yAxisFieldName} Ошибка: {e.Message}" };
+            }
+        }
+        public static ScatterSeries GetScatterSerries(this IWBNodeLayer layer, string variantName, string yAxisFieldName,
+            string xAxisFieldName = nameof(WBOneDemNode.X),
+            double yScaler = 1d,
+            double xScaler = 1d) {
+
+            try {
+                return layer.GetNodesForDraw(variantName).GetScatterSerries(yAxisFieldName, xAxisFieldName, yScaler, xScaler);
+
+            } catch (Exception e) {
+                return new ScatterSeries() { Title = $"{yAxisFieldName} Ошибка: {e.Message}" };
+            }
+        }
+
+        public static ScatterSeries GetScatterSerries(this IEnumerable<IWBNode> nodes,
+                string yAxisFieldName,
+                string xAxisFieldName = nameof(WBOneDemNode.X),
+                double yScaler = 1d,
+                double xScaler = 1d) {
+
+            try {
+                return nodes.Cast<WBNodeBase>().GetScatterSerries(yAxisFieldName, xAxisFieldName, yScaler, xScaler);
+  
+            } catch (Exception e) {
+                return new ScatterSeries() { Title = $"{yAxisFieldName} Ошибка: {e.Message}" };
+
+            }
+        }
+        public static LineSeries GetLineSerries(this IEnumerable<IWBNode> nodes,
+            string yAxisFieldName,
+            string xAxisFieldName = nameof(WBOneDemNode.X),
+            double yScaler = 1d,
+            double xScaler = 1d) {
+
+            try {
+                return nodes.Cast<WBNodeBase>().GetLineSerries(yAxisFieldName, xAxisFieldName, yScaler, xScaler);
+
             } catch (Exception e) {
                 return new LineSeries() { Title = $"{yAxisFieldName} Ошибка: {e.Message}" };
 

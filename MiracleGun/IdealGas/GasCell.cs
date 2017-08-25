@@ -21,7 +21,7 @@ namespace MiracleGun.IdealGas {
         public GasConstants g;
         public GunShape Geom;
         public GasBound LeftBound, RightBound;
-        public WBVec q = new WBVec(0, 0, 0);
+        public WBVec q = WBVec.Zeros(3), h = WBVec.Zeros(3);
         public GasCell(GasConstants g) {
             this.g = g;
         }
@@ -36,16 +36,34 @@ namespace MiracleGun.IdealGas {
             q[2] = ro * u;
             q[3] = ro *(e + 0.5 * u * u);
         }
+        public void Init_h() {
+            h[1] = 0d;
+            h[2] = p * Geom.Get_dS(X);
+            h[3] = 0d;
+        }
         public void SetQ(WBVec q) {
             this.q = q;
             ro = q[1];
             u = q[2] / ro;
             e = q[3] / ro - 0.5 * u * u;
             p = GetPressure();
+            Init_h();
+        }
+        public void Sync() {
+            e = GetE();
+            InitQ();
+            Init_h();
         }
         public double CSound => Math.Sqrt(p / (g[8] * ro * (1d - g.covolume * ro)));
+        /// <summary>
+        /// Энтальпия
+        /// </summary>
         public double H => e + 0.5 * u * u + p / ro;
-
+        /// <summary>
+        /// объем ячейки
+        /// </summary>
+        public double W => Geom.GetW(LeftBound.X, RightBound.X);
+        public double dx => RightBound.X - LeftBound.X;
     }
 
     /// <summary>

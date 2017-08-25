@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WizardBallistics.Core;
+using static System.Math;
 
 namespace MiracleGun.IdealGas {
     public class GasLayer : WBOneDemCellLayer<GasCell, GasBound> {
@@ -29,6 +30,81 @@ namespace MiracleGun.IdealGas {
             foreach (var b in AllBounds) {
                 b.Geom = Geom;
             }
+        }
+
+        public double GetMaxTimeStep() {
+            double vmax = 0d;
+            foreach (var cell in RealCells) {
+                var vel = cell.CSound + Abs(cell.q[2]) / cell.q[1];
+                if (vel > vmax)
+                    vmax = vel;
+            }
+            return Max(vmax, Max(Abs(RealBounds[0].V), Abs(RealBoundsRev[0].V)));
+        }
+
+        public void InitBoundaryCells_wall() {
+            //Согласно godstep.f90 строка 172
+            var ql = RealCells[0].q;
+            var qr = ql;
+            ql[2] = -qr[2] + 2 * RealBounds[0].V * qr[1];
+
+            LeftCells[0].SetQ(ql);
+
+            qr = RealCellsRev[0].q;
+            ql = qr;
+            //Однако в godstep.f90 строка 204 вместо последней ql[1] стоит qr[1].... странно, возможно это ошибка при копировании, хотя это и не важно
+            qr[2] = -ql[2] + 2 * RealBoundsRev[0].V * ql[1];
+
+            RightCells[0].SetQ(qr);
+
+        }
+
+        public void StrechMe(double deltaT) {
+            Time += deltaT;
+            RealNodes[0].X += RealNodes[0].V * deltaT;
+            RealNodesRev[0].X += RealNodesRev[0].V * deltaT;
+            SynchNodes_X_V();
+        }
+
+        public GasLayer StepUp(double tau) {
+            var lr0 = this;        
+            foreach (var c in lr0.RealCells) {
+                c.Sync();
+            }
+            lr0.InitBoundaryCells_wall();
+
+            var lr05 = lr0.Clone() as GasLayer;
+            foreach (var b in lr05.RealBounds) {
+                b.SetFlux();
+            }
+            lr05.StrechMe(tau * 0.5);
+
+            for (int i = 0; i < lr05.RealCells.Count; i++) {
+                var c_0 = lr0.RealCells[i];
+                var c_05 = lr05.RealCells[i];
+                var qs = (c_0.q * c_0.W - 0.5 * tau * (c_0.RightBound.S * c_05.RightBound.flux - c_0.LeftBound.S * c_05.LeftBound.flux) + 0.5*tau* c_0.h*c_0.dx)/c_05.W;
+
+                c_05.SetQ(qs);
+            }
+
+            lr05.InitBoundaryCells_wall();
+            var lr1 = lr05.Clone() as GasLayer;
+            foreach (var b in lr1.RealBounds) {
+                b.SetFlux();
+            }
+            lr1.StrechMe(tau * 0.5);
+
+            for (int i = 0; i < lr1.RealCells.Count; i++) {
+                var c_0 = lr0.RealCells[i];
+                var c_05 = lr05.RealCells[i];
+                var c_1 = lr0.RealCells[i];
+
+                var qn = (c_0.q * c_0.W - 0.5 * tau * (c_05.RightBound.S * c_1.RightBound.flux - c_05.LeftBound.S * c_1.LeftBound.flux) + 0.5 * tau * c_1.h * c_05.dx) / c_1.W;
+
+                c_1.SetQ(qn);
+            }
+
+            return lr1;
         }
     }
 }

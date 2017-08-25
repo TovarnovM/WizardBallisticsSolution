@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WizardBallisticsDraw", "Wiz
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WizardBallisticsDrawVisualTests", "WizardBallisticsDrawVisualTests\WizardBallisticsDrawVisualTests.csproj", "{A91FBFF1-6AC2-4F88-A5E9-8A646C291884}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WBRimanTest", "WBRimanTest\WBRimanTest.csproj", "{17373A7A-1CAB-403D-9F06-FAE9089C4FDD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolverDrawTsts", "WBRimanTest\SolverDrawTsts.csproj", "{17373A7A-1CAB-403D-9F06-FAE9089C4FDD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WizardBallisticsCoreTests1", "WizardBallisticsCoreTests1\WizardBallisticsCoreTests1.csproj", "{E41E2D2A-1760-4486-BAD8-AD92FA9BA46D}"
 EndProject
