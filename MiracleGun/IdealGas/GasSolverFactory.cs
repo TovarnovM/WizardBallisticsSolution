@@ -31,7 +31,7 @@ namespace MiracleGun.IdealGas {
                     RightNodesCount = 1,
                     X_left = -1,
                     X_right = 1,
-                    RealNodesCount = GasLayer.GetNumOfRealNodes(700),                  
+                    RealNodesCount = GasLayer.GetNumOfRealNodes(300),                  
                 };
                 lo.SynchH();
                 return lo;

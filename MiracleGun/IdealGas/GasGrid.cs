@@ -12,8 +12,9 @@ namespace MiracleGun.IdealGas {
         }
 
         public override double GetMaxTimeStep() {
-            double tau =  0.4*(CurrLayer as GasLayer).GetMaxTimeStep();
-            tau =  Math.Min(0.001, tau);
+            double tau =  0.5*(CurrLayer as GasLayer).GetMaxTimeStep();
+            //tau = tau < 1E-6 ? 1E-6 : tau;
+            //tau =  Math.Min(0.01, tau);
             return tau;
         }
 
