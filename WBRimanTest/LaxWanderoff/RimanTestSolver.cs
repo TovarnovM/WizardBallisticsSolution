@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using WizardBallistics;
 using WizardBallistics.Core;
 
-namespace WBRimanTest {
+namespace SolverDrawTsts {
     [SolversFactory]
     public class RimanFactory {
-        [SolverGeneratorMethod("RimanTest")]
+        [SolverGeneratorMethod("Лакс-вандеркто-то идеальный газ, задача Римана")]
         public static WBSolver GetNewSolver(WBProjectOptions options) {
             var layerOpts = StandartOpts;
             var initLayer = new RmLayer();

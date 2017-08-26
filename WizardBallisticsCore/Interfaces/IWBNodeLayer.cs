@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WizardBallistics {
+namespace WizardBallistics.Core {
     public interface IWBNodeLayer {
         /// <summary>
         /// Время слоя
@@ -15,6 +15,8 @@ namespace WizardBallistics {
         /// </summary>
         /// <returns></returns>
         IWBNodeLayer Clone();
+
+        IEnumerable<IWBNode> GetNodesForDraw(string variantName);
 
         void ActionWhenLoad();
     }

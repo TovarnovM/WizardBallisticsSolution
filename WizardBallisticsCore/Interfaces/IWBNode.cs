@@ -11,5 +11,6 @@ namespace WizardBallistics {
     public interface IWBNode {
         IWBNode Clone();
         T Clone<T>();
+        List<string> GetDataFieldsNames<T1>();
     }
 }

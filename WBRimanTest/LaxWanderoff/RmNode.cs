@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using WizardBallistics;
 using WizardBallistics.Core;
 
-namespace WBRimanTest {
+namespace SolverDrawTsts {
     public class RmNode : WBOneDemNode {
         public double u,ro, p, e;
         public static double k = 1.4;

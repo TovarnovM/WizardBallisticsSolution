@@ -38,6 +38,6 @@ namespace WizardBallistics.Core {
         /// логика/действия при загрузке из файла
         /// </summary>
         public abstract void ActionWhenLoad();
-
+        public abstract IEnumerable<IWBNode> GetNodesForDraw(string variantName);
     }
 }
