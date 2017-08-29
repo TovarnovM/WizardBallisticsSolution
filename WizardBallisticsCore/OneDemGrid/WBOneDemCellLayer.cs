@@ -323,6 +323,19 @@ namespace WizardBallistics.Core {
             base.CloneLogic(clone);
             (clone as WBOneDemCellLayer<TCell, TBound>).InitBoundCellRefs();
         }
+
+        public override IEnumerable<IWBNode> GetNodesForDraw(string variantName) {
+            switch (variantName.ToUpper()) {
+                case "ALLBOUNDS":
+                    return AllBounds;
+                case "BOUNDS":
+                    return RealBounds;
+                case "ALLCELLS":
+                    return AllCells;
+                default:
+                    return RealCells;                    
+            }
+        }
         #endregion
 
         #region Abstract Methods
@@ -337,11 +350,5 @@ namespace WizardBallistics.Core {
         /// </summary>
         public abstract void InitDataRefs();
         #endregion
-
-
-
-
-
-
     }
 }

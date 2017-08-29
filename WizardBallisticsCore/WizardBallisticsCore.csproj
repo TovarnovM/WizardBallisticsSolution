@@ -76,6 +76,7 @@
     <Compile Include="Interfaces\IWBNode.cs" />
     <Compile Include="Interfaces\IWBNodeLayer.cs" />
     <Compile Include="OneDemGrid\WBOneDemCellLayer.cs" />
+    <Compile Include="OneDemGrid\WBOneDemGrid.cs" />
     <Compile Include="OneDemGrid\WBOneDemLayerOptions.cs" />
     <Compile Include="OneDemGrid\WBOneDemNode.cs" />
     <Compile Include="OneDemGrid\WBOneDemLayer.cs" />

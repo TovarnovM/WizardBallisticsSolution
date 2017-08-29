@@ -13,7 +13,6 @@ namespace WizardBallistics.Core {
         /// <summary>
         /// Собственно какую IWBGrid обслуживаем
         /// </summary>
-        [JsonIgnore]
         public IWBGrid OwnerGrid { get; set; }
         /// <summary>
         /// Что делать на каждом шаге?

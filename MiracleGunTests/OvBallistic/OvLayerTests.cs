@@ -24,8 +24,9 @@ namespace MiracleGun.OvBallistic.Tests {
             Assert.AreEqual(18, opts.AllNodesCount);
 
             var lr = new OvLayer();
+            
             lr.InitLayer(0, opts, (t,x) => new OvCell(), (t, x) => new OvBound());
-            lr.InitBoundCellRefs();
+            lr = lr.Clone() as OvLayer;
 
             Assert.AreEqual(5, lr.RealCells.Count);
             Assert.AreEqual(5, lr.RealCellsRev.Count);

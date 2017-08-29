@@ -126,6 +126,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MiracleGun\MiracleGun.csproj">
+      <Project>{a01da796-7bf8-4fc0-b956-87b5a827c263}</Project>
+      <Name>MiracleGun</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WizardBallisticsCore\WizardBallisticsCore.csproj">
       <Project>{26476633-6ea1-464a-b808-e03cbd9191ce}</Project>
       <Name>WizardBallisticsCore</Name>

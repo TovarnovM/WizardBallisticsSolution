@@ -49,6 +49,10 @@ namespace WizardBallistics.Core {
         /// Здесь можно получить самый актуальный по времени слой узлов
         /// </summary>
         IWBNodeLayer CurrLayer { get; }
+
+        IWBNodeLayer this[int index] {
+            get;
+        }
     }
 
 

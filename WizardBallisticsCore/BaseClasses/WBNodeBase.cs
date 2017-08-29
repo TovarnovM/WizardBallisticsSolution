@@ -79,8 +79,6 @@ namespace WizardBallistics.Core {
             }
             return cells.Select(c => (T1)firstTry.GetValue(c));
         }
-
-
     }
 
     public static class CellExtentions {

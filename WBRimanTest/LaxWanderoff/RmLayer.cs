@@ -7,7 +7,7 @@ using WizardBallistics;
 using WizardBallistics.Core;
 using static System.Math;
 
-namespace WBRimanTest {
+namespace SolverDrawTsts {
     public class RmLayer : WBOneDemLayer<RmNode> {
         public double GetTauMax() {
             double maxVal = -1;
@@ -54,5 +54,6 @@ namespace WBRimanTest {
             }
             return nxtLayer;
         }
+
     }
 }

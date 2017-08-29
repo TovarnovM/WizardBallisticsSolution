@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace WizardBallistics.Core {
 
     /// <summary>
-    /// Шаблон для одномерной подвижной эйлеровой сетки
+    /// Шаблон для одномерной подвижной сетки
     /// </summary>
     /// <typeparam name="T">Структура данных для ячейки/задачи</typeparam>
     public class WBOneDemLayer<T> : WBNodeLayerBase<T> where T : WBOneDemNode {
@@ -200,6 +200,15 @@ namespace WizardBallistics.Core {
         public override void ActionWhenLoad() {
             InitLists();
         }
-        #endregion      
+
+        public override IEnumerable<IWBNode> GetNodesForDraw(string variantName) {
+            switch (variantName.ToUpper()) {
+                case "REAL":
+                    return RealNodes;
+                default:
+                    return Nodes;
+            }
+        }
+        #endregion
     }
 }
