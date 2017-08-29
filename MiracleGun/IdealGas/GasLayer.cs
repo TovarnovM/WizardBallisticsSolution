@@ -44,29 +44,29 @@ namespace MiracleGun.IdealGas {
         }
 
         public void InitBoundaryCells_wall() {
-            ////Согласно godstep.f90 строка 172
-            //var ql = RealCells[0].q;
-            //var qr = ql;
-            //ql[2] = -qr[2] + 2 * RealBounds[0].V * qr[1];
+            //Согласно godstep.f90 строка 172
+            var ql = RealCells[0].q;
+            var qr = ql;
+            ql[2] = -qr[2] + 2 * RealBounds[0].V * qr[1];
 
-            //LeftCells[0].SetQ(ql);
+            LeftCells[0].SetQ(ql);
 
-            //qr = RealCellsRev[0].q;
-            //ql = qr;
-            ////Однако в godstep.f90 строка 204 вместо последней ql[1] стоит qr[1].... странно, возможно это ошибка при копировании, хотя это и не важно
-            //qr[2] = -ql[2] + 2 * RealBoundsRev[0].V * ql[1];
+            qr = RealCellsRev[0].q;
+            ql = qr;
+            //Однако в godstep.f90 строка 204 вместо последней ql[1] стоит qr[1].... странно, возможно это ошибка при копировании, хотя это и не важно
+            qr[2] = -ql[2] + 2 * RealBoundsRev[0].V * ql[1];
 
-            //RightCells[0].SetQ(qr);
+            RightCells[0].SetQ(qr);
 
-            LeftCells[0].p = RealCells[0].p;
-            LeftCells[0].ro = RealCells[0].ro;
-            LeftCells[0].u = -RealCells[0].u;
-            LeftCells[0].Sync();
+            //LeftCells[0].p = RealCells[0].p;
+            //LeftCells[0].ro = RealCells[0].ro;
+            //LeftCells[0].u = -RealCells[0].u;
+            //LeftCells[0].Sync();
 
-            RightCells[0].p = RealCellsRev[0].p;
-            RightCells[0].ro = RealCellsRev[0].ro;
-            RightCells[0].u = -RealCellsRev[0].u;
-            RightCells[0].Sync();
+            //RightCells[0].p = RealCellsRev[0].p;
+            //RightCells[0].ro = RealCellsRev[0].ro;
+            //RightCells[0].u = -RealCellsRev[0].u;
+            //RightCells[0].Sync();
 
         }
 
@@ -108,9 +108,9 @@ namespace MiracleGun.IdealGas {
             for (int i = 0; i < lr1.RealCells.Count; i++) {
                 var c_0 = lr0.RealCells[i];
                 var c_05 = lr05.RealCells[i];
-                var c_1 = lr0.RealCells[i];
+                var c_1 = lr1.RealCells[i];
 
-                var qn = (c_0.q * c_0.W - 0.5 * tau * (c_05.RightBound.S * c_1.RightBound.flux - c_05.LeftBound.S * c_1.LeftBound.flux) + 0.5 * tau * c_1.h * c_05.dx) / c_1.W;
+                var qn = (c_0.q * c_0.W - tau * (c_05.RightBound.S * c_1.RightBound.flux - c_05.LeftBound.S * c_1.LeftBound.flux) + tau * c_1.h * c_05.dx) / c_1.W;
 
                 c_1.SetQ(qn);
             }
