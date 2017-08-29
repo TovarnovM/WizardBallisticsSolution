@@ -18,6 +18,9 @@ using WizardBallistics.Core;
 using WizardBallistics.Draw;
 using MiracleGun.IdealGas;
 using MiracleGun;
+using System.IO;
+using OxyPlot.Wpf;
+using System.Windows.Threading;
 
 namespace SolverDrawTsts {
     /// <summary>
@@ -135,6 +138,55 @@ namespace SolverDrawTsts {
             } finally {
 
             }
+        }
+
+        void saveGif(string fp) {
+            GifBitmapEncoder gEnc = new GifBitmapEncoder();
+            int fi = (int)slider.Value;
+            int ti = (int)slider.Maximum;
+            foreach (var bmpImage in GetFrames(fi, ti)) {
+                //var bmp = bmpImage.GetHbitmap();
+                //var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
+                //    bmp,
+                //    IntPtr.Zero,
+                //    Int32Rect.Empty,
+                //    BitmapSizeOptions.FromEmptyOptions());
+                gEnc.Frames.Add(BitmapFrame.Create(bmpImage));
+                //DeleteObject(bmp); // recommended, handle memory leak
+            }
+            using (FileStream fs = new FileStream(fp, FileMode.Create)) {
+                gEnc.Save(fs);
+            }
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e) {
+            try {
+                btnGif.IsEnabled = false;
+
+                var sd = new Microsoft.Win32.SaveFileDialog() {
+                    Filter = "GIF Files|*.gif",
+                    FileName = "XY"
+                };
+                if (sd.ShowDialog() == true) {
+                    saveGif(sd.FileName);
+                }
+            } finally {
+                btnGif.IsEnabled = true;
+            }
+        }
+
+        IEnumerable<BitmapSource> GetFrames(int fromInd, int toInd) {
+            for (int i = fromInd; i <= toInd; i++) {
+                slider.Value = i;
+                DoEvents();
+                var pngExporter = new PngExporter();
+                yield return pngExporter.ExportToBitmap(vm.PM);
+
+            }
+        }
+        public static void DoEvents() {
+            System.Windows.Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
+                                                  new Action(delegate { }));
         }
     }
 }

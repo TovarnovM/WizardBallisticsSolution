@@ -26,5 +26,6 @@
         <GridSplitter Grid.Column="1" Grid.Row="0"  Width="5"/>
         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
         <ListBox Name="lb" SelectionChanged="lb_SelectionChanged"/>
+        <Button Name="btnGif" Content="Gif" HorizontalAlignment="Left" Margin="156,0,0,1" Grid.Row="1" Width="36" Height="20" VerticalAlignment="Bottom"  Grid.Column="2" Click="Button_Click_3"/>
     </Grid>
 </Window>

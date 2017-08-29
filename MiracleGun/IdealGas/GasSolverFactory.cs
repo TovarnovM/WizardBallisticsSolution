@@ -47,9 +47,9 @@ namespace MiracleGun.IdealGas {
                 var lo =  new WBOneDemLayerOptions() {
                     LeftNodesCount = 1,
                     RightNodesCount = 1,
-                    X_left = -1,
-                    X_right = 1,
-                    RealNodesCount = GasLayer.GetNumOfRealNodes(200),                  
+                    X_left = -2,
+                    X_right = 2,
+                    RealNodesCount = GasLayer.GetNumOfRealNodes(400),                  
                 };
                 lo.SynchH();
                 return lo;
