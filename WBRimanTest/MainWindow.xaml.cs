@@ -137,6 +137,35 @@ namespace SolverDrawTsts {
                         vel = (solver.Grids[gridname] as PnGrid).Get_Vanal(tl.time)
                     };
                 }).ToList();
+                var list_diff = list_fact.Zip(list_ideal, (f, i) => new {
+                    time = f.time,
+                    vel = (f.vel - i.vel)/Math.Abs(i.vel)*100
+                })
+                    .ToList();
+                var t_max_analit = 2* (solver.Grids[gridname] as PnGrid).lrInit.L_real/ (solver.Grids[gridname] as PnGrid).lrInit.RealCells[3].CSound;
+                vm.PM.Title = $"Максимальное время, пока годна аналитика t = {t_max_analit} c";
+                vm.PM.Series.Clear();
+                vm.PM.Series.Add(new OxyPlot.Series.LineSeries() {
+                    DataFieldX = "time",
+                    DataFieldY = "vel",
+                    ItemsSource = list_fact,
+                    Title = "Насчитанный"
+                });
+                vm.PM.Series.Add(new OxyPlot.Series.LineSeries() {
+                    DataFieldX = "time",
+                    DataFieldY = "vel",
+                    ItemsSource = list_ideal,
+                    Title = "Теоретический"
+                });
+                vm.PM.Series.Add(new OxyPlot.Series.LineSeries() {
+                    DataFieldX = "time",
+                    DataFieldY = "vel",
+                    ItemsSource = list_diff,
+                    Title = "Насчитанный - Теоретический, %"
+                });
+                vm.PM.InvalidatePlot(true);
+                vm.PM.ResetAllAxes();
+                vm.PM.InvalidatePlot(true);
             }
             catch {
                 MessageBox.Show("Errrrrrrorrrrr");
@@ -164,7 +193,8 @@ namespace SolverDrawTsts {
             GifBitmapEncoder gEnc = new GifBitmapEncoder();
             int fi = (int)slider.Value;
             int ti = (int)slider.Maximum;
-            foreach (var bmpImage in GetFrames(fi, ti)) {
+            int step = Math.Abs(fi - ti) / 100;
+            foreach (var bmpImage in GetFrames(fi, ti,step)) {
                 //var bmp = bmpImage.GetHbitmap();
                 //var src = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
                 //    bmp,
@@ -179,7 +209,7 @@ namespace SolverDrawTsts {
             }
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e) {
+        private void btnGif_click(object sender, RoutedEventArgs e) {
             try {
                 btnGif.IsEnabled = false;
 
@@ -195,8 +225,8 @@ namespace SolverDrawTsts {
             }
         }
 
-        IEnumerable<BitmapSource> GetFrames(int fromInd, int toInd) {
-            for (int i = fromInd; i <= toInd; i++) {
+        IEnumerable<BitmapSource> GetFrames(int fromInd, int toInd, int step) {
+            for (int i = fromInd; i <= toInd; i+= step) {
                 slider.Value = i;
                 DoEvents();
                 var pngExporter = new PngExporter();
@@ -204,6 +234,8 @@ namespace SolverDrawTsts {
 
             }
         }
+
+
         public static void DoEvents() {
             System.Windows.Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
                                                   new Action(delegate { }));

@@ -60,7 +60,7 @@ namespace MiracleGun.IdealGas {
 
             LeftCells[0].p = RealCells[0].p;
             LeftCells[0].ro = RealCells[0].ro;
-            LeftCells[0].u = -RealCells[0].u + 2 * RealBoundsRev[0].V;
+            LeftCells[0].u = -RealCells[0].u + 2 * RealBounds[0].V;
             LeftCells[0].Sync();
 
             RightCells[0].p = RealCellsRev[0].p;

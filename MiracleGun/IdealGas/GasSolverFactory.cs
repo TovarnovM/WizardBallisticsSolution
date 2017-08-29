@@ -35,8 +35,8 @@ namespace MiracleGun.IdealGas {
             initLayer.InitLayer(0d, layerOpts, InitGasCell, InitGasBound);
             var grid = new GasGrid("GasGrid_tst1", initLayer);
             var solver = new WBSolver(grid, options);
-            initLayer.RealBoundsRev[0].V = 1;
-            initLayer.RealBounds[0].V = 1;
+            initLayer.RealBoundsRev[0].V = 0;
+            initLayer.RealBounds[0].V = 0;
             // initLayer.RealCells.ForEach(n => n.u = 0.5);
             initLayer.SynchNodes_X_V();
             return solver;
@@ -46,8 +46,8 @@ namespace MiracleGun.IdealGas {
         public static WBSolver GetNewSolver2(WBProjectOptions options) {
             var layerOpts1 = StandartOpts1;
             var geom = new GunShape();
-            geom.AddPoint(layerOpts1.X_left, 0.2);
-            geom.AddPoint(layerOpts1.X_right + 0.5, 0.2);
+            geom.AddPoint(layerOpts1.X_left-0.2, 0.2);
+            geom.AddPoint(layerOpts1.X_right*100, 0.2);
             var initLayer = new GasLayer();
             initLayer.Geom = geom;
             initLayer.InitLayer(0d, layerOpts1, InitGasCell1, InitGasBound);
@@ -77,8 +77,8 @@ namespace MiracleGun.IdealGas {
                     LeftNodesCount = 1,
                     RightNodesCount = 1,
                     X_left = 0,
-                    X_right = 0.01,
-                    RealNodesCount = GasLayer.GetNumOfRealNodes(200),
+                    X_right = 1,
+                    RealNodesCount = GasLayer.GetNumOfRealNodes(100),
                 };
                 lo.SynchH();
                 return lo;

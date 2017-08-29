@@ -19,6 +19,8 @@ namespace WizardBallistics.Core {
         /// </summary>
         public WBOneDemLayerOptions Opt { get; set; }
 
+        public double L_real => Math.Abs(RealNodes[0].X - RealNodesRev[0].X);
+
         /// <summary>
         /// Список узлов (которые все еще находятся и в Nodes), играющих роль фиктивных узлов, расплолженных слева. Нумерация идет справа налево
         /// </summary>

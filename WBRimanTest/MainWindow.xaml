@@ -22,11 +22,11 @@
         <Button Content="RunT" HorizontalAlignment="Left" Margin="26,0,0,2" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Grid.Column="2" Click="Button_Click_3"/>
         <TextBox Name="tb1" HorizontalAlignment="Left" Margin="106,0,0,1" Grid.Row="1" TextWrapping="Wrap" Text="0.5" Width="120" Height="20" VerticalAlignment="Bottom" Grid.Column="2"/>
         <Slider Name="slider" Margin="0,5,0,0" Grid.Row="1" VerticalAlignment="Top" ValueChanged="slider_ValueChanged" Grid.ColumnSpan="3"/>
-        <Button Content="Save" HorizontalAlignment="Left" Margin="231,0,0,-1" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Click="Button_Click_1" Grid.Column="2"/>
-        <Button Content="Load" HorizontalAlignment="Left" Margin="323,0,0,-1" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Click="Button_Click_2" Grid.Column="2" />
+        <Button Content="Save" HorizontalAlignment="Left" Margin="258,0,0,0" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Click="Button_Click_1" Grid.Column="2"/>
+        <Button Content="Load" HorizontalAlignment="Left" Margin="333,0,0,0" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Click="Button_Click_2" Grid.Column="2" />
         <GridSplitter Grid.Column="1" Grid.Row="0"  Width="5"/>
         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
         <ListBox Name="lb" SelectionChanged="lb_SelectionChanged"/>
-        <Button Name="btnGif" Content="Gif" HorizontalAlignment="Left" Margin="156,0,0,1" Grid.Row="1" Width="36" Height="20" VerticalAlignment="Bottom"  Grid.Column="2" Click="Button_Click_3"/>
+        <Button Name="btnGif" Content="Gif" HorizontalAlignment="Left" Margin="222,0,0,0" Grid.Row="1" Width="31" Height="20" VerticalAlignment="Bottom"  Grid.Column="2" Click="btnGif_click"/>
     </Grid>
 </Window>

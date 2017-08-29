@@ -14,14 +14,21 @@ namespace MiracleGun.IdealGas {
 
         public GasLayer lrInit;
 
-        public int smooth = 3;
+        public int smooth = 2;
 
         public PnGrid(string name, IWBNodeLayer initLayer) : base(name, initLayer) {
             lrInit = initLayer as GasLayer;
         }
-
+        public double GetMnozj() {
+            if (TimeCurr > 0.01) {
+                return 0.5d;
+            }
+            return 0.05 + TimeCurr / 0.01 * (0.5 - 0.05);
+        }
         public override double GetMaxTimeStep() {
-            double tau = 0.5 * (CurrLayer as GasLayer).GetMaxTimeStep();
+            double tau = GetMnozj() * (CurrLayer as GasLayer).GetMaxTimeStep();
+            //tau = tau < 1E-6 ? 1E-6 : tau;
+            //tau =  Math.Min(0.01, tau);
             return tau;
         }
 
