@@ -79,6 +79,12 @@ namespace MiracleGun.IdealGas {
         public GasConstants(double gamma) {
             SynchArr(gamma);
         }
+
+        public GasConstants(double gamma, double covolume) {
+            this.covolume = covolume;
+            SynchArr(gamma);
+        }
+
         public void SynchArr(double gamma) {
             this.gamma = gamma;
             g[0] = gamma;
