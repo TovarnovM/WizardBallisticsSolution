@@ -65,7 +65,7 @@ namespace MiracleGun.IdealGas {
 
             RightCells[0].p = RealCellsRev[0].p;
             RightCells[0].ro = RealCellsRev[0].ro;
-            RightCells[0].u = -RealCellsRev[0].u;
+            RightCells[0].u = -RealCellsRev[0].u + 2 * RealBoundsRev[0].V;
             RightCells[0].Sync();
 
         }
@@ -108,9 +108,9 @@ namespace MiracleGun.IdealGas {
             for (int i = 0; i < lr1.RealCells.Count; i++) {
                 var c_0 = lr0.RealCells[i];
                 var c_05 = lr05.RealCells[i];
-                var c_1 = lr0.RealCells[i];
+                var c_1 = lr1.RealCells[i];
 
-                var qn = (c_0.q * c_0.W - 0.5 * tau * (c_05.RightBound.S * c_1.RightBound.flux - c_05.LeftBound.S * c_1.LeftBound.flux) + 0.5 * tau * c_1.h * c_05.dx) / c_1.W;
+                var qn = (c_0.q * c_0.W - tau * (c_05.RightBound.S * c_1.RightBound.flux - c_05.LeftBound.S * c_1.LeftBound.flux) + tau * c_1.h * c_05.dx) / c_1.W;
 
                 c_1.SetQ(qn);
             }

@@ -73,8 +73,8 @@ namespace SolverDrawTsts {
             //}
             vm.PM.Series.Add(nodes.GetLineSerries("ro"));
             vm.PM.Series.Add(nodes.GetLineSerries("u"));
-            vm.PM.Series.Add(nodes.GetLineSerries("p"));
-            vm.PM.Series.Add(nodes.GetLineSerries("e"));
+            vm.PM.Series.Add(nodes.GetLineSerries(yAxisFieldName:"p",yScaler:10E-5));
+           // vm.PM.Series.Add(nodes.GetLineSerries("e"));
             vm.PM.Title = $"{lr.Time} sec";
             vm.PM.InvalidatePlot(true);
         }
@@ -118,6 +118,26 @@ namespace SolverDrawTsts {
         private void lb_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             var s = (string)e.AddedItems[0];
             fillStrs(s);
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e) {
+            try {
+                var list_fact = solver.Grids[gridname].LayerList.Cast<GasLayer>().Select(gl => {
+                    return new {
+                        time = gl.Time,
+                        vel = gl.RealBoundsRev[0].V
+                    };
+                }).ToList();
+                var list_ideal = list_fact.Select(tl => {
+                    return new {
+                        time = tl.time,
+                        vel = (solver.Grids[gridname] as PnGrid).Get_Vanal(tl.time)
+                    };
+                }).ToList();
+            }
+            catch {
+                MessageBox.Show("Errrrrrrorrrrr");
+            }
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e) {
