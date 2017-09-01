@@ -31,6 +31,9 @@ namespace MiracleGun.IdealGas {
         public double GetPressure() {
             return g[9]*e /(1 / ro - g.covolume);
         }
+        public WBVec Get_dQS() {
+            return h * dx - (RightBound.S * RightBound.flux - LeftBound.S * LeftBound.flux);
+        }
         public void InitQ() {
             q[1] = ro;
             q[2] = ro * u;

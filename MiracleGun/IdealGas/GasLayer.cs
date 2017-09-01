@@ -77,6 +77,33 @@ namespace MiracleGun.IdealGas {
             SynchNodes_X_V();
         }
 
+        public GasLayer EulerStepUp(double tau) {
+            var lr0 = this;
+            foreach (var c in lr0.RealCells) {
+                c.Sync();
+            }
+            lr0.InitBoundaryCells_wall();
+
+            foreach (var b in lr0.RealBounds) {
+                b.SetFlux();
+            }
+
+            var lr05 = lr0.Clone() as GasLayer;
+
+            lr05.StrechMe(tau);
+
+            for (int i = 0; i < lr05.RealCells.Count; i++) {
+                var c_0 = lr0.RealCells[i];
+                var c_05 = lr05.RealCells[i];
+                var qs = (c_0.q * c_0.W + tau * c_0.Get_dQS()) / c_05.W;
+
+                c_05.SetQ(qs);
+            }
+            return lr05;
+        }
+
+
+
         public GasLayer StepUp(double tau) {
             var lr0 = this;        
             foreach (var c in lr0.RealCells) {
@@ -84,25 +111,27 @@ namespace MiracleGun.IdealGas {
             }
             lr0.InitBoundaryCells_wall();
 
-            var lr05 = lr0.Clone() as GasLayer;
-            foreach (var b in lr05.RealBounds) {
+            foreach (var b in lr0.RealBounds) {
                 b.SetFlux();
             }
+
+            var lr05 = lr0.Clone() as GasLayer;
             lr05.StrechMe(tau * 0.5);
 
             for (int i = 0; i < lr05.RealCells.Count; i++) {
                 var c_0 = lr0.RealCells[i];
                 var c_05 = lr05.RealCells[i];
-                var qs = (c_0.q * c_0.W - 0.5 * tau * (c_0.RightBound.S * c_05.RightBound.flux - c_0.LeftBound.S * c_05.LeftBound.flux) + 0.5*tau* c_0.h*c_0.dx)/c_05.W;
+                var qs = (c_0.q * c_0.W + 0.5 * tau * c_0.Get_dQS()) /c_05.W;
 
                 c_05.SetQ(qs);
             }
 
             lr05.InitBoundaryCells_wall();
-            var lr1 = lr05.Clone() as GasLayer;
-            foreach (var b in lr1.RealBounds) {
+            foreach (var b in lr05.RealBounds) {
                 b.SetFlux();
             }
+
+            var lr1 = lr05.Clone() as GasLayer;
             lr1.StrechMe(tau * 0.5);
 
             for (int i = 0; i < lr1.RealCells.Count; i++) {
@@ -110,7 +139,7 @@ namespace MiracleGun.IdealGas {
                 var c_05 = lr05.RealCells[i];
                 var c_1 = lr1.RealCells[i];
 
-                var qn = (c_0.q * c_0.W - tau * (c_05.RightBound.S * c_1.RightBound.flux - c_05.LeftBound.S * c_1.LeftBound.flux) + tau * c_1.h * c_05.dx) / c_1.W;
+                var qn = (c_0.q * c_0.W + tau * c_05.Get_dQS()) / c_1.W;
 
                 c_1.SetQ(qn);
             }
