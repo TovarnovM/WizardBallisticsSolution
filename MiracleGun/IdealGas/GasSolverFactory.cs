@@ -36,7 +36,7 @@ namespace MiracleGun.IdealGas {
             var grid = new GasGrid("GasGrid_tst1", initLayer);
             var solver = new WBSolver(grid, options);
             initLayer.RealBoundsRev[0].V = 0;
-            initLayer.RealBounds[0].V = 0;
+            initLayer.RealBounds[0].V = 0.5;
             // initLayer.RealCells.ForEach(n => n.u = 0.5);
             initLayer.SynchNodes_X_V();
             return solver;

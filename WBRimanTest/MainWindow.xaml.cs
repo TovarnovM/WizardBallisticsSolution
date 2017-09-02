@@ -143,6 +143,7 @@ namespace SolverDrawTsts {
                 })
                     .ToList();
                 var t_max_analit = 2* (solver.Grids[gridname] as PnGrid).lrInit.L_real/ (solver.Grids[gridname] as PnGrid).lrInit.RealCells[3].CSound;
+
                 vm.PM.Title = $"Максимальное время, пока годна аналитика t = {t_max_analit} c";
                 vm.PM.Series.Clear();
                 vm.PM.Series.Add(new OxyPlot.Series.LineSeries() {
