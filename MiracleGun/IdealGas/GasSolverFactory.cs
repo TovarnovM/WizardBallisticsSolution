@@ -72,12 +72,14 @@ namespace MiracleGun.IdealGas {
             return solver;
         }
 
-        [SolverGeneratorMethod("Pneumatics-simple_happening4")]
+        [SolverGeneratorMethod("D02-d005_RK4")]
         public static WBSolver GetNewSolver4(WBProjectOptions options) {
             var layerOpts1 = StandartOpts1;
             var geom = new GunShape();
             geom.AddPoint(layerOpts1.X_left - 0.2, 0.2);
-            geom.AddPoint(layerOpts1.X_right * 100, 0.2);
+            //geom.AddPoint(layerOpts1.X_left +1 , 0.2);
+            geom.AddPoint(layerOpts1.X_left + 1, 0.05);
+            geom.AddPoint(layerOpts1.X_right * 100, 0.05);
             var initLayer = new GasLayer();
             initLayer.Geom = geom;
             initLayer.InitLayer(0d, layerOpts1, InitGasCell1, InitGasBound);
@@ -108,7 +110,7 @@ namespace MiracleGun.IdealGas {
                     RightNodesCount = 1,
                     X_left = 0,
                     X_right = 1,
-                    RealNodesCount = GasLayer.GetNumOfRealNodes(100),
+                    RealNodesCount = GasLayer.GetNumOfRealNodes(200),
                 };
                 lo.SynchH();
                 return lo;

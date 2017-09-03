@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using WizardBallistics.Core;
 using WizardBallistics.Draw;
 using MiracleGun.IdealGas;
+using MiracleGun.IdealPiston;
 using MiracleGun;
 using System.IO;
 using OxyPlot.Wpf;
@@ -36,6 +37,7 @@ namespace SolverDrawTsts {
             //solver = WBSolver.Factory("RimanTest", WBProjectOptions.Default);
             InitializeComponent();
             var gn = new GasBound();
+            var pg = new PistonIdealBound();
             FillLB();
         }
 

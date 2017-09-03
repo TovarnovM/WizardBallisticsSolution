@@ -25,10 +25,10 @@ namespace MiracleGun.IdealGas {
         public GasCell(GasConstants g) {
             this.g = g;
         }
-        public double GetE() {
+        public virtual double GetE() {
             return (p / g[9]) * (1 / ro - g.covolume);
         }
-        public double GetPressure() {
+        public virtual double GetPressure() {
             return g[9]*e /(1 / ro - g.covolume);
         }
         public WBVec Get_dQS() {
@@ -39,7 +39,7 @@ namespace MiracleGun.IdealGas {
             q[2] = ro * u;
             q[3] = ro *(e + 0.5 * u * u);
         }
-        public void Init_h() {
+        public virtual void Init_h() {
             h[1] = 0d;
             h[2] = p * Geom.Get_dS(X);
             h[3] = 0d;
@@ -57,7 +57,11 @@ namespace MiracleGun.IdealGas {
             InitQ();
             Init_h();
         }
-        public double CSound => Math.Sqrt(p / (g[8] * ro * (1d - g.covolume * ro)));
+        public virtual double GetCSound() {
+            return Math.Sqrt(p / (g[8] * ro * (1d - g.covolume * ro)));
+        }
+
+        public double CSound => GetCSound();
         /// <summary>
         /// Энтальпия
         /// </summary>

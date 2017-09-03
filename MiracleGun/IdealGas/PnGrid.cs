@@ -21,9 +21,9 @@ namespace MiracleGun.IdealGas {
         }
         public double GetMnozj() {
             if (TimeCurr > 0.01) {
-                return 0.5d;
+                return 0.3d;
             }
-            return 0.05 + TimeCurr / 0.01 * (0.5 - 0.05);
+            return 0.01 + TimeCurr / 0.01 * (0.3 - 0.01);
         }
         public override double GetMaxTimeStep() {
             double tau = GetMnozj() * (CurrLayer as GasLayer).GetMaxTimeStep();

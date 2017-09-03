@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ElasticPiston\PistonCell.cs" />
     <Compile Include="IdealGas\GasBorderWall.cs" />
     <Compile Include="IdealGas\PnGrid.cs" />
     <Compile Include="IdealGas\FortranFuncs.cs" />
@@ -57,6 +58,10 @@
     <Compile Include="IdealGas\GasSolverFactory.cs" />
     <Compile Include="IdealGas\PnGrid2.cs" />
     <Compile Include="IdealGas\PnGrid4.cs" />
+    <Compile Include="IdealPiston\IdealPistonFabric.cs" />
+    <Compile Include="IdealPiston\PistonIdealBound.cs" />
+    <Compile Include="IdealPiston\PistonIdealCell.cs" />
+    <Compile Include="IdealPiston\PistonIdealGrid.cs" />
     <Compile Include="Invariants\AbstractShape.cs" />
     <Compile Include="OvBallistic\OvBound.cs" />
     <Compile Include="OvBallistic\OvLayer.cs" />
