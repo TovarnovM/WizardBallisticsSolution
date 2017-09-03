@@ -12,22 +12,7 @@ namespace WizardBallistics.Core {
         static Lazy<Dictionary<string, Func<WBProjectOptions, WBSolver>>> generDict = new Lazy<Dictionary<string, Func<WBProjectOptions, WBSolver>>>(
             LazyFactory, true);
         static Dictionary<string, Func<WBProjectOptions, WBSolver>> LazyFactory() {
-            string name;
-            try {
-                var tst1 = AppDomain.CurrentDomain
-                    .GetAssemblies();
-                foreach (var assm in tst1) {
-                    name = assm.FullName;
-                    var tps = assm.GetTypes();
-                }
-            } finally {
 
-            }
-            var tst = AppDomain.CurrentDomain
-                .GetAssemblies()
-                .SelectMany(ass => ass.GetTypes())
-               // .Where(t => t.GetCustomAttributes(typeof(SolversFactoryAttribute), false).Length > 0)
-                .ToList();
 
             return AppDomain.CurrentDomain
                 .GetAssemblies()

@@ -48,7 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IdealGas\GasBorderWall.cs" />
-    <Compile Include="IdealGas\GasBorder_wall.cs" />
     <Compile Include="IdealGas\PnGrid.cs" />
     <Compile Include="IdealGas\FortranFuncs.cs" />
     <Compile Include="IdealGas\GasBound.cs" />
