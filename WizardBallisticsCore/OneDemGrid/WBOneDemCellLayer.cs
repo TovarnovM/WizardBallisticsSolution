@@ -12,7 +12,7 @@ namespace WizardBallistics.Core {
     /// </summary>
     /// <typeparam name="TCell">Тип ячейки</typeparam>
     /// <typeparam name="TBound">Тип границы между ячейками</typeparam>
-    public abstract class WBOneDemCellLayer<TCell,TBound>: WBOneDemLayer<WBOneDemNode> 
+    public abstract class WBOneDemCellLayer<TCell,TBound>: WBOneDemLayer<WBOneDemNode>, IWB_ODE_Layer<TCell, TBound>
         where TCell : WBOneDemNode 
         where TBound : WBOneDemNode {
 
@@ -89,6 +89,27 @@ namespace WizardBallistics.Core {
         [JsonIgnore]
         public List<TBound> AllBoundsRev;
 
+        protected WBEulerBorder<TCell, TBound> rightBorder, leftBorder;
+        public WBEulerBorder<TCell, TBound> RightBorder {
+            get {
+                return rightBorder;
+            }
+            set {
+                rightBorder = value;
+                BindRightBorder();
+            }
+        }
+        public WBEulerBorder<TCell, TBound> LeftBorder {
+            get {
+                return leftBorder;
+            }
+            set {
+                leftBorder = value;
+                BindLeftBorder();
+            }
+        }
+
+        List<TCell> IWBNodeLayer<TCell>.Nodes { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         #endregion
 
         #region Методы генерации списков
@@ -149,6 +170,20 @@ namespace WizardBallistics.Core {
         #endregion
 
         #region Методы
+        public virtual void SetBounds() {
+            LeftBorder.SetCond();
+            RightBorder.SetCond();
+            LeftBorder.InitFakeCells();
+            RightBorder.InitFakeCells();
+        }
+
+        public virtual void StrechStep(double tau) {
+            LeftBorder.SetCond(tau);
+            RightBorder.SetCond(tau);
+            SynchNodes_X_V();
+            Time += tau;
+        }
+
         /// <summary>
         /// Возвращает общее количество узлов (узлов-ячейки и узлов-границы), при условии, что каждая ячейка имеет 2 границы.
         /// </summary>
@@ -300,6 +335,27 @@ namespace WizardBallistics.Core {
 
             InitBoundCellRefs();
             InitDataRefs();
+
+            BindBorders();
+        }
+
+        public void BindBorders() {
+
+            BindLeftBorder();
+            BindRightBorder();
+
+        }
+
+        public virtual void BindLeftBorder() {
+            if (LeftBorder != null) {
+                LeftBorder.OwnerLayer = this;
+            }
+        }
+
+        public virtual void BindRightBorder() {
+            if (RightBorder != null) {
+                RightBorder.OwnerLayer = this;
+            }
         }
 
         /// <summary>
@@ -321,7 +377,11 @@ namespace WizardBallistics.Core {
 
         public override void CloneLogic(IWBNodeLayer clone) {
             base.CloneLogic(clone);
-            (clone as WBOneDemCellLayer<TCell, TBound>).InitBoundCellRefs();
+            var c = clone as WBOneDemCellLayer<TCell, TBound>;
+            c.InitBoundCellRefs();
+            c.LeftBorder = (WBEulerBorder<TCell,TBound>)LeftBorder?.Clone();
+            c.RightBorder = (WBEulerBorder<TCell, TBound>)RightBorder?.Clone();
+
         }
 
         public override IEnumerable<IWBNode> GetNodesForDraw(string variantName) {
@@ -349,6 +409,8 @@ namespace WizardBallistics.Core {
         /// В этом методе нужно передавать в ячейки/границы все внешние связи (типа геометрий/опций и т.д.)
         /// </summary>
         public abstract void InitDataRefs();
+        public abstract WBOneDemCellLayer<TCell, TBound> ComplexStep(double tau, bool synch, IList<ComplexStepContainer<TCell, TBound>> rightPart);
+
         #endregion
     }
 }

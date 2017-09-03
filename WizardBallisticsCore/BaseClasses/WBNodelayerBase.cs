@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 namespace WizardBallistics.Core {
@@ -29,7 +31,10 @@ namespace WizardBallistics.Core {
             CloneLogic(layerclone);
             return layerclone;
         }
-
+       // [OnDeserialized]
+        //public void OnLoad() {
+        //    ActionWhenLoad();
+        //}
         /// <summary>
         /// логика/действия при копировании
         /// </summary>

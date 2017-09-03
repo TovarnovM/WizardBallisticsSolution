@@ -20,6 +20,8 @@ namespace WizardBallistics.Core {
 
         void ActionWhenLoad();
     }
+
+
     /// <summary>
     /// Интерфейс для временнОго слоя узлов
     /// </summary>
@@ -28,5 +30,10 @@ namespace WizardBallistics.Core {
         /// Узлы
         /// </summary>
         List<T> Nodes {get;set;}
+    }
+
+
+    public interface IWB_ODE_Layer<TCell, TBound>:IWBNodeLayer<TCell> where TCell : WBOneDemNode where TBound : WBOneDemNode {
+        WBOneDemCellLayer<TCell, TBound> ComplexStep(double tau, bool synch, IList<ComplexStepContainer<TCell, TBound>> rightPart);
     }
 }

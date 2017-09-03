@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IdealGas\GasBorderWall.cs" />
+    <Compile Include="IdealGas\GasBorder_wall.cs" />
     <Compile Include="IdealGas\PnGrid.cs" />
     <Compile Include="IdealGas\FortranFuncs.cs" />
     <Compile Include="IdealGas\GasBound.cs" />
@@ -54,6 +56,8 @@
     <Compile Include="IdealGas\GasLayer.cs" />
     <Compile Include="IdealGas\GasCell.cs" />
     <Compile Include="IdealGas\GasSolverFactory.cs" />
+    <Compile Include="IdealGas\PnGrid2.cs" />
+    <Compile Include="IdealGas\PnGrid4.cs" />
     <Compile Include="Invariants\AbstractShape.cs" />
     <Compile Include="OvBallistic\OvBound.cs" />
     <Compile Include="OvBallistic\OvLayer.cs" />

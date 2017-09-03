@@ -45,6 +45,8 @@ namespace WizardBallistics.Core {
         /// Здесь хранятся текущий временной слой узллов и несколько предыдущих
         /// </summary>
         LinkedList<IWBNodeLayer> LayerList { get; }
+
+        List<IWBNodeLayer> FakeSteps { get; }
         /// <summary>
         /// Здесь можно получить самый актуальный по времени слой узлов
         /// </summary>

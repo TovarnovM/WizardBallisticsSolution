@@ -57,6 +57,36 @@ namespace MiracleGun.IdealGas {
             return solver;
         }
 
+        [SolverGeneratorMethod("Pneumatics-simple_happening2")]
+        public static WBSolver GetNewSolver3(WBProjectOptions options) {
+            var layerOpts1 = StandartOpts1;
+            var geom = new GunShape();
+            geom.AddPoint(layerOpts1.X_left - 0.2, 0.2);
+            geom.AddPoint(layerOpts1.X_right * 100, 0.2);
+            var initLayer = new GasLayer();
+            initLayer.Geom = geom;
+            initLayer.InitLayer(0d, layerOpts1, InitGasCell1, InitGasBound);
+            var grid = new PnGrid2("GasGrid_tst2", initLayer);
+            var solver = new WBSolver(grid, options);
+            initLayer.SynchNodes_X_V();
+            return solver;
+        }
+
+        [SolverGeneratorMethod("Pneumatics-simple_happening4")]
+        public static WBSolver GetNewSolver4(WBProjectOptions options) {
+            var layerOpts1 = StandartOpts1;
+            var geom = new GunShape();
+            geom.AddPoint(layerOpts1.X_left - 0.2, 0.2);
+            geom.AddPoint(layerOpts1.X_right * 100, 0.2);
+            var initLayer = new GasLayer();
+            initLayer.Geom = geom;
+            initLayer.InitLayer(0d, layerOpts1, InitGasCell1, InitGasBound);
+            var grid = new PnGrid4("GasGrid_tst4", initLayer);
+            var solver = new WBSolver(grid, options);
+            initLayer.SynchNodes_X_V();
+            return solver;
+        }
+
         public static WBOneDemLayerOptions StandartOpts {
             get {
                 var lo =  new WBOneDemLayerOptions() {

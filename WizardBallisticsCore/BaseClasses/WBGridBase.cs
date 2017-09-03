@@ -36,6 +36,8 @@ namespace WizardBallistics.Core {
         /// </summary>
         public string Name { get; set; }
 
+        public List<IWBNodeLayer> FakeSteps { get; set; } = new List<IWBNodeLayer>();
+
         public IWBNodeLayer this[int index] {
             get {
                 var ll = LayerList.Last;

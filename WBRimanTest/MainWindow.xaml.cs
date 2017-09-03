@@ -158,7 +158,7 @@ namespace SolverDrawTsts {
                     ItemsSource = list_ideal,
                     Title = "Теоретический"
                 });
-                vm.PM.Series.Add(new OxyPlot.Series.LineSeries() {
+                vm.PM.Series.Add(new OxyPlot.Series.ScatterSeries() {
                     DataFieldX = "time",
                     DataFieldY = "vel",
                     ItemsSource = list_diff,

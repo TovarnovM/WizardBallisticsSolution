@@ -36,5 +36,9 @@ namespace MiracleGun.OvBallistic {
             }  
         }
 
+
+        public override WBOneDemCellLayer<OvCell, OvBound> ComplexStep(double tau, bool synch, IList<ComplexStepContainer<OvCell, OvBound>> rightPart) {
+            throw new NotImplementedException();
+        }
     }
 }

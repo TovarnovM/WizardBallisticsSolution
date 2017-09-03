@@ -43,7 +43,7 @@ namespace MiracleGun.IdealGas {
             return RealCells[0].dx / vmax;
         }
 
-        public void InitBoundaryCells_wall() {
+        public void InitBoundaryCells() {
             ////Согласно godstep.f90 строка 172
             //var ql = RealCells[0].q;
             //var qr = ql;
@@ -77,39 +77,74 @@ namespace MiracleGun.IdealGas {
             SynchNodes_X_V();
         }
 
-        public GasLayer EulerStepUp(double tau) {
+        //public GasLayer EulerStep(double tau) {
+        //    var lr0 = this;
+        //    foreach (var c in lr0.RealCells) {
+        //        c.Sync();
+        //    }
+        //    lr0.SetBounds();
+
+        //    foreach (var b in lr0.RealBounds) {
+        //        b.SetFlux();
+        //    }
+
+        //    var lr1 = lr0.Clone() as GasLayer;
+
+        //    lr1.StrechStep(tau);
+
+        //    for (int i = 0; i < lr1.RealCells.Count; i++) {
+        //        var c_0 = lr0.RealCells[i];
+        //        var c_05 = lr1.RealCells[i];
+        //        var qs = (c_0.q * c_0.W + tau * c_0.Get_dQS()) / c_05.W;
+
+        //        c_05.SetQ(qs);
+        //    }
+        //    return lr1;
+        //}
+
+        public GasLayer EulerStep(double tau, GasLayer dqLayer, bool synchMe = true, bool syncDqLayer = true, bool calcDqLayerFluxes = true) {
             var lr0 = this;
-            foreach (var c in lr0.RealCells) {
-                c.Sync();
-            }
-            lr0.InitBoundaryCells_wall();
-
-            foreach (var b in lr0.RealBounds) {
-                b.SetFlux();
+            if (synchMe) {
+                foreach (var c in lr0.RealCells) {
+                    c.Sync();
+                }
+                lr0.SetBounds();
             }
 
-            var lr05 = lr0.Clone() as GasLayer;
+            if (calcDqLayerFluxes)
+                foreach (var b in dqLayer.RealBounds) {
+                    b.SetFlux();
+                }
 
-            lr05.StrechMe(tau);
-
-            for (int i = 0; i < lr05.RealCells.Count; i++) {
+            var lr1 = lr0.Clone() as GasLayer;
+            lr1.StrechStep(tau);
+            for (int i = 0; i < lr1.RealCells.Count; i++) {
                 var c_0 = lr0.RealCells[i];
-                var c_05 = lr05.RealCells[i];
-                var qs = (c_0.q * c_0.W + tau * c_0.Get_dQS()) / c_05.W;
+                var c_n = lr1.RealCells[i];
+                var c_dq = dqLayer.RealCells[i];
+                var qs = (c_0.q * c_0.W + tau * c_dq.Get_dQS()) / c_n.W;
 
-                c_05.SetQ(qs);
+                c_n.SetQ(qs);
             }
-            return lr05;
+            return lr1;
+
+            //var lst = new List<ComplexStepContainer<GasCell, GasBound>> {
+            //    new ComplexStepContainer<GasCell, GasBound>() {
+            //        calcFluxes = calcDqLayerFluxes,
+            //        synch = syncDqLayer,
+            //        multipl = 1d,
+            //        dyLayer = dqLayer
+            //    }
+            //};
+            //return ComplexStep(tau, synchMe, lst) as GasLayer;
         }
-
-
 
         public GasLayer StepUp(double tau) {
             var lr0 = this;        
             foreach (var c in lr0.RealCells) {
                 c.Sync();
             }
-            lr0.InitBoundaryCells_wall();
+            lr0.InitBoundaryCells();
 
             foreach (var b in lr0.RealBounds) {
                 b.SetFlux();
@@ -126,7 +161,7 @@ namespace MiracleGun.IdealGas {
                 c_05.SetQ(qs);
             }
 
-            lr05.InitBoundaryCells_wall();
+            lr05.InitBoundaryCells();
             foreach (var b in lr05.RealBounds) {
                 b.SetFlux();
             }
@@ -152,6 +187,56 @@ namespace MiracleGun.IdealGas {
             foreach (var c in AllCells) {
                 c.Sync();
             }
+        }
+
+
+
+        public override WBOneDemCellLayer<GasCell, GasBound> ComplexStep(double tau, bool synch, IList<ComplexStepContainer<GasCell, GasBound>> rightPart) {
+
+            if (synch) {
+                SetBounds();
+                foreach (var c in RealCells) {
+                    c.Sync();
+                }
+            }
+
+            var res = (GasLayer)Clone();
+            res.Time += tau;
+            foreach (var tp in rightPart) {
+                res.RightBorder.X_0 += tp.dyLayer.RightBorder.V_0 * tp.multipl* tau;
+                res.LeftBorder.X_0 += tp.dyLayer.LeftBorder.V_0 * tp.multipl* tau;
+
+                res.RightBorder.V_0 += tp.dyLayer.RightBorder.A_0 * tp.multipl * tau;
+                res.LeftBorder.V_0 += tp.dyLayer.LeftBorder.A_0 * tp.multipl * tau;
+            }
+            
+            res.SynchNodes_X_V();
+
+            foreach (var tp in rightPart) {
+                if (tp.synch) {
+                    foreach (var c in tp.dyLayer.RealCells) {
+                        c.Sync();
+                    }
+                }
+                if (tp.calcFluxes) {
+                    foreach (var b in tp.dyLayer.RealBounds) {
+                        b.SetFlux();
+                    }
+                }
+            }
+
+            for (int i = 0; i < RealCells.Count; i++) {
+                var c_0 = RealCells[i];
+                var qn = c_0.q * c_0.W;
+                foreach (var tp in rightPart) {   
+                    var c_rp = tp.dyLayer.RealCells[i];
+                    qn += tau * tp.multipl * c_rp.Get_dQS();
+                }
+                qn /= res.RealCells[i].W;
+                res.RealCells[i].SetQ(qn);
+            }
+
+            return res;
         }
     }
 }

@@ -48,7 +48,7 @@ namespace MiracleGun.IdealGas {
             AddLayer(lrN1);
         }
 
-        double Get_a(List<GasCell> revList) {
+        public double Get_a(IList<GasCell> revList) {
             double a = 0;
             for (int i = 0; i < smooth; i++) {
                 a = revList[i].p * revList[i].RightBound.S / m;
