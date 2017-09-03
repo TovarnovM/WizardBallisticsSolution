@@ -42,5 +42,11 @@ namespace MiracleGun.Invariants {
                 Synch();
             return sShape.Get_dV(x);
         }
+
+        public double Get_dS(double x1, double x2) {
+            if (!isSynch)
+                Synch();
+            return sShape.Get_dV(x1,x2);
+        }
     }
 }

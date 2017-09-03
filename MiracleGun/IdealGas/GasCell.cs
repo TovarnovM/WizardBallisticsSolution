@@ -41,7 +41,7 @@ namespace MiracleGun.IdealGas {
         }
         public virtual void Init_h() {
             h[1] = 0d;
-            h[2] = p * Geom.Get_dS(X);
+            h[2] = p * Geom.Get_dS(LeftBound?.X ?? X, RightBound?.X ?? X);
             h[3] = 0d;
         }
         public void SetQ(WBVec q) {

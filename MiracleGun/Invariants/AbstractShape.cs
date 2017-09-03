@@ -206,12 +206,18 @@ namespace MiracleGun.Invariants
                 Synch();
             int ind = ~Array.BinarySearch(x_arr, x);
             if (ind < 0) {
-                return 0.5 * (Get_dV(x - x_delta) + Get_dV(x + x_delta));
+                return Get_dV(x - x_delta);// + Get_dV(x + x_delta));
             }
             if (ind == 0 || ind == x_arr.Length) {
                 return 0;
             }
             return yk_arr[ind - 1];
+        }
+
+        public double Get_dV(double x1, double x2) {
+            if (!isSynch)
+                Synch();
+            return (GetV(x2) - GetV(x1)) / (x2 - x1);
         }
         #endregion
 
