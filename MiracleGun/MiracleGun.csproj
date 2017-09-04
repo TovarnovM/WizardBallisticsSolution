@@ -47,7 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ElasticPiston\PistonCell.cs" />
+    <Compile Include="ElasticPiston\ElasticPistonConsts.cs" />
+    <Compile Include="ElasticPiston\PistonElasticCell.cs" />
     <Compile Include="IdealGas\GasBorderWall.cs" />
     <Compile Include="IdealGas\PnGrid.cs" />
     <Compile Include="IdealGas\FortranFuncs.cs" />

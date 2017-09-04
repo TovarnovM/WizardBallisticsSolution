@@ -38,4 +38,22 @@ namespace WizardBallistics.Core {
         public WBMemTacticBase() {
         }
     }
+
+    public class WBMemTacticTimeStep: WBMemTacticBase {
+        public double timeStemSave = 0.00001;
+        public override void StepWhatToDo() {
+            double t0 = OwnerGrid.CurrLayer.Time;
+            var node = OwnerGrid.LayerList.First.Next;
+            while(node != null && node.Next != null) {                
+                if(t0 - node.Value.Time < timeStemSave) {
+                    node = node.Next;
+                    var tdel = node.Previous.Value.Time;
+                    node.List.Remove(node.Previous);
+                } else {
+                    break;
+                }
+            }
+            
+        }
+    }
 }

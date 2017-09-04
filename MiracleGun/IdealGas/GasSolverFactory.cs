@@ -89,6 +89,25 @@ namespace MiracleGun.IdealGas {
             return solver;
         }
 
+        [SolverGeneratorMethod("D02-d0001_RK2")]
+        public static WBSolver GetNewSolver5(WBProjectOptions options) {
+            var layerOpts1 = StandartOpts1;
+            var geom = new GunShape();
+            geom.AddPoint(layerOpts1.X_left - 0.2, 0.2);
+            geom.AddPoint(layerOpts1.X_left +1 , 0.2);
+            geom.AddPoint(layerOpts1.X_left + 50, 0.01);
+            geom.AddPoint(layerOpts1.X_right + 10000, 0.01);
+            var initLayer = new GasLayer();
+            initLayer.Geom = geom;
+            initLayer.InitLayer(0d, layerOpts1, InitGasCell1, InitGasBound);
+            var grid = new PnGrid2("GasGrid_tst22", initLayer);
+            //grid.Slaver = new WBMemTacticTimeStep();
+            //grid.Slaver.OwnerGrid = grid;
+            var solver = new WBSolver(grid, options);
+            initLayer.SynchNodes_X_V();
+            return solver;
+        }
+
         public static WBOneDemLayerOptions StandartOpts {
             get {
                 var lo =  new WBOneDemLayerOptions() {
@@ -109,8 +128,8 @@ namespace MiracleGun.IdealGas {
                     LeftNodesCount = 1,
                     RightNodesCount = 1,
                     X_left = 0,
-                    X_right = 1,
-                    RealNodesCount = GasLayer.GetNumOfRealNodes(200),
+                    X_right = 1, 
+                    RealNodesCount = GasLayer.GetNumOfRealNodes(300),
                 };
                 lo.SynchH();
                 return lo;

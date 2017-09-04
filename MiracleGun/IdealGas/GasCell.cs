@@ -21,9 +21,11 @@ namespace MiracleGun.IdealGas {
         public GasConstants g;
         public GunShape Geom;
         public GasBound LeftBound, RightBound;
-        public WBVec q = WBVec.Zeros(3), h = WBVec.Zeros(3);
-        public GasCell(GasConstants g) {
+        public WBVec q, h;
+        public GasCell(GasConstants g, int hq_count = 3) {
             this.g = g;
+            q = WBVec.Zeros(hq_count);
+            h = WBVec.Zeros(hq_count);
         }
         public virtual double GetE() {
             return (p / g[9]) * (1 / ro - g.covolume);
