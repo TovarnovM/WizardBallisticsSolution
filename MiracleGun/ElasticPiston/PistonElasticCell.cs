@@ -52,9 +52,12 @@ namespace MiracleGun.ElasticPiston {
             } else {
                 sigmantw = -ge.sigmas * ge.k0 * (1d + ge.b1 * u) * Exp(-ge.b2 * u) * Sign(q[2]);
             }
-                
-        
 
+            double ui1 = RightBound.RightCell.u;
+            double Sri1 = RightBound.RightCell.RightBound.S,
+                Sli1 = RightBound.RightCell.LeftBound.S;
+
+            ha = (2.0 * (ui1 - u) - 0.25 * Sr * (ui1 + u) * (Sri1 + Sli1 - Sr - Sl)) / dx;
 
     //tauxx on the boundaries
     //        ha = 4.0 * (u(nl) - vb0) / dx !производна¤ dS / dx выброшена дл¤ простоты
@@ -83,11 +86,11 @@ namespace MiracleGun.ElasticPiston {
     //endif
 
 
-    //do i = nl,nr
-    //    h(1, i) = 0.
-    //    h(2, i) = -(sigmannw(i) * (Sr(i) - Sl(i)) / dx + 2.0 * sqrt(0.5 * (Sr(i) + Sl(i))) * sigmantw(i)) / sqrt(pi)
-    //    h(3, i) = 2.0 * sqrt(0.5 * (Sr(i) + Sl(i))) * (sigmantw(i) * u(i) - qw(i)) / Sqrt(pi)
-    //enddo
+            //do i = nl,nr
+            //    h(1, i) = 0.
+            //    h(2, i) = -(sigmannw(i) * (Sr(i) - Sl(i)) / dx + 2.0 * sqrt(0.5 * (Sr(i) + Sl(i))) * sigmantw(i)) / sqrt(pi)
+            //    h(3, i) = 2.0 * sqrt(0.5 * (Sr(i) + Sl(i))) * (sigmantw(i) * u(i) - qw(i)) / Sqrt(pi)
+            //enddo
 
 
         }

@@ -78,7 +78,7 @@ namespace SolverDrawTsts {
             //}
             vm.PM.Series.Add(nodes.GetLineSerries("ro"));
             vm.PM.Series.Add(nodes.GetLineSerries("u"));
-            vm.PM.Series.Add(nodes.GetLineSerries(yAxisFieldName:"p",yScaler:10E-5));
+            vm.PM.Series.Add(nodes.GetLineSerries(yAxisFieldName: "p",yScaler:1E-5));
            // vm.PM.Series.Add(nodes.GetLineSerries("e"));
             vm.PM.Title = $"{lr.Time} sec";
             vm.PM.InvalidatePlot(true);
