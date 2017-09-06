@@ -3,7 +3,6 @@
 namespace MiracleGun.ElasticPiston {
     public class ElasticPistonConsts: GasConstants {
         public double 
-            k = 1.63098, 
             c0 = 2380d, 
             rho0 = 919.03,
             sigmas = 25.2E6, 

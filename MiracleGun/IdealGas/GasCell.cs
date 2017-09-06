@@ -73,6 +73,7 @@ namespace MiracleGun.IdealGas {
         /// </summary>
         public double W => Geom.GetW(LeftBound.X, RightBound.X);
         public double dx => RightBound.X - LeftBound.X;
+        public double S => Geom.Square(X);
     }
 
     /// <summary>

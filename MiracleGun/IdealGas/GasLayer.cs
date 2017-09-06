@@ -184,7 +184,7 @@ namespace MiracleGun.IdealGas {
 
         public override void InitLayer(double time, WBOneDemLayerOptions opts, Func<double, double, GasCell> initCellFunc, Func<double, double, GasBound> initBoundFunc) {
             base.InitLayer(time, opts, initCellFunc, initBoundFunc);
-            foreach (var c in AllCells) {
+            foreach (var c in RealCells) {
                 c.Sync();
             }
         }

@@ -15,6 +15,8 @@ namespace MiracleGun.Invariants {
             sShape = new AbstractShape(d => Math.PI * d * d * 0.25);
         }
         public double Square(double x) {
+            if (!isSynch)
+                Synch();
             return sShape.GetV(x);
         }
         public override void Synch() {

@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 using WizardBallistics.Core;
 
 namespace MiracleGun.IdealPiston {
-    public class PistonIdealGrid : WBGridBase {
+    public class PistonGrid : WBGridBase {
         public double m1 = 15, m2 = 8;
        
 
         public int smooth = 2;
-        public PistonIdealGrid(string name, GasLayer initLayer) : base(name, initLayer) {
+        public PistonGrid(string name, GasLayer initLayer) : base(name, initLayer) {
             initLayer.LeftBorder = new GasBorderWall() {
                 OwnerLayer = initLayer,
                 A_0_func = A_0_function_L,

@@ -6,6 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MiracleGun.IdealPiston {
-    public class PistonIdealBound: GasBound {
+    public class IdealPistonBound: GasBound {
     }
 }

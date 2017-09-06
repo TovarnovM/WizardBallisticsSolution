@@ -7,10 +7,13 @@ using System.Text;
 using System.Threading.Tasks;
 using WizardBallistics.Core;
 
-namespace MiracleGun.IdealPiston {
+namespace MiracleGun.ElasticPiston {
     [SolversFactory]
-    public class IdealPistonFabric {
-        [SolverGeneratorMethod("IdealPiston по инерции")]
+    public class ElasticPistonFabric {
+        static ElasticPistonConsts gp = new ElasticPistonConsts(1.63098);
+        static double v0 = 700;
+
+        [SolverGeneratorMethod("ElasticPiston по инерции")]
         public static WBSolver GetNewSolver(WBProjectOptions options) {
             var layerOpts = StandartOpts;
             var geom = new GunShape();
@@ -20,8 +23,8 @@ namespace MiracleGun.IdealPiston {
             geom.AddPoint(layerOpts.X_right + 1000, 0.05);
             var initLayer = new GasLayer();
             initLayer.Geom = geom;
-            initLayer.InitLayer(0d, layerOpts, InitIdealPCell, InitIdealPBound);
-            var grid = new PistonGrid("IdealP_tst1", initLayer);
+            initLayer.InitLayer(0d, layerOpts, InitIdealPCell, InitElasticPBound);
+            var grid = new IdealPiston.PistonGrid("ElasticP_tst1", initLayer);
             var solver = new WBSolver(grid, options);
             return solver;
         }
@@ -38,10 +41,8 @@ namespace MiracleGun.IdealPiston {
                 return lo;
             }
         }
-        static IdealPistonConstants gp = new IdealPistonConstants(1.235);
-        static double v0 = 700;
-        public static IdealPistonCell InitIdealPCell(double t, double x) {
-            var answ = new IdealPistonCell(gp);
+        public static ElasticPistonCell InitIdealPCell(double t, double x) {
+            var answ = new ElasticPistonCell(gp);
             answ.ro = 921.0;
             answ.u = v0;
             answ.p = 0;
@@ -49,9 +50,8 @@ namespace MiracleGun.IdealPiston {
             answ.V = v0;
             return answ;
         }
-
-        public static IdealPistonBound InitIdealPBound(double t, double x) {
-            return new IdealPistonBound() { X = x, V = v0 };
+        public static ElasticPistonBound InitElasticPBound(double t, double x) {
+            return new ElasticPistonBound(gp) { X = x, V = v0 };
         }
     }
 }

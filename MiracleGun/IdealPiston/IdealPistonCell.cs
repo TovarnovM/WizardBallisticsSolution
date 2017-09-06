@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MiracleGun.IdealPiston {
-    public class PistonIdealCell : GasCell {
+    public class IdealPistonCell : GasCell {
         public IdealPistonConstants pg;
-        public PistonIdealCell(IdealPistonConstants g) : base(g) {
+        public IdealPistonCell(IdealPistonConstants g) : base(g) {
             pg = g;
         }
         public override double GetCSound() {

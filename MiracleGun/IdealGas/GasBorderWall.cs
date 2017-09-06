@@ -14,7 +14,8 @@ namespace MiracleGun.IdealGas {
             c_f.p = c.p;
             c_f.ro = c.ro;
             c_f.u = -c.u + 2 * b.V;
-            c_f.Sync();
+            c_f.e = c_f.GetE();
+            c_f.InitQ();
         }
     }
 }

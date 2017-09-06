@@ -37,7 +37,7 @@ namespace SolverDrawTsts {
             //solver = WBSolver.Factory("RimanTest", WBProjectOptions.Default);
             InitializeComponent();
             var gn = new GasBound();
-            var pg = new PistonIdealBound();
+            var pg = new IdealPistonBound();
             FillLB();
         }
 
