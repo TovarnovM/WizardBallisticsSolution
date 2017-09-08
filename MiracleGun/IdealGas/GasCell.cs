@@ -21,10 +21,16 @@ namespace MiracleGun.IdealGas {
         public GasConstants g;
         public GunShape Geom;
         public GasBound LeftBound, RightBound;
-        public WBVec q = WBVec.Zeros(3), h = WBVec.Zeros(3);
-        public GasCell(GasConstants g) {
-            this.g = g;
+        public WBVec q, h;
+        public GasCell(GasConstants g) : this(g, 3) {
         }
+
+        public GasCell(GasConstants g, int vecDem) {
+            this.g = g;
+            q = WBVec.Zeros(vecDem);
+            h = WBVec.Zeros(vecDem);
+        }
+
         public virtual double GetE() {
             return (p / g[9]) * (1 / ro - g.covolume);
         }
@@ -34,7 +40,7 @@ namespace MiracleGun.IdealGas {
         public WBVec Get_dQS() {
             return h * dx - (RightBound.S * RightBound.flux - LeftBound.S * LeftBound.flux);
         }
-        public void InitQ() {
+        public virtual void InitQ() {
             q[1] = ro;
             q[2] = ro * u;
             q[3] = ro *(e + 0.5 * u * u);
@@ -44,7 +50,7 @@ namespace MiracleGun.IdealGas {
             h[2] = p * Geom.Get_dS(LeftBound?.X ?? X, RightBound?.X ?? X);
             h[3] = 0d;
         }
-        public void SetQ(WBVec q) {
+        public virtual void SetQ(WBVec q) {
             this.q = q;
             ro = q[1];
             u = q[2] / ro;

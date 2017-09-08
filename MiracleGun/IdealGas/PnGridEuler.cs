@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using WizardBallistics.Core;
 
 namespace MiracleGun.IdealGas {
-    public class PnGrid2 : PnGrid {
+    public class PnGridEuler : PnGrid {
         
-        public PnGrid2(string name, IWBNodeLayer initLayer) : base(name, initLayer) {
+        public PnGridEuler(string name, IWBNodeLayer initLayer) : base(name, initLayer) {
             lrInit.LeftBorder = new GasBorderWall() {
                 OwnerLayer = lrInit,
                 BorderPos = WBBorderPos.leftBorder

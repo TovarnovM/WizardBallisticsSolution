@@ -18,6 +18,7 @@ using WizardBallistics.Core;
 using WizardBallistics.Draw;
 using MiracleGun.IdealGas;
 using MiracleGun.IdealPiston;
+using MiracleGun.OvBallistic;
 using MiracleGun;
 using System.IO;
 using OxyPlot.Wpf;
@@ -30,6 +31,8 @@ namespace SolverDrawTsts {
     public partial class MainWindow : Window {
         public StandartVM vm { get; set; }
         WBSolver solver;
+        public List<List_type> solv_list_time1, solv_list_time2, solv_list_time3;
+        public List<List_type> solv_list_len1, solv_list_len2, solv_list_len3;
         string solName, gridname;
         public MainWindow() {
             DataContext = this;
@@ -55,7 +58,7 @@ namespace SolverDrawTsts {
 
         private void Button_Click(object sender, RoutedEventArgs e) {
             
-            double timeMax = GetDouble(tb1.Text, 0.5);
+            double timeMax = GetDouble(tb1.Text, 0.01);
             solver.MyStopFunc = slv => slv.TimeCurr >= timeMax;
             solver.RunCalc();
             SynchSlider();
@@ -238,10 +241,183 @@ namespace SolverDrawTsts {
             }
         }
 
+        private void Button_Click_8(object sender, RoutedEventArgs e) {
+            try {
+                var ls1 = new OxyPlot.Series.LineSeries() {
+                    Title = "Цилиндр"
+                };
+                var ls2 = new OxyPlot.Series.LineSeries() {
+                    Title = "Конус"
+                };
+                var ls3 = new OxyPlot.Series.LineSeries() {
+                    Title = "Цилиндр-конус-цилиндр"
+                };
+                foreach (var point in solv_list_len1) {
+                    ls1.Points.Add(new OxyPlot.DataPoint(point.Len, point.vel));
+                }
+                foreach (var point in solv_list_len2) {
+                    ls2.Points.Add(new OxyPlot.DataPoint(point.Len, point.vel));
+                }
+                foreach (var point in solv_list_len3) {
+                    ls3.Points.Add(new OxyPlot.DataPoint(point.Len, point.vel));
+                }
+                vm.PM.Series.Clear();
+                vm.PM.Series.Add(ls1);
+                vm.PM.Series.Add(ls2);
+                vm.PM.Series.Add(ls3);
+
+                vm.PM.InvalidatePlot(true);
+                vm.PM.ResetAllAxes();
+                vm.PM.InvalidatePlot(true);
+            }
+            catch {
+                MessageBox.Show("Errrrrrrorrrrr");
+            }
+        }
+
+        private void Button_Click_9(object sender, RoutedEventArgs e) {
+            try {
+                var list_fact = solver.Grids[gridname].LayerList.Cast<OvLayer>().Select(gl => {
+                    return new {
+                        time = gl.Time,
+                        vel = gl.RealBoundsRev[0].V
+                    };
+                }).ToList();
+
+                vm.PM.Title = $"Скорость от времени";
+                vm.PM.Series.Clear();
+                vm.PM.Series.Add(new OxyPlot.Series.LineSeries() {
+                    DataFieldX = "time",
+                    DataFieldY = "vel",
+                    ItemsSource = list_fact,
+                    Title = "Скорость"
+                });
+                vm.PM.InvalidatePlot(true);
+            }
+            catch {
+                MessageBox.Show("Errrrrrrorrrrr");
+            }
+        }
+
+        private void Button_Click_10(object sender, RoutedEventArgs e) {
+            try {
+                var list_fact = solver.Grids[gridname].LayerList.Cast<OvLayer>().Select(gl => {
+                    return new {
+                        time = gl.Time,
+                        pres = gl.RealBoundsRev[0].RightCell.p
+                    };
+                }).ToList();
+
+                vm.PM.Title = $"Давление от времени";
+                vm.PM.Series.Clear();
+                vm.PM.Series.Add(new OxyPlot.Series.LineSeries() {
+                    DataFieldX = "time",
+                    DataFieldY = "pres",
+                    ItemsSource = list_fact,
+                    Title = "Давление"
+                });
+                vm.PM.InvalidatePlot(true);
+            }
+            catch {
+                MessageBox.Show("Errrrrrrorrrrr");
+            }
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e) {
+            try {
+                var ls1 = new OxyPlot.Series.LineSeries() {
+                    Title = "Цилиндр"
+                };
+                var ls2 = new OxyPlot.Series.LineSeries() {
+                    Title = "Конус"
+                };
+                var ls3 = new OxyPlot.Series.LineSeries() {
+                    Title = "Цилиндр-конус-цилиндр"
+                };
+                foreach (var point in solv_list_time1) {
+                    ls1.Points.Add(new OxyPlot.DataPoint(point.time, point.vel));
+                }
+                foreach (var point in solv_list_time2) {
+                    ls2.Points.Add(new OxyPlot.DataPoint(point.time, point.vel));
+                }
+                foreach (var point in solv_list_time3) {
+                    ls3.Points.Add(new OxyPlot.DataPoint(point.time, point.vel));
+                }
+                vm.PM.Series.Clear();
+                vm.PM.Series.Add(ls1);
+                vm.PM.Series.Add(ls2);
+                vm.PM.Series.Add(ls3);
+
+                vm.PM.InvalidatePlot(true);
+                vm.PM.ResetAllAxes();
+                vm.PM.InvalidatePlot(true);
+            }
+            catch {
+                MessageBox.Show("Errrrrrrorrrrr");
+            }
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e) {
+            var list_time1 = solver.Grids[gridname].LayerList.Cast<GasLayer>().Select(gl => {
+                return new List_type{
+                    time = gl.Time,
+                    vel = gl.RealBoundsRev[0].V
+                };
+            }).ToList();
+            var list_len1 = solver.Grids[gridname].LayerList.Cast<GasLayer>().Select(gl => {
+                return new List_type {
+                    Len = gl.RealBoundsRev[0].X,
+                    vel = gl.RealBoundsRev[0].V
+                };
+            }).ToList();
+            solv_list_time1 = list_time1;
+            solv_list_len1 = list_len1;
+        }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e) {
+            var list_time2 = solver.Grids[gridname].LayerList.Cast<GasLayer>().Select(gl => {
+                return new List_type {
+                    time = gl.Time,
+                    vel = gl.RealBoundsRev[0].V
+                };
+            }).ToList();
+            var list_len2 = solver.Grids[gridname].LayerList.Cast<GasLayer>().Select(gl => {
+                return new List_type {
+                    Len = gl.RealBoundsRev[0].X,
+                    vel = gl.RealBoundsRev[0].V
+                };
+            }).ToList();
+            solv_list_time2 = list_time2;
+            solv_list_len2 = list_len2;
+        }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e) {
+            var list_time3 = solver.Grids[gridname].LayerList.Cast<GasLayer>().Select(gl => {
+                return new List_type {
+                    time = gl.Time,
+                    vel = gl.RealBoundsRev[0].V
+                };
+            }).ToList();
+            var list_len3 = solver.Grids[gridname].LayerList.Cast<GasLayer>().Select(gl => {
+                return new List_type {
+                    Len = gl.RealBoundsRev[0].X,
+                    vel = gl.RealBoundsRev[0].V
+                };
+            }).ToList();
+            solv_list_time3 = list_time3;
+            solv_list_len3 = list_len3;
+        }
 
         public static void DoEvents() {
             System.Windows.Application.Current.Dispatcher.Invoke(DispatcherPriority.Background,
                                                   new Action(delegate { }));
         }
+    }
+
+    public class List_type {
+        public double time { get; set; }
+        public double vel { get; set; }
+        public double Len { get; set; }
+        public double pres { get; set; }
     }
 }

@@ -6,72 +6,90 @@ using System.Text;
 using System.Threading.Tasks;
 using WizardBallistics;
 using WizardBallistics.Core;
+using MiracleGun.IdealGas;
 
 namespace MiracleGun.OvBallistic {
 
-    public class OvCell : WBOneDemNode {
+    public class OvCell : GasCell {
 
-        public double u, rho, p, e, z;
+        public double[] z;
 
-        public GunPowder powder;
+        public MixtureGunPowder mixture;
 
-        public GunShape geom;
 
-        public OvBound LeftBound, RightBound;
-
-        public double Get_E() {
-            return (p / (powder.k - 1)) *
-            ((1 / rho) - ((1 - powder.Psi(z)) / powder.dest + powder.alpha_k * powder.Psi(z))) +
-            (1 - powder.Psi(z)) * powder.f / (powder.k - 1);
+        public OvCell(GasConstants g, MixtureGunPowder mixture) : base(g, 3 + mixture.powders.Count) {
+            this.mixture = mixture;
+            z = new double[mixture.powders.Count];
         }
-
-        public double Get_p() {
-            return ((powder.k - 1) * e - (1 - powder.Psi(z)) * powder.f) /
-            (1 / rho - (1 - powder.Psi(z)) / powder.dest - powder.alpha_k * powder.Psi(z));
-        }
-
-        public double Get_z() {
-            return vect_q[4] / vect_q[1];
-        }
-
-        public double Get_u() {
-            return vect_q[2] / vect_q[1];
-        }
-
-        public void Init_q() {
-            vect_q[1] = rho;
-            vect_q[2] = rho * u;
-            vect_q[3] = rho * (e + 0.5 * Math.Pow(u, 2));
-            vect_q[4] = rho * z;
-        }
-
-        public void Synch() {
-            e = Get_E();
-            Init_q();
-        }
-
-        public void Get_h() {
-            vect_h[1] = 0;
-            vect_h[2] = p * geom.Get_dS(X);
-            vect_h[3] = 0;
-            vect_h[4] = vect_q[1] * geom.Square(X) * Math.Pow(p, powder.nu) / powder.Ik;
-
-        }
-
-        public double Csound() {
-            var z = Get_z();
-            return Math.Sqrt(p / ((1 / powder.k) * (1 / rho - (1 - powder.Psi(z)) / powder.dest - powder.alpha_k * powder.Psi(z)))) / rho;
-        }
-
-        public WBVec vect_f = new WBVec(0, 0, 0, 0), vect_q = new WBVec(0, 0, 0, 0), vect_h = new WBVec(0, 0, 0, 0);
 
         public override IWBNode Clone() {
-            var cl = (OvCell)base.Clone();
-            cl.vect_q = vect_q.Clone();
-            cl.vect_f = vect_f.Clone();
-            cl.vect_h = vect_h.Clone();
+            var cl = base.Clone() as OvCell;
+            Array.Copy(z, cl.z, z.Length);
             return cl;
         }
-       
+
+        public override double GetE() {
+            var sumPsi = 0d;
+            for (int i = 0; i < mixture.powders.Count; i++) {
+                sumPsi += mixture.conc[i] * mixture.powders[i].Psi(z[i]);
+            }
+            return (p / (mixture.k - 1) * (1 / ro - (1 - sumPsi) / mixture.dest - mixture.alpha_k * sumPsi)) + (1 - sumPsi) * mixture.f / (mixture.k - 1);
+        }
+        public override double GetPressure() {
+            var sumPsi = 0d;
+            for (int i = 0; i < mixture.powders.Count; i++) {
+                sumPsi += mixture.conc[i] * mixture.powders[i].Psi(z[i]);
+            }
+            return (e * (mixture.k - 1) - (1 - sumPsi) * mixture.f) / (1 / ro - (1 - sumPsi) / mixture.dest - mixture.alpha_k * sumPsi);
+        }
+        public override void InitQ() {
+            q[1] = ro;
+            q[2] = ro * u;
+            q[3] = ro * (e + 0.5 * u * u);
+
+            for (int i = 0; i < mixture.powders.Count; i++) {
+                if (q[i + 4] / q[1] > mixture.powders[i].zk) {
+                    q[i + 4] = q[1] * mixture.powders[i].zk;
+                }
+                else {
+                   q[i + 4] = q[1] * z[i];
+                }
+            }
+        }
+        public override void Init_h() {
+            h[1] = 0d;
+            h[2] = p * Geom.Get_dS(X);
+            h[3] = 0d;
+
+            for (int i = 0; i < mixture.powders.Count; i++) {
+                h[i + 4] = q[1] * Geom.Square(X) * p / mixture.powders[i].Ik;
+            }
+
+        }
+        public override void SetQ(WBVec q) {
+            this.q = q;
+            ro = q[1];
+            u = q[2] / ro;
+            e = q[3] / ro - 0.5 * u * u;
+            p = GetPressure();
+
+            for (int i = 0; i < mixture.powders.Count; i++) {
+                if (q[i + 4] > mixture.powders[i].zk * ro) {
+                    z[i] = mixture.powders[i].zk;
+                }
+                else {
+                  z[i] = q[i + 4] / ro;
+                }
+            }
+            Init_h();
+        }
+
+        public override double GetCSound() {
+            var sumPsi = 0d;
+            for (int i = 0; i < mixture.powders.Count; i++) {
+                sumPsi += mixture.conc[i] * mixture.powders[i].Psi(z[i]);
+            }
+            return Math.Sqrt(p * mixture.k / (1 / ro - (1 - sumPsi) / mixture.dest - mixture.alpha_k * sumPsi)) / ro;
+        }
     }
 }

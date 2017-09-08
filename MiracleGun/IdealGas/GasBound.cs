@@ -11,8 +11,8 @@ namespace MiracleGun.IdealGas {
     public class GasBound:WBOneDemNode {
         public GasCell LeftCell, RightCell;
         public GunShape Geom;
-        public WBVec flux = WBVec.Zeros(3);
-        public WBVec AUSMp() {
+        public WBVec flux;
+        public virtual WBVec AUSMp() {
             double r1 = LeftCell.ro;
             double u1 = LeftCell.u;
             double e1 = LeftCell.e;
