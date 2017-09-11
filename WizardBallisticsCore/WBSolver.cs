@@ -110,7 +110,7 @@ namespace WizardBallistics.Core {
         /// После расчета в свойстве State сохраняется информация о причинах остановки расчета
         /// </summary>
         public void RunCalc() {
-            try {
+            //try {
                 _stopReason = "";
                 State = "calculating";
                 stopFlag = false;
@@ -135,9 +135,10 @@ namespace WizardBallistics.Core {
                     SaveStuff();
                 }
                 State = "solved. Stop reason = "+_stopReason;
-            } catch (Exception e) {
-                State = "ошибка при вычислении :" + e.Message;                
-            }
+            //} catch (Exception e) {
+            //    State = "ошибка при вычислении :" + e.Message;
+            //    throw e;
+            //}
         }
 
         double SaveTime;

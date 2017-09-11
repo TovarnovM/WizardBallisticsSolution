@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="GunDTests.cs" />
     <Compile Include="GunShapeTests.cs" />
+    <Compile Include="OvBallistic\OvCellTests.cs" />
     <Compile Include="OvBallistic\OvLayerTests.cs" />
     <Compile Include="OvBallistic\OvPowderFactoryTests.cs" />
     <Compile Include="OvBallistic\OvPowderTests.cs" />

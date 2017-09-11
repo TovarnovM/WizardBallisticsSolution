@@ -42,12 +42,12 @@ namespace MiracleGun.IdealGas {
             return solver;
         }
 
-        [SolverGeneratorMethod("Pneumatics-simple_happening")]
+        [SolverGeneratorMethod("Pneumatics-simple_happening_Euler")]
         public static WBSolver GetNewSolver2(WBProjectOptions options) {
             var layerOpts1 = StandartOpts1;
             var geom = new GunShape();
             geom.AddPoint(layerOpts1.X_left-0.2, 0.2);
-            geom.AddPoint(layerOpts1.X_right*100, 0.2);
+            geom.AddPoint(layerOpts1.X_right * 100, 0.2);
             var initLayer = new GasLayer();
             initLayer.Geom = geom;
             initLayer.InitLayer(0d, layerOpts1, InitGasCell1, InitGasBound);
@@ -57,7 +57,7 @@ namespace MiracleGun.IdealGas {
             return solver;
         }
 
-        [SolverGeneratorMethod("Pneumatics-simple_happening2")]
+        [SolverGeneratorMethod("Pneumatics-simple_happening_R-K")]
         public static WBSolver GetNewSolver3(WBProjectOptions options) {
             var layerOpts1 = StandartOpts1;
             var geom = new GunShape();
@@ -66,24 +66,56 @@ namespace MiracleGun.IdealGas {
             var initLayer = new GasLayer();
             initLayer.Geom = geom;
             initLayer.InitLayer(0d, layerOpts1, InitGasCell1, InitGasBound);
-            var grid = new PnGrid2("GasGrid_tst2", initLayer);
+            var grid = new PnGridEuler("GasGrid_tst2", initLayer);
             var solver = new WBSolver(grid, options);
             initLayer.SynchNodes_X_V();
             return solver;
         }
 
-        [SolverGeneratorMethod("D02-d005_RK4")]
+        [SolverGeneratorMethod("Pn_0/0.2-1/0.2_RK4")]
         public static WBSolver GetNewSolver4(WBProjectOptions options) {
             var layerOpts1 = StandartOpts1;
             var geom = new GunShape();
             geom.AddPoint(layerOpts1.X_left - 0.2, 0.2);
-            //geom.AddPoint(layerOpts1.X_left +1 , 0.2);
-            geom.AddPoint(layerOpts1.X_left + 1, 0.05);
-            geom.AddPoint(layerOpts1.X_right * 100, 0.05);
+            geom.AddPoint(layerOpts1.X_left + 0.1, 0.05);
+            geom.AddPoint(layerOpts1.X_right + 2, 0.2);
             var initLayer = new GasLayer();
             initLayer.Geom = geom;
             initLayer.InitLayer(0d, layerOpts1, InitGasCell1, InitGasBound);
-            var grid = new PnGrid4("GasGrid_tst4", initLayer);
+            var grid = new PnGridRK("GasGrid_tst4", initLayer);
+            var solver = new WBSolver(grid, options);
+            initLayer.SynchNodes_X_V();
+            return solver;
+        }
+
+        [SolverGeneratorMethod("Pn_0/0.2-1/0.05_RK4")]
+        public static WBSolver GetNewSolver5(WBProjectOptions options) {
+            var layerOpts1 = StandartOpts1;
+            var geom = new GunShape();
+            geom.AddPoint(layerOpts1.X_left - 0.2, 0.2);
+            geom.AddPoint(layerOpts1.X_left + 0.1, 0.2);
+            geom.AddPoint(layerOpts1.X_right + 2, 0.1);
+            var initLayer = new GasLayer();
+            initLayer.Geom = geom;
+            initLayer.InitLayer(0d, layerOpts1, InitGasCell1, InitGasBound);
+            var grid = new PnGridRK("GasGrid_tst5", initLayer);
+            var solver = new WBSolver(grid, options);
+            initLayer.SynchNodes_X_V();
+            return solver;
+        }
+
+        [SolverGeneratorMethod("Pn_0/0.2-0.5/0.2-0.75/0.05-1/0.05_RK4")]
+        public static WBSolver GetNewSolver6(WBProjectOptions options) {
+            var layerOpts1 = StandartOpts1;
+            var geom = new GunShape();
+            geom.AddPoint(layerOpts1.X_left - 0.2, 0.2);
+            geom.AddPoint(layerOpts1.X_left + 1.0, 0.2);
+            geom.AddPoint(layerOpts1.X_left + 1.5, 0.1);
+            geom.AddPoint(layerOpts1.X_right + 2, 0.1);
+            var initLayer = new GasLayer();
+            initLayer.Geom = geom;
+            initLayer.InitLayer(0d, layerOpts1, InitGasCell1, InitGasBound);
+            var grid = new PnGridRK("GasGrid_tst6", initLayer);
             var solver = new WBSolver(grid, options);
             initLayer.SynchNodes_X_V();
             return solver;

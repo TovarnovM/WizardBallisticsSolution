@@ -119,5 +119,11 @@ namespace MiracleGun.Invariants
             return GunPowderFactory.Get(powderName);
         }
 
+        public void Get_powder_SI() {
+            f = f * 1e6;
+            alpha_k = alpha_k / 1e3;
+            dest = dest * 1e3;
+            Ik = Ik * 1e6;
+        }
     }
 }

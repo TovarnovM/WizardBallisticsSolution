@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SolverDrawTsts"
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="337.394" Width="467.903">
+        Title="MainWindow" Height="892.337" Width="1345.269">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="47*"/>
@@ -19,14 +19,21 @@
         </Grid.RowDefinitions>
         <oxy:PlotView x:Name="tstPV" Model="{Binding vm.PM}" Grid.Row="0" Grid.Column="2"/>
         <Button Content="RunX" HorizontalAlignment="Left" Margin="0,0,0,1" Grid.Row="1" Width="75" Click="Button_Click" Height="20" VerticalAlignment="Bottom" Grid.ColumnSpan="3"/>
-        <Button Content="RunT" HorizontalAlignment="Left" Margin="26,0,0,2" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Grid.Column="2" Click="Button_Click_3"/>
-        <TextBox Name="tb1" HorizontalAlignment="Left" Margin="106,0,0,1" Grid.Row="1" TextWrapping="Wrap" Text="0.5" Width="120" Height="20" VerticalAlignment="Bottom" Grid.Column="2"/>
+        <Button Content="RunTGas" HorizontalAlignment="Left" Margin="93,0,0,1" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Grid.Column="2" Click="Button_Click_3"/>
+        <TextBox Name="tb1" HorizontalAlignment="Left" Margin="206,0,0,-1" Grid.Row="1" TextWrapping="Wrap" Text="0.01" Width="120" Height="20" VerticalAlignment="Bottom" Grid.Column="2"/>
         <Slider Name="slider" Margin="0,5,0,0" Grid.Row="1" VerticalAlignment="Top" ValueChanged="slider_ValueChanged" Grid.ColumnSpan="3"/>
-        <Button Content="Save" HorizontalAlignment="Left" Margin="258,0,0,0" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Click="Button_Click_1" Grid.Column="2"/>
-        <Button Content="Load" HorizontalAlignment="Left" Margin="333,0,0,0" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Click="Button_Click_2" Grid.Column="2" />
+        <Button Content="Save" HorizontalAlignment="Left" Margin="378,0,0,2" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Click="Button_Click_1" Grid.Column="2"/>
+        <Button Content="Load" HorizontalAlignment="Left" Margin="468,0,0,2" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Click="Button_Click_2" Grid.Column="2" />
         <GridSplitter Grid.Column="1" Grid.Row="0"  Width="5"/>
         <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
         <ListBox Name="lb" SelectionChanged="lb_SelectionChanged"/>
-        <Button Name="btnGif" Content="Gif" HorizontalAlignment="Left" Margin="222,0,0,0" Grid.Row="1" Width="31" Height="20" VerticalAlignment="Bottom"  Grid.Column="2" Click="btnGif_click"/>
+        <Button Name="btnGif" Content="Gif" HorizontalAlignment="Left" Margin="331,0,0,1" Grid.Row="1" Width="31" Height="20" VerticalAlignment="Bottom"  Grid.Column="2" Click="btnGif_click"/>
+        <Button Content="PnPlotTime" HorizontalAlignment="Left" Margin="871,0,0,1" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Grid.Column="2" Click="Button_Click_4"/>
+        <Button Content="PnSave1" HorizontalAlignment="Left" Margin="576,0,0,1" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Grid.Column="2" Click="Button_Click_5"/>
+        <Button Content="PnSave2" HorizontalAlignment="Left" Margin="675,0,0,1" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Grid.Column="2" Click="Button_Click_6"/>
+        <Button Content="PnSave3" HorizontalAlignment="Left" Margin="766,0,0,1" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Grid.Column="2" Click="Button_Click_7"/>
+        <Button Content="PnPlotLen" HorizontalAlignment="Left" Margin="961,0,0,1" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Grid.Column="2" Click="Button_Click_8"/>
+        <Button Content="RunTOv-Vel" HorizontalAlignment="Left" Margin="80,0,0,1" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Click="Button_Click_9" Grid.ColumnSpan="3"/>
+        <Button Content="RunTOv-Pr" HorizontalAlignment="Left" Margin="9,0,0,1" Grid.Row="1" Width="75" Height="20" VerticalAlignment="Bottom" Click="Button_Click_10" Grid.Column="2"/>
     </Grid>
 </Window>

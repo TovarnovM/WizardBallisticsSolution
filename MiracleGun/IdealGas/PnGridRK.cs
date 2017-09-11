@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using WizardBallistics.Core;
 
 namespace MiracleGun.IdealGas {
-    public class PnGrid4 : PnGrid2 {
-        public PnGrid4(string name, IWBNodeLayer initLayer) : base(name, initLayer) {
+    public class PnGridRK : PnGridEuler {
+        public PnGridRK(string name, IWBNodeLayer initLayer) : base(name, initLayer) {
         }
 
         public override void StepUpLogic(double deltaTau) {
@@ -41,7 +41,8 @@ namespace MiracleGun.IdealGas {
                     dyLayer = lr4
                 }
             };
-
+            var dV = deltaTau * (Get_a(lr4.RealCellsRev) + Get_a(lr1.RealCellsRev)) / 2;
+            BoundVel += dV;
             var lrr = lr1.ComplexStep(deltaTau, false, rightPart);
             AddLayer(lrr);
         }
