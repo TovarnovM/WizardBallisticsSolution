@@ -62,7 +62,7 @@ namespace MiracleGun.OvBallistic {
             h[3] = 0d;
 
             for (int i = 0; i < mixture.powders.Count; i++) {
-                h[i + 4] = q[1] * Geom.Square(X) * p / mixture.powders[i].Ik;
+                h[i + 4] = q[1] * Geom.Square(X) * Math.Pow(p, mixture.powders[i].nu) / mixture.powders[i].Ik;
             }
 
         }

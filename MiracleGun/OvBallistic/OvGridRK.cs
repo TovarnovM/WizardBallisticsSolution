@@ -16,6 +16,8 @@ namespace MiracleGun.OvBallistic {
 
         public int smooth = 2;
 
+        public double p_fors = 13.79e6;
+
         public OvGridRK(string name, IWBNodeLayer initLayer) : base(name, initLayer) {
             lrInit = initLayer as OvLayer;
             lrInit.LeftBorder = new OvBorderWall() {
@@ -34,6 +36,9 @@ namespace MiracleGun.OvBallistic {
 
         public double Get_a(IList<OvCell> revList) {
             double a = 0;
+            if (Math.Abs(revList[0].V) < 1e-12 && revList[0].p < p_fors) {
+                return 0;
+            }
             for (int i = 0; i < smooth; i++) {
                 a = revList[i].p * revList[i].RightBound.S / m;
                 a += a;

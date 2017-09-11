@@ -68,19 +68,19 @@ namespace MiracleGun.OvBallistic {
             double flux2 = 0.5 * (cs * Mrf * (r1 * u1 + r2 * u2) - cs * Abs(Mrf) * (r2 * u2 - r1 * u1)) + pf;
             double flux3 = 0.5 * (cs * Mrf * (r1 * H1 + r2 * H2) - cs * Abs(Mrf) * (r2 * H2 - r1 * H1)) + pf * V;
 
-            //WBVec vec_flux = WBVec.Zeros(LeftCell.mixture.powders.Count + 3);
-            //vec_flux[1] = flux1;
-            //vec_flux[2] = flux2;
-            //vec_flux[3] = flux3;
+            WBVec vec_flux = WBVec.Zeros(LeftCell.mixture.powders.Count + 3);
+            vec_flux[1] = flux1;
+            vec_flux[2] = flux2;
+            vec_flux[3] = flux3;
 
-            double[] fluxz = new double[LeftCell.mixture.powders.Count];
+            double[] fluxz = new double[RightCell.mixture.powders.Count];
 
-            for (int i = 0; i < LeftCell.mixture.powders.Count; i++) {
+            for (int i = 0; i < RightCell.mixture.powders.Count; i++) {
                 fluxz[i] = 0.5 * (cs * Mrf * (r1 * z1[i] + r2 * z2[i]) - cs * Abs(Mrf) * (r2 * z2[i] - r1 * z1[i]));
-                //vec_flux[4 + i] = fluxz[i];
+                vec_flux[4 + i] = fluxz[i];
             }
             
-            return new WBVec (flux1, flux2, flux3, fluxz[0]);
+            return vec_flux;
         }
     }
 }

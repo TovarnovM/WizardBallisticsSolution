@@ -12,9 +12,10 @@ namespace MiracleGun.Invariants {
         public MixtureGunPowder(List<GunPowder> powderList, List<double> concList) {
             powders = powderList;
             conc = concList;
+            GetMixture();
         }
 
-        public GunPowder GetMixture() {
+        public void GetMixture() {
             this.f = 0;
             this.alpha_k = 0;
             this.k = 0;
@@ -25,7 +26,6 @@ namespace MiracleGun.Invariants {
                 this.k += conc[i] * powders[i].k;
                 this.dest += conc[i] * powders[i].dest;
             }
-            return this;
         }
     }
 }

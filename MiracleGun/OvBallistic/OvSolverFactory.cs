@@ -39,10 +39,10 @@ namespace MiracleGun.OvBallistic {
             geom.AddPoint(layerOpts1.X_right + 5, 0.132);
             var initLayer = new OvLayer();
             initLayer.Geom = geom;
-            GunPowder powder = GunPowder.Factory("ВТМ");
-            powder.Get_powder_SI();
-            List<GunPowder> powder_list = new List<GunPowder>() {powder};
-            List<double> conc_list = new List<double>() { 1 };
+            GunPowder powder = new GunPowder();
+            powder = powder_AGARD();
+            List<GunPowder> powder_list = new List<GunPowder>() {powder, powder};
+            List<double> conc_list = new List<double>() { 0.7, 0.3 };
             MixtureGunPowder mixture = new MixtureGunPowder(powder_list, conc_list);
             mixture.GetMixture();
             initLayer.InitLayer(0d, layerOpts1, MySuoerFunc(mixture), InitOvBound);
@@ -65,7 +65,6 @@ namespace MiracleGun.OvBallistic {
             List<GunPowder> powder_list = new List<GunPowder>() { powder };
             List<double> conc_list = new List<double>() { 1 };
             MixtureGunPowder mixture = new MixtureGunPowder(powder_list, conc_list);
-            mixture.GetMixture();
             initLayer.InitLayer(0d, layerOpts2, MySuoerFunc(mixture), InitOvBound);
             var grid = new OvGridRK("OvGrid_tst1", initLayer);
             var solver = new WBSolver(grid, options);
