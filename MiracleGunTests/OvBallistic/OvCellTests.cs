@@ -10,7 +10,9 @@ using MiracleGun.Invariants;
 namespace MiracleGun.OvBallistic.Tests {
     [TestClass()]
     public class OvCellTests {
-        [TestMethod()]
+
+        MixtureGunPowder mixture;
+        [TestMethod(), TestInitialize()]
         public void GetPressureTest() {
             var powder = new GunPowder();
             powder.f = 1.009e6;
@@ -27,17 +29,25 @@ namespace MiracleGun.OvBallistic.Tests {
             powder.zk = 1.5;
             List<GunPowder> powder_list = new List<GunPowder>() { powder };
             List<double> conc_list = new List<double>() { 1 };
-            MixtureGunPowder mixture = new MixtureGunPowder(powder_list, conc_list);
+            mixture = new MixtureGunPowder(powder_list, conc_list);
             var cell = new OvCell(null, mixture) {
                 ro = 840,
                 u = 0,
                 p = 1e5,
-                X =0,
+                X = 0,
                 V = 0
             };
             cell.e = cell.GetE();
-           var p = cell.GetPressure();
+            var p = cell.GetPressure();
             Assert.AreEqual(cell.p, p, 0.1);
+        }
+
+        [TestMethod()]
+        public void CloneTest() {
+            var c1 = new OvCell(null, mixture);
+            var c2 = (OvCell)c1.Clone();
+
+            Assert.AreNotSame(c1.z,c2.z);
         }
     }
 }

@@ -380,7 +380,9 @@ namespace WizardBallistics.Core {
             var c = clone as WBOneDemCellLayer<TCell, TBound>;
             c.InitBoundCellRefs();
             c.LeftBorder = (WBEulerBorder<TCell,TBound>)LeftBorder?.Clone();
+            c.LeftBorder.OwnerLayer = c;
             c.RightBorder = (WBEulerBorder<TCell, TBound>)RightBorder?.Clone();
+            c.RightBorder.OwnerLayer = c;
 
         }
 

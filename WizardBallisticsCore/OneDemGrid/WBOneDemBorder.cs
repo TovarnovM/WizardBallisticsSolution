@@ -22,8 +22,10 @@ namespace WizardBallistics.Core {
         public abstract void InitFakeCells();
         public void SetCond(double dt=0d) {
             A_0_abs = A_0_func?.Invoke(Time_0,RealCells) ?? A_0_abs;
-            V_0 = GetV(dt);
+            var v1 = GetV(dt);
             X_0 = GetX(dt);
+            V_0 = v1;
+            
         }
         public object Clone() {
             return MemberwiseClone();

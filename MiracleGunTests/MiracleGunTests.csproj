@@ -46,6 +46,9 @@
       <HintPath>..\packages\MSTest.TestFramework.1.1.11\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -58,6 +61,7 @@
   <ItemGroup>
     <Compile Include="GunDTests.cs" />
     <Compile Include="GunShapeTests.cs" />
+    <Compile Include="Invariants\GunPowderTests.cs" />
     <Compile Include="OvBallistic\OvCellTests.cs" />
     <Compile Include="OvBallistic\OvLayerTests.cs" />
     <Compile Include="OvBallistic\OvPowderFactoryTests.cs" />

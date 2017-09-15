@@ -24,6 +24,7 @@ namespace MiracleGun.OvBallistic {
 
         public override IWBNode Clone() {
             var cl = base.Clone() as OvCell;
+            cl.z = new double[z.Length];
             Array.Copy(z, cl.z, z.Length);
             return cl;
         }
