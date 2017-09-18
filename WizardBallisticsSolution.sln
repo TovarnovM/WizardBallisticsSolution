@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExecutorConsoleTest", "Exec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClusterExecutor", "ClusterExecutor\ClusterExecutor.csproj", "{2F3D880E-213E-4DD0-BA86-4CFCA71A0B68}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClusterExecutorTests", "ClusterExecutorTests\ClusterExecutorTests.csproj", "{95298008-3AD5-48F2-9315-23A5EAA94218}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -225,6 +227,18 @@ Global
 		{2F3D880E-213E-4DD0-BA86-4CFCA71A0B68}.Release|x64.Build.0 = Release|Any CPU
 		{2F3D880E-213E-4DD0-BA86-4CFCA71A0B68}.Release|x86.ActiveCfg = Release|Any CPU
 		{2F3D880E-213E-4DD0-BA86-4CFCA71A0B68}.Release|x86.Build.0 = Release|Any CPU
+		{95298008-3AD5-48F2-9315-23A5EAA94218}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95298008-3AD5-48F2-9315-23A5EAA94218}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95298008-3AD5-48F2-9315-23A5EAA94218}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{95298008-3AD5-48F2-9315-23A5EAA94218}.Debug|x64.Build.0 = Debug|Any CPU
+		{95298008-3AD5-48F2-9315-23A5EAA94218}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{95298008-3AD5-48F2-9315-23A5EAA94218}.Debug|x86.Build.0 = Debug|Any CPU
+		{95298008-3AD5-48F2-9315-23A5EAA94218}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95298008-3AD5-48F2-9315-23A5EAA94218}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95298008-3AD5-48F2-9315-23A5EAA94218}.Release|x64.ActiveCfg = Release|Any CPU
+		{95298008-3AD5-48F2-9315-23A5EAA94218}.Release|x64.Build.0 = Release|Any CPU
+		{95298008-3AD5-48F2-9315-23A5EAA94218}.Release|x86.ActiveCfg = Release|Any CPU
+		{95298008-3AD5-48F2-9315-23A5EAA94218}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -238,6 +252,7 @@ Global
 		{F927DFBC-0F54-4978-93BC-020DFB1349F1} = {BC876E9B-274C-4916-B323-52F167C1568F}
 		{0F662394-DE08-43C9-83EB-122964CB17B4} = {BC876E9B-274C-4916-B323-52F167C1568F}
 		{2F3D880E-213E-4DD0-BA86-4CFCA71A0B68} = {BC876E9B-274C-4916-B323-52F167C1568F}
+		{95298008-3AD5-48F2-9315-23A5EAA94218} = {BC876E9B-274C-4916-B323-52F167C1568F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CEA0265E-4F95-4DB4-87BE-A724E2A9A0EF}
