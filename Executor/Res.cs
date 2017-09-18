@@ -10,7 +10,7 @@ namespace Executor {
         public DateTime StopExecuting { get; set; }
         public ResStatus Status { get; set; }
         public string Info { get; set; }
-        public ExecutorAbstract<TParams, TResult> Executor { get; set; }
+      //  public ExecutorAbstract<TParams, TResult> Executor { get; set; }
     }
 
 }
