@@ -12,6 +12,10 @@ namespace Executor.Tests {
         
         [TestMethod()]
         public void ExecutorTest() {
+            var en = Enumerable.Range(10, 4);
+            var lst = en.ToList();
+            var enumer = en.GetEnumerator();
+            var c = enumer.Current;
             Assert.Fail();
         }
     }

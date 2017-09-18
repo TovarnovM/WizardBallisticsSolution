@@ -39,7 +39,7 @@ namespace Executor {
             var lst = new List<Res<TParams, TResult>>(tasks.Length + 1);
             foreach (var pr in tasks) {
                 var res = new Res<TParams, TResult>() {
-                    Executor = this,
+                    //Executor = this,
                     Params = pr,
                     Status = ResStatus.notCalcYet
                 };
@@ -93,15 +93,15 @@ namespace Executor {
         public abstract Res<TParams, TResult> WaitAny(TimeSpan time4execMax, params Res<TParams, TResult>[] tasks);
         #region Events
         public event EventHandler<Res<TParams, TResult>> QueueAddNew;
-        protected virtual void OnQueueAddNew(Res<TParams, TResult> e) {
+        public virtual void OnQueueAddNew(Res<TParams, TResult> e) {
             QueueAddNew?.Invoke(this, e);
         }
         public event EventHandler<Res<TParams, TResult>> ExecutAddNew;
-        protected virtual void OnExecutAddNew(Res<TParams, TResult> e) {
+        public virtual void OnExecutAddNew(Res<TParams, TResult> e) {
             ExecutAddNew?.Invoke(this, e);
         }
         public event EventHandler<Res<TParams, TResult>> ExecutDoneNew;
-        protected virtual void OnExecutDoneNew(Res<TParams, TResult> e) {
+        public virtual void OnExecutDoneNew(Res<TParams, TResult> e) {
             ExecutDoneNew?.Invoke(this, e);
         }
         public List<Res<TParams, TResult>> ClearQueue() {
