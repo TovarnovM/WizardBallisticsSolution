@@ -2,13 +2,9 @@
 using GeneticSharp.Domain.Fitnesses;
 using GeneticSharp.Infrastructure.Framework.Threading;
 using GeneticSharp.Infrastructure.Threading;
-using HelperSharp;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GeneticSharp.Domain.Chromosomes;
+using GeneticSharp.Infrastructure.Framework.Texts;
 
 namespace DoubleEnumGenetic.DetermOptimization {
 

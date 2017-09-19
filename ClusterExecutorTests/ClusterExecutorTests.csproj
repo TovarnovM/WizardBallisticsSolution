@@ -45,9 +45,6 @@
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.1.18\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="MPAPI, Version=1.1.2.41302, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MPAPI_ipv4.1.0.0\lib\net20\MPAPI.dll</HintPath>
-    </Reference>
     <Reference Include="RL_ipv4, Version=1.2.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RL_lpv4.1.0.0\lib\RL_ipv4.dll</HintPath>
     </Reference>
@@ -72,6 +69,10 @@
     <ProjectReference Include="..\ClusterExecutor\ClusterExecutor.csproj">
       <Project>{2F3D880E-213E-4DD0-BA86-4CFCA71A0B68}</Project>
       <Name>ClusterExecutor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MPAPI\MPAPI.csproj">
+      <Project>{8727458c-e531-44ba-9af5-686b239a0f20}</Project>
+      <Name>MPAPI</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

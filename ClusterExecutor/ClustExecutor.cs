@@ -9,11 +9,11 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace ClusterExecutor {
-    public class ClusterExecutor<TParams, TResult, TClustWorker> : ExecutorAbstract<TParams, TResult> 
+    public class ClusterExecutor<TParams, TResult, TClustWorker> : ExecutorAbstract<TParams, TResult>, IDisposable 
         where TClustWorker: ClustWorker<TParams, TResult> {
 
-        Node node;
-        MainWorker<TParams, TResult, TClustWorker> mainWorker;
+        public Node node;
+        public MainWorker<TParams, TResult, TClustWorker> mainWorker;
         protected ConcurrentQueue<Res<TParams, TResult>> inputQ = new ConcurrentQueue<Res<TParams, TResult>>();
 
         public ClusterExecutor(IComputeTask<TParams, TResult> computeTask, string regServerAddress, int regServerPort, int port) {
@@ -91,6 +91,15 @@ namespace ClusterExecutor {
                 OnQueueAddNew(res);
             }
             return lst;
+        }
+
+        public void KillAllWorkers() {
+            mainWorker.Broadcast(MessageTypes.Terminate, null);
+            mainWorker.Send(mainWorker.MyAddr, MessageTypes.Terminate, null);
+        }
+
+        public void Dispose() {
+            node.Dispose();
         }
     }
 }

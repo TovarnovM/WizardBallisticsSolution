@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2F3D880E-213E-4DD0-BA86-4CFCA71A0B68}</ProjectGuid>
+    <ProjectGuid>{DE1A23CE-3B6D-45C3-80B8-8D34741BC256}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>ClusterExecutor</RootNamespace>
-    <AssemblyName>ClusterExecutor</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>ClustServer</RootNamespace>
+    <AssemblyName>ClustServer</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
@@ -32,14 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="RL_ipv4, Version=1.2.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RL_lpv4.1.0.0\lib\RL_ipv4.dll</HintPath>
-    </Reference>
-    <Reference Include="Stateless, Version=3.0.0.0, Culture=neutral, PublicKeyToken=93038f0927583c9a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Stateless.3.1.0\lib\net45\Stateless.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -51,10 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClustWorker.cs" />
-    <Compile Include="ClustExecutor.cs" />
-    <Compile Include="MainWorker.cs" />
-    <Compile Include="MessageTypes.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -63,10 +53,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Executor\Executor.csproj">
-      <Project>{82dc02dc-5925-4437-ae7e-56f6363c4b7f}</Project>
-      <Name>Executor</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MPAPI\MPAPI.csproj">
       <Project>{8727458c-e531-44ba-9af5-686b239a0f20}</Project>
       <Name>MPAPI</Name>

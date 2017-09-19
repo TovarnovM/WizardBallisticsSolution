@@ -1,7 +1,8 @@
 ﻿using GeneticSharp.Domain.Chromosomes;
 using GeneticSharp.Domain.Mutations;
 using GeneticSharp.Domain.Randomizations;
-using HelperSharp;
+using GeneticSharp.Infrastructure.Framework.Commons;
+using GeneticSharp.Infrastructure.Framework.Texts;
 using System;
 using System.Collections.Generic;
 using System.Linq;

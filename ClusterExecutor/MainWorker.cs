@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ClusterExecutor {
-    class MainWorker<TParams, TResult, TClustWorker> : Worker where TClustWorker : ClustWorker<TParams, TResult> {
+    public class MainWorker<TParams, TResult, TClustWorker> : Worker where TClustWorker : ClustWorker<TParams, TResult> {
         public ClusterExecutor<TParams, TResult, TClustWorker> Owner;
         public ConcurrentQueue<Res<TParams, TResult>> inputQ;
         public ConcurrentQueue<Res<TParams, TResult>> doneQueue;
@@ -176,6 +176,5 @@ namespace ClusterExecutor {
             }
 
         }
-
     }
 }
