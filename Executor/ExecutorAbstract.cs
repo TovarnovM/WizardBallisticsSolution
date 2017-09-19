@@ -35,7 +35,7 @@ namespace Executor {
             Status = ExecStatus.notReady;
         }
 
-        public List<Res<TParams, TResult>> AddToQueue(params TParams[] tasks) {
+        public virtual List<Res<TParams, TResult>> AddToQueue(params TParams[] tasks) {
             var lst = new List<Res<TParams, TResult>>(tasks.Length + 1);
             foreach (var pr in tasks) {
                 var res = new Res<TParams, TResult>() {

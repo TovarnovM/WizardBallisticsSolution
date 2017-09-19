@@ -52,12 +52,12 @@ namespace ClusterExecutor {
                     case MessageTypes.Result:
                         Send(daddyAddress, MessageTypes.Result, msg.Content);
                         sm.Fire(Triggers.taskFinished);
-                        //Send(daddyAddress, MessageTypes.ReadyAgain, null);
+                        Send(daddyAddress, MessageTypes.ReadyAgain, null);
                         break;
                     case MessageTypes.ResultError:
                         Send(daddyAddress, MessageTypes.ResultError, msg.Content);
                         sm.Fire(Triggers.taskFinished);
-                        //Send(daddyAddress, MessageTypes.ReadyAgain, null);
+                        Send(daddyAddress, MessageTypes.ReadyAgain, null);
                         break;
                     case MessageTypes.RequestStatus:
                         Send(msg.SenderAddress, MessageTypes.ReplyStatus, sm.State);

@@ -31,22 +31,34 @@ namespace ClusterExecutor {
                 };
             }
         }
-        static List<Res<TstParam, TstResult>> list = new List<Res<TstParam, TstResult>>();
+
+
+
         static void Main(string[] args) {
             var ex = new ClusterExecutor<TstParam, TstResult, TstClustWorker>();
-            ex.ExecutDoneNew += Ex_ExecutDoneNew;
+
             var zad = Enumerable.Range(0, 10)
                 .Select(i => new TstParam() {
                     name = $"pars{i}",
                     Index = i,
                     Doub = i * i
                 });
+
+
             var answ = ex.Run(zad);
             ex.WaitAll(answ);
+            Console.WriteLine("doneFirst 10");
+            Console.ReadLine();
+            answ = ex.Run(zad);
+            Console.ReadLine();
+            ex.Stop();
+            Console.WriteLine("stoped");
+            Console.ReadLine();
+            ex.Run();
+            Console.WriteLine("run");
+            Console.ReadLine();
         }
 
-        private static void Ex_ExecutDoneNew(object sender, Executor.Res<TstParam, TstResult> e) {
-            list.Add(e);
-        }
+ 
     }
 }

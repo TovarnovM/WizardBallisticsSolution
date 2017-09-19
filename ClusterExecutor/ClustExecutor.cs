@@ -1,6 +1,7 @@
 ﻿using Executor;
 using MPAPI;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,8 @@ namespace ClusterExecutor {
 
         Node node;
         MainWorker<TParams, TResult, TClustWorker> mainWorker;
+        protected ConcurrentQueue<Res<TParams, TResult>> inputQ = new ConcurrentQueue<Res<TParams, TResult>>();
+
         public ClusterExecutor(IComputeTask<TParams, TResult> computeTask, string regServerAddress, int regServerPort, int port) {
             node = new Node();
             mainWorker = node.OpenDistributed<MainWorker<TParams, TResult, TClustWorker>>(regServerAddress, regServerPort, port);
@@ -26,7 +29,7 @@ namespace ClusterExecutor {
         }
 
         void InitMainWorkerFields() {
-            mainWorker.inputCollection = inputCollection;
+            mainWorker.inputQ = inputQ;
             mainWorker.doneQueue = doneQueue;
             mainWorker.inprogressBag = inprogressBag;
             mainWorker.blackList = blackList;
@@ -71,6 +74,23 @@ namespace ClusterExecutor {
                 Thread.Sleep(100);
             }
             return null;
+        }
+
+        
+
+        public override List<Res<TParams, TResult>> AddToQueue(params TParams[] tasks) {
+            var lst = new List<Res<TParams, TResult>>(tasks.Length + 1);
+            foreach (var pr in tasks) {
+                var res = new Res<TParams, TResult>() {
+                    //Executor = this,
+                    Params = pr,
+                    Status = ResStatus.notCalcYet
+                };
+                lst.Add(res);
+                inputQ.Enqueue(res);
+                OnQueueAddNew(res);
+            }
+            return lst;
         }
     }
 }
