@@ -58,8 +58,18 @@ namespace MPAPI.RegistrationServer
                             Console.WriteLine($"[{i++}] : {s.ToString()}");
                         }       
                         break;
+                    case "killnodes":
+                        for (ushort ind = 0; ind < _registrationServer.GetAllNodeEndPoints().Count; ind++) {
+                            Console.WriteLine($"Trying to kill Node[{ind}]");
+                            _registrationServer.UnregisterNode(ind);
+                        }                        
+                        break;
                     default:
-                        Console.WriteLine("Такой команды нет (exit для выхода если что)");
+                        Console.WriteLine("Такой команды нет но есть вот такие");
+                        Console.WriteLine("scount");
+                        Console.WriteLine("slaves");
+                        Console.WriteLine("killnodes");
+                        Console.WriteLine("exit");
                         break;
                 }
             } while (input!="exit");

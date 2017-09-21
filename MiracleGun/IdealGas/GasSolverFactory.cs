@@ -1,4 +1,5 @@
-﻿using MiracleGun.Invariants;
+﻿using MiracleGun.IdealGas.optimiz1;
+using MiracleGun.Invariants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -175,6 +176,20 @@ namespace MiracleGun.IdealGas {
             }
         }
 
+        public static WBOneDemLayerOptions OptimOpts {
+            get {
+                var lo = new WBOneDemLayerOptions() {
+                    LeftNodesCount = 1,
+                    RightNodesCount = 1,
+                    X_left = -1,
+                    X_right = 1,
+                    RealNodesCount = GasLayer.GetNumOfRealNodes(200),
+                };
+                lo.SynchH();
+                return lo;
+            }
+        }
+
         public static WBOneDemLayerOptions StandartOpts1 {
             get {
                 var lo = new WBOneDemLayerOptions() {
@@ -230,5 +245,104 @@ namespace MiracleGun.IdealGas {
         public static GasBound InitGasBound(double t, double x) {
             return new GasBound() { X = x };
         }
+
+
+
+        [SolverGeneratorMethod("zzz")]
+        public static WBSolver GetNewSolverZZ(WBProjectOptions options) {
+            var layerOpts1  = new WBOneDemLayerOptions() {
+                LeftNodesCount = 1,
+                RightNodesCount = 1,
+                X_left = -1,
+                X_right = 1,
+                RealNodesCount = GasLayer.GetNumOfRealNodes(200),
+            };
+            layerOpts1.SynchH();
+            var geom = new GunShape();
+            double d = 0.1;
+            geom.AddPoint(layerOpts1.X_left - 100, d);
+            geom.AddPoint(layerOpts1.X_right + 100, d);
+            var initLayer = new GasLayer();
+            initLayer.Geom = geom;
+
+            double pl = 4e5, pr = 1e5, rol = pl / (1e5 / 1.204), ror = pr / (1e5/1.204);
+            var gasc = gc;
+            var k = gasc.gamma;
+            var el = (pl / gasc[9]) * (1 / rol - gasc.covolume);
+            var ml = Math.PI * d * d * 0.25 * Math.Abs(layerOpts1.X_left) * rol;
+            var El = el * ml;
+            var er = (pr / gasc[9]) * (1 / ror - gasc.covolume);
+            var mr = Math.PI * d * d * 0.25 * Math.Abs(layerOpts1.X_right) * ror;
+            var Er = er * mr;
+            var Evnutr = El + Er;
+            Func<double, double, GasCell> initCellsFunc = (t, x) => {
+                var answ = new GasCell(gasc);
+                answ.ro = x < 0 ? rol : ror;
+                answ.u = 0;
+                answ.p = x < 0 ? pl : pr;
+                answ.X = x;
+                answ.V = 0;
+                return answ;
+            };
+
+            initLayer.InitLayer(0d, layerOpts1, initCellsFunc, InitGasBound);
+            var grid = new OptGrid("GasGrid_opt", initLayer);
+            grid.InnerEnergy0 = Evnutr;
+            var solver = new WBSolver(grid, options);
+            initLayer.SynchNodes_X_V();
+            return solver;
+            
+        }
+
+        public static WBSolver GetNewSolverLite(WBProjectOptions options) {
+            var dopOpts = (OptimizDopParam)options.DopParams;
+            var layerOpts1 = new WBOneDemLayerOptions() {
+                LeftNodesCount = 1,
+                RightNodesCount = 1,
+                X_left = dopOpts.xl,
+                X_right = dopOpts.xr,
+                RealNodesCount = GasLayer.GetNumOfRealNodes(dopOpts.nCells),
+            };
+            layerOpts1.SynchH();
+            var geom = new GunShape();
+            double d = dopOpts.d;
+            geom.AddPoint(layerOpts1.X_left - 100, d);
+            geom.AddPoint(layerOpts1.X_right + 100, d);
+            var initLayer = new GasLayer();
+            initLayer.Geom = geom;
+            
+            
+            double pl = dopOpts.pl, pr = dopOpts.pr, rol = pl / 1000, ror = pr / 1000;
+            var gasc = gc;
+            var k = gasc.gamma;
+            var el = (pl / gasc[9]) * (1 / rol - gasc.covolume);
+            var ml = Math.PI * d * d * 0.25 * Math.Abs(layerOpts1.X_left) * rol;
+            var El = el * ml;
+            var er = (pr / gasc[9]) * (1 / ror - gasc.covolume);
+            var mr = Math.PI * d * d * 0.25 * Math.Abs(layerOpts1.X_right) * ror;
+            var Er = er * mr;
+            var Evnutr = El + Er;
+            Func<double, double, GasCell> initCellsFunc = (t, x) => {
+                var answ = new GasCell(gasc);
+                answ.ro = x < 0 ? rol : ror;
+                answ.u = 0;
+                answ.p = x < 0 ? pl : pr;
+                answ.X = x;
+                answ.V = 0;
+                return answ;
+            };
+
+            initLayer.InitLayer(0d, layerOpts1, initCellsFunc, InitGasBound);
+            var grid = new OptGrid("GasGrid_opt", initLayer);
+            grid.m = dopOpts.m;
+            grid.InnerEnergy0 = Evnutr;
+            grid.Slaver = new WBMemTacticDellAll();
+            grid.Slaver.OwnerGrid = grid;
+            var solver = new WBSolver(grid, options);
+            initLayer.SynchNodes_X_V();
+            return solver;
+            
+        }
+
     }
 }

@@ -8,14 +8,17 @@ using System.Threading.Tasks;
 
 namespace WizardBallistics.Draw {
     public class StandartVM {
+        public LinearAxis Xaxis;
+        public LinearAxis Yaxis;
+
         public PlotModel PM { get; set; }
         public StandartVM() {
             PM = GetNewModel();
         }
-        public static PlotModel GetNewModel(string title = "", string xname = "", string yname = "") {
+        public PlotModel GetNewModel(string title = "", string xname = "", string yname = "") {
 
             var m = new PlotModel { Title = title };
-            var linearAxis1 = new LinearAxis() {
+            Xaxis = new LinearAxis() {
                 MajorGridlineStyle = LineStyle.Solid,
                 MaximumPadding = 0,
                 MinimumPadding = 0,
@@ -23,15 +26,15 @@ namespace WizardBallistics.Draw {
                 Position = AxisPosition.Bottom,
                 Title = xname
             };
-            m.Axes.Add(linearAxis1);
-            var linearAxis2 = new LinearAxis() {
+            m.Axes.Add(Xaxis);
+            Yaxis = new LinearAxis() {
                 MajorGridlineStyle = LineStyle.Solid,
                 MaximumPadding = 0,
                 MinimumPadding = 0,
                 MinorGridlineStyle = LineStyle.Dot,
                 Title = yname
             };
-            m.Axes.Add(linearAxis2);
+            m.Axes.Add(Yaxis);
 
             return m;
         }
