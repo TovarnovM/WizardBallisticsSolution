@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>RL_lpv4</id>
+    <version>1.0.0</version>
+    <title>RL_lpv4</title>
+    <authors>https://github.com/TovarnovM</authors>
+    <owners>Copyright (c) 2008, Frank Thomsen - http://sector0.dk</owners>
+    <licenseUrl>https://github.com/TovarnovM/RL_ipv4/blob/master/Licence%20-%20RemotingLite.txt</licenseUrl>
+    <projectUrl>https://github.com/TovarnovM/RL_ipv4</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This is modification of https://remotinglite.codeplex.com/ Modification forced to create ipv4 socket instead of system default socket (witch may be ipv6)</description>
+    <copyright>Copyright 2017</copyright>
+    <tags>RemotingLite ipv4</tags>
+  </metadata>
+  <files>
+    <file src="lib\" target="lib" />
+  </files>
+</package>

@@ -13,6 +13,7 @@ namespace ClustServer {
                 try {
                     using (var rs = new RegistrationServerBootstrap()) {
                         rs.Open(7777);
+                        input = "n";
                     }
                 } catch (Exception) {
                     Console.WriteLine();
