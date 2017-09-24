@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Общие сведения об этой сборке предоставляются следующим набором
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("MyRandom")]
+[assembly: AssemblyTitle("SwarmOptimizator")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MyRandom")]
+[assembly: AssemblyProduct("SwarmOptimizator")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов, если этот проект будет видимым для COM
-[assembly: Guid("46a9c797-1dd4-4bad-a27d-a133e19b50ef")]
+[assembly: Guid("7e3d98f5-a25a-4366-9398-0d7f77b8cee6")]
 
 // Сведения о версии сборки состоят из следующих четырех значений:
 //
