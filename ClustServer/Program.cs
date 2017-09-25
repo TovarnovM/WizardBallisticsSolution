@@ -8,9 +8,20 @@ using System.Threading.Tasks;
 namespace ClustServer {
     class Program {
         static void Main(string[] args) {
-            using (var rs = new RegistrationServerBootstrap()) {
-                rs.Open(7777);
-            }
+            string input = "n";
+            do {
+                try {
+                    using (var rs = new RegistrationServerBootstrap()) {
+                        rs.Open(7777);
+                        input = "n";
+                    }
+                } catch (Exception) {
+                    Console.WriteLine();
+                    Console.Write(@"retry?[y/n] ");
+                    input = Console.ReadLine();
+                }
+            } while (input.StartsWith("y"));
+
         }
     }
 }

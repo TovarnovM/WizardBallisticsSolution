@@ -35,9 +35,6 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RL_ipv4, Version=1.2.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RL_lpv4.1.0.0\lib\RL_ipv4.dll</HintPath>
-    </Reference>
     <Reference Include="Stateless, Version=3.0.0.0, Culture=neutral, PublicKeyToken=93038f0927583c9a, processorArchitecture=MSIL">
       <HintPath>..\packages\Stateless.3.1.0\lib\net45\Stateless.dll</HintPath>
     </Reference>
@@ -68,7 +65,7 @@
       <Name>Executor</Name>
     </ProjectReference>
     <ProjectReference Include="..\MPAPI\MPAPI.csproj">
-      <Project>{8727458c-e531-44ba-9af5-686b239a0f20}</Project>
+      <Project>{6104d664-8183-45b1-8b53-c6eab326907c}</Project>
       <Name>MPAPI</Name>
     </ProjectReference>
   </ItemGroup>

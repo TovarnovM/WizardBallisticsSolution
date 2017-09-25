@@ -56,4 +56,17 @@ namespace WizardBallistics.Core {
             
         }
     }
+
+    public class WBMemTacticDellAll : WBMemTacticBase {
+        public override void StepWhatToDo() {
+            double t0 = OwnerGrid.CurrLayer.Time;
+            var node = OwnerGrid.LayerList.First.Next;
+            while (node != null) {
+                var nodeNext = node.Next;
+                OwnerGrid.LayerList.Remove(node);
+                node = nodeNext;
+            }
+
+        }
+    }
 }

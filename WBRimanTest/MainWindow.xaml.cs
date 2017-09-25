@@ -23,6 +23,7 @@ using MiracleGun;
 using System.IO;
 using OxyPlot.Wpf;
 using System.Windows.Threading;
+using MiracleGun.IdealGas.optimiz1;
 
 namespace SolverDrawTsts {
     /// <summary>
@@ -80,7 +81,7 @@ namespace SolverDrawTsts {
             //    vm.PM.Series.Add(nodes.GetLineSerries(s));
             //}
             vm.PM.Series.Add(nodes.GetLineSerries("ro"));
-            vm.PM.Series.Add(nodes.GetLineSerries("u"));
+          //  vm.PM.Series.Add(nodes.GetLineSerries("u"));
             vm.PM.Series.Add(nodes.GetLineSerries(yAxisFieldName: "p",yScaler:1E-5));
            // vm.PM.Series.Add(nodes.GetLineSerries("e"));
             vm.PM.Title = $"{lr.Time} sec";
@@ -321,6 +322,79 @@ namespace SolverDrawTsts {
             catch {
                 MessageBox.Show("Errrrrrrorrrrr");
             }
+        }
+
+        private void Button_Click_11(object sender, RoutedEventArgs e) {
+            var dopP = Enumerable.Range(0, 30)
+                .Select(i => {
+                    var dp = new OptimizDopParam() {
+                        m = 0.5,
+                        xl = -1,
+                        xr = 1,
+                        nCells = 200,
+                        pr = 1e5,
+                        pl = 2e5 + i * 0.5e5,
+                        d = 0.1
+                    };
+                    var ls = new OxyPlot.Series.LineSeries() {
+                        DataFieldX = "t",
+                        DataFieldY = "KPD",
+                        Title = $"давление слева в нач. момент {dp.pl*1e-5} Атм"
+                    };
+                    return (dopP: dp, ser: ls);
+                })
+                .ToList();
+
+            Parallel.ForEach(dopP, tup => {
+                var lst = GetKPDList(tup.dopP);
+                tup.ser.ItemsSource = lst;
+            });
+
+            vm.PM.Series.Clear();
+            //dopP.ForEach(tup => {
+            //    vm.PM.Series.Add(tup.ser);
+            //});
+            //vm.PM.Title = "КПД";
+            //vm.Xaxis.Title = "t, с";
+            //vm.Yaxis.Title = "КПД, %";
+            vm.PM.Series.Add(new OxyPlot.Series.LineSeries() {
+                DataFieldX = "p0",
+                DataFieldY = "kpdMax",
+                Title = $"КПД, %",
+                ItemsSource = dopP.Select(tup =>
+                        new {
+                            p0 = tup.dopP.pl * 1e-5,
+                            kpdMax = ((List<KpdPoint>)tup.ser.ItemsSource)
+                                .Max(kdpp => kdpp.KPD)
+                        })
+                        .ToList()
+            });
+            vm.PM.Title = "КПД";
+            vm.Xaxis.Title = "Начальное давление слева, Атм";
+            vm.Yaxis.Title = "КПД, %";
+            vm.PM.InvalidatePlot(true);
+
+        }
+
+        List<KpdPoint> GetKPDList(OptimizDopParam dopts) {
+            var opts = new WBProjectOptions() {
+                DopParams = dopts
+            };
+            var sol = GasSolverFactory.GetNewSolverLite(opts);
+            sol.RunCalc();
+            var gr = (OptGrid)sol.Grids.Values.First();
+            var kpd = gr.kinE
+                .Select(ke => new KpdPoint() {
+                    t = ke.t,
+                    KPD = ke.ke / gr.InnerEnergy0 * 100
+                })
+                .ToList();
+            return kpd;
+        }
+
+        class KpdPoint {
+            public double t { get; set; }
+            public double KPD { get; set; }
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e) {

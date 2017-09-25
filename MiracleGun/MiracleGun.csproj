@@ -52,6 +52,8 @@
     <Compile Include="ElasticPiston\ElasticPistonCell.cs" />
     <Compile Include="ElasticPiston\ElasticPistonFabric.cs" />
     <Compile Include="IdealGas\GasBorderWall.cs" />
+    <Compile Include="IdealGas\optimiz1\OptGrid.cs" />
+    <Compile Include="IdealGas\optimiz1\OptimizDopParam.cs" />
     <Compile Include="IdealGas\PnGrid.cs" />
     <Compile Include="IdealGas\FortranFuncs.cs" />
     <Compile Include="IdealGas\GasBound.cs" />

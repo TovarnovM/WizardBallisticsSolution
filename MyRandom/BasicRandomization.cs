@@ -12,6 +12,7 @@ namespace MyRandomGenerator
         #region Fields   
         // TODO: change to ThreadLocal when we migrate GeneticSharp to .NET 4.0+.
         // http://codeblog.jonskeet.uk/2009/11/04/revisiting-randomness/
+        [ThreadStatic]
         private static int s_seed = Environment.TickCount;
 
         [ThreadStatic]
