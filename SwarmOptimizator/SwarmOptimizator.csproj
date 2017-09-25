@@ -35,6 +35,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -43,11 +46,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChromConst.cs" />
-    <Compile Include="MarkovNameGenerator.cs" />
+    <Compile Include="Bee\Bee.cs" />
+    <Compile Include="Bee\BeeColony.cs" />
+    <Compile Include="Bee\BeePoint.cs" />
+    <Compile Include="Primitives\Fitness.cs" />
+    <Compile Include="Primitives\MarkovNameGenerator.cs" />
+    <Compile Include="Primitives\ParamsInfo.cs" />
+    <Compile Include="Primitives\ParConst.cs" />
     <Compile Include="Primitives\DblRange.cs" />
     <Compile Include="Primitives\FitInfo.cs" />
-    <Compile Include="Primitives\Fitness.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Primitives\StrRange.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -71,7 +78,7 @@
       <Name>MyRandom</Name>
     </ProjectReference>
     <ProjectReference Include="..\Oslo\Oslo.csproj">
-      <Project>{92589c2d-3833-496f-87e8-788fd511b162}</Project>
+      <Project>{24f84c3d-777e-4202-b58f-25f57dd7022b}</Project>
       <Name>Oslo</Name>
     </ProjectReference>
   </ItemGroup>
