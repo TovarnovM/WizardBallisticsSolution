@@ -140,26 +140,26 @@ namespace MiracleGun.IdealGas {
         //    return solver;
         //}
 
-        //[SolverGeneratorMethod("23_mm")]
-        //public static WBSolver GetNewSolver6(WBProjectOptions options) {
-        //    var layerOpts1 = StandartOpts1;
-        //    var geom = new GunShape();
-        //    geom.AddPoint(layerOpts1.X_left - 0.2, 0.023);
-        //    geom.AddPoint(layerOpts1.X_left + 1, 0.023);
-        //    geom.AddPoint(layerOpts1.X_left + 7, 0.015);
-        //    geom.AddPoint(layerOpts1.X_right + 10000, 0.015);
-        //    var initLayer = new GasLayer();
-        //    initLayer.Geom = geom;
-        //    initLayer.InitLayer(0d, layerOpts1, InitGasCell23, InitGasBound);
-        //    var grid = new PnGrid2("GasGrid_tst22", initLayer);
-        //    grid.m = 0.1;
-           
-        //    //grid.Slaver = new WBMemTacticTimeStep();
-        //    //grid.Slaver.OwnerGrid = grid;
-        //    var solver = new WBSolver(grid, options);
-        //    initLayer.SynchNodes_X_V();
-        //    return solver;
-        //}
+        [SolverGeneratorMethod("23_mm")]
+        public static WBSolver GetNewSolver66(WBProjectOptions options) {
+            var layerOpts1 = StandartOpts1;
+            var geom = new GunShape();
+            geom.AddPoint(layerOpts1.X_left - 0.2, 0.023);
+            geom.AddPoint(layerOpts1.X_left + 1, 0.023);
+            geom.AddPoint(layerOpts1.X_left + 7, 0.015);
+            geom.AddPoint(layerOpts1.X_right + 10000, 0.015);
+            var initLayer = new GasLayer();
+            initLayer.Geom = geom;
+            initLayer.InitLayer(0d, layerOpts1, InitGasCell23, InitGasBound);
+            var grid = new PnGridEuler("GasGrid_tst22", initLayer);
+            grid.m = 0.1;
+
+            //grid.Slaver = new WBMemTacticTimeStep();
+            //grid.Slaver.OwnerGrid = grid;
+            var solver = new WBSolver(grid, options);
+            initLayer.SynchNodes_X_V();
+            return solver;
+        }
 
         public static WBOneDemLayerOptions StandartOpts {
             get {
