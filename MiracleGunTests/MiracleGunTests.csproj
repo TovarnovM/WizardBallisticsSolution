@@ -59,6 +59,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ElasticPiston\ElasticPistonCell_shockEOSTests.cs" />
     <Compile Include="GunDTests.cs" />
     <Compile Include="GunShapeTests.cs" />
     <Compile Include="Invariants\GunPowderTests.cs" />

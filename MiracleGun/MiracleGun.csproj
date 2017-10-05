@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ElasticPiston\ElasticPistonCell_shockEOS.cs" />
     <Compile Include="ElasticPiston\ElasticPistonConsts.cs" />
     <Compile Include="ElasticPiston\ElasticPistonBound.cs" />
     <Compile Include="ElasticPiston\ElasticPistonCell.cs" />

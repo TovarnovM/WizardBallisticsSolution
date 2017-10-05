@@ -53,10 +53,6 @@
       <Project>{2f3d880e-213e-4dd0-ba86-4cfca71a0b68}</Project>
       <Name>ClusterExecutor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MPAPI\MPAPI.csproj">
-      <Project>{6104d664-8183-45b1-8b53-c6eab326907c}</Project>
-      <Name>MPAPI</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

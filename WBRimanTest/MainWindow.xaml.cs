@@ -24,6 +24,7 @@ using System.IO;
 using OxyPlot.Wpf;
 using System.Windows.Threading;
 using MiracleGun.IdealGas.optimiz1;
+using Bikas_comp1D2D;
 
 namespace SolverDrawTsts {
     /// <summary>
@@ -81,9 +82,9 @@ namespace SolverDrawTsts {
             //    vm.PM.Series.Add(nodes.GetLineSerries(s));
             //}
             vm.PM.Series.Add(nodes.GetLineSerries("ro"));
-          //  vm.PM.Series.Add(nodes.GetLineSerries("u"));
+            vm.PM.Series.Add(nodes.GetLineSerries("u"));
             vm.PM.Series.Add(nodes.GetLineSerries(yAxisFieldName: "p",yScaler:1E-5));
-           // vm.PM.Series.Add(nodes.GetLineSerries("e"));
+            vm.PM.Series.Add(nodes.GetLineSerries("e"));
             vm.PM.Title = $"{lr.Time} sec";
             vm.PM.InvalidatePlot(true);
         }
@@ -493,5 +494,29 @@ namespace SolverDrawTsts {
         public double vel { get; set; }
         public double Len { get; set; }
         public double pres { get; set; }
+    }
+    [SolversFactory]
+    public class PistonTest {
+        [SolverGeneratorMethod("ElasticPiston _ 23 mm")]
+        public static WBSolver GetNewSolver(WBProjectOptions options) {
+            var opts = new Piston_el_params() {
+                V0 = 1000,
+                max_x_elem = 0.24
+            };
+            var p = new Piston_1D();
+            return p.GetSolverElastic(opts);
+        }
+        [SolverGeneratorMethod("ElasticPiston _ 23 mm_shock")]
+        public static WBSolver GetNewSolver2(WBProjectOptions options) {
+            var opts = new Piston_el_params_shock() {
+                V0 = 1000,
+                max_x_elem = 0.24,
+                p0 = 1e6,
+                rho = 1050,
+                rho0= 1050
+            };
+            var p = new Piston_1D();
+            return p.GetSolverElastic_shock(opts);
+        }
     }
 }

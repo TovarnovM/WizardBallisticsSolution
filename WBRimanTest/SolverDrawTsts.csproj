@@ -131,6 +131,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Bikas_comp1D2D\Bikas_comp1D2D.csproj">
+      <Project>{0132982c-af72-4b43-aa9a-5fe9124fc515}</Project>
+      <Name>Bikas_comp1D2D</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MiracleGun\MiracleGun.csproj">
       <Project>{a01da796-7bf8-4fc0-b956-87b5a827c263}</Project>
       <Name>MiracleGun</Name>

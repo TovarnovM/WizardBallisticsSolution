@@ -67,10 +67,6 @@
       <Project>{2F3D880E-213E-4DD0-BA86-4CFCA71A0B68}</Project>
       <Name>ClusterExecutor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MPAPI\MPAPI.csproj">
-      <Project>{6104d664-8183-45b1-8b53-c6eab326907c}</Project>
-      <Name>MPAPI</Name>
-    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
