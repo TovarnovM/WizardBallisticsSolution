@@ -39,7 +39,7 @@ namespace Bikas_comp1D2D {
                 btn_autodynInit.IsEnabled = false;
                 btn_autodynInit.Content = "In process...";
                 var aconv = new AutodynConverter();
-                dict_2318_ai = await aconv.GetMegaDictAsync(@"C:\Users\mi\Google Диск\autodyn_uhss", @"_2318_");//@"D:\расчетики\бикалиберный ствол\23 мм\comparison_1d",@"_2318_");
+                dict_2318_ai = await aconv.GetMegaDictAsync(@"C:\Users\User\Google Диск\autodyn_uhss", @"_2318_");//@"D:\расчетики\бикалиберный ствол\23 мм\comparison_1d",@"_2318_");
                 var all_ts = dict_2318_ai.Values.SelectMany(vs => vs.gPress.Values.Select(vv => vv.Data.Keys.ToList()));
                 var all_dts = new List<double>();
                 foreach (var ts in all_ts) {
@@ -48,7 +48,7 @@ namespace Bikas_comp1D2D {
                     all_dts.Add(dt);
                 }
                 var sss = all_dts.Average();
-                
+                var keys = dict_2318_ai.Keys.ToList();
             } finally {
                 btn_autodynInit.IsEnabled = true;
                 btn_autodynInit.Content = oldContent;

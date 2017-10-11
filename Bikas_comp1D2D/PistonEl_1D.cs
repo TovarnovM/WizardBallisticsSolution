@@ -155,5 +155,10 @@ namespace Bikas_comp1D2D {
                 return answ;
             };
         }
+        public static double[] GetGaugePar(GasLayer layer, Func<GasCell, double> paramF, List<double> xs) {
+            var res = new double[xs.Count];
+            throw new NotImplementedException();
+
+        }
     }
 }

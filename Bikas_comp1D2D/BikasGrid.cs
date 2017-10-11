@@ -1,4 +1,5 @@
 ﻿using MiracleGun.IdealGas;
+using System;
 using System.Collections.Generic;
 using WizardBallistics.Core;
 
@@ -89,5 +90,6 @@ namespace Bikas_comp1D2D {
             
             return gl.RealBoundsRev[0].X >= max_x_elem;
         }
+
     }
 }
