@@ -1,4 +1,6 @@
 ﻿using Interpolator;
+using MiracleGun.IdealGas;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -84,19 +86,104 @@ namespace Bikas_comp1D2D {
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e) {
+        private async void Button_Click_1(object sender, RoutedEventArgs e) {
+            var dict1d = await Get1DDictAsync(dict_2318_ai);
+            var dir = @"C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega_1D_.json";
+            using (var jsw = new JsonTextWriter(new StreamWriter(dir))) {
+                var ser = JsonSerializer.Create();
+                ser.Serialize(jsw, dict1d);
+            }
+            //var opts = new Piston_el_params() {
+            //    V0 = 1000,
+            //    max_x_elem = 0.24
+            //};
+            //var p = new Piston_1D();
+            //var sol = p.GetSolverElastic(opts);
+            //sol.RunCalc();
+            //var gr = (BikasGrid)sol.Grids.Values.First();
+            //var megaInterp = Piston_1D.GetMegaInterp(gr.LayerList.Cast<GasLayer>(), c => c.u);
+
+            //var gr = (BikasGrid)sol.Grids.Values.First();
+            //var oldTimes = gr.LayerList.Select(lr => lr.Time).ToList();
+            //var oldDeltas = oldTimes.Zip(oldTimes.Skip(1), (t1, t0) => t1 - t0).ToList();
+
+
+        }
+
+        public SerializableDictionary<int, AutodynInfo> Get1DDict(SerializableDictionary<int, AutodynInfo> dict) {
+            var locker = new object();
+            var dict1d = new SerializableDictionary<int, AutodynInfo>();
+            Parallel.ForEach(dict, kw => {
+                var info1d = Get_1D_sol(kw.Value);
+                lock (locker) {
+                    dict1d.Add(kw.Key, info1d);
+                }
+            });
+            return dict1d;
+        }
+
+        public Task<SerializableDictionary<int, AutodynInfo>> Get1DDictAsync(SerializableDictionary<int, AutodynInfo> dict) {
+            return Task.Factory.StartNew(() => Get1DDict(dict));
+        }
+
+        private void btn_autodynInit_fromXml_Copy_Click(object sender, RoutedEventArgs e) {
+            var dir = @"C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega.json";
+            using (var jsw = new JsonTextWriter(new StreamWriter(dir))) {
+                var ser = JsonSerializer.Create();
+                ser.Serialize(jsw, dict_2318_ai);
+            }
+            using (var jstr = new JsonTextReader(new StreamReader(dir))) {
+
+                var ser = JsonSerializer.Create();
+                var slc = ser.Deserialize<SerializableDictionary<int, AutodynInfo>>(jstr);
+            }
+                //foreach (var item in dict_2318_ai) {
+                //    item.Value.SaveToFile(dir+$"{item.Key}.json");
+                //}
+                //var ai = new AutodynInfo();
+                //ai.LoadFromFile(dir);
+            }
+
+        private void btn_autodynInit_fromXml_Copy1_Click(object sender, RoutedEventArgs e) {
+            var dir = @"C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega.json";
+            using (var jstr = new JsonTextReader(new StreamReader(dir))) {
+
+                var ser = JsonSerializer.Create();
+                dict_2318_ai = ser.Deserialize<SerializableDictionary<int, AutodynInfo>>(jstr);
+            }
+        }
+
+        public AutodynInfo Get_1D_sol(AutodynInfo info) {
+
             var opts = new Piston_el_params() {
-                V0 = 1000,
-                max_x_elem = 0.24
+                V0 = info.vel,
+                max_x_elem = 0.25
             };
             var p = new Piston_1D();
             var sol = p.GetSolverElastic(opts);
             sol.RunCalc();
-
             var gr = (BikasGrid)sol.Grids.Values.First();
-            var oldTimes = gr.LayerList.Select(lr => lr.Time).ToList();
-            var oldDeltas = oldTimes.Zip(oldTimes.Skip(1), (t1, t0) => t1 - t0).ToList();
-            
+            var res = new AutodynInfo() {
+                vel = info.vel
+            };
+            var megaInterp_v = Piston_1D.GetMegaInterp(gr.LayerList.Cast<GasLayer>(), c => c.u);
+            var megaInterp_p = Piston_1D.GetMegaInterp(gr.LayerList.Cast<GasLayer>(), c => c.p / 1000);
+            var tupV = Piston_1D.GetPoddElV(gr.LayerList.Cast<GasLayer>());
+
+            var gauges = Enumerable.Range(1, 21)
+                .Select(i => (name: $"Gauge#  {i}", x_coord: 0.1 + (i - 1) * 0.01))
+                .ToList();
+            foreach (var g in gauges) {
+                res.gVels.Add(g.name, Piston_1D.GetSrez(megaInterp_v, g.x_coord));
+            }
+            foreach (var g in gauges) {
+                res.gPress.Add(g.name, Piston_1D.GetSrez(megaInterp_p, g.x_coord));
+            }
+            res.Vels.Add("el", tupV.elV);
+            res.Vels.Add("podd", tupV.poddV);
+
+            return res;
         }
+
     }
 }

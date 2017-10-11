@@ -1,6 +1,10 @@
 ﻿using Interpolator;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
@@ -62,6 +66,37 @@ namespace Bikas_comp1D2D {
 
 
             return cl;
+        }
+        public void Reduce() {
+            var el_interp = new InterpXY(Vels.Values.First().Count);
+            string el_str = @"el";
+            var reg = new Regex(el_str);
+            var els = Vels.Where(kv => reg.IsMatch(kv.Key)).Select(kv => kv.Value).ToList();
+            foreach (var t in els[0].Data.Keys) {
+                var v_sred = 0d;
+                foreach (var el in els) {
+                    v_sred += el[t];
+                }
+                el_interp.Add(t, v_sred / els.Count);
+            }
+            Vels.Add(el_str, el_interp);
+        }
+        public void SaveToFile(string dir) {
+            using (var jsw = new JsonTextWriter(new StreamWriter(dir))) {
+                var ser = JsonSerializer.Create();
+                ser.Serialize(jsw, this);
+            }
+        }
+        public void LoadFromFile(string dir) {
+            using (var jstr = new JsonTextReader(new StreamReader(dir))) {
+
+                var ser = JsonSerializer.Create();
+                var slc = ser.Deserialize<AutodynInfo>(jstr);
+                vel = slc.vel;
+                gVels = slc.gVels;
+                Vels = slc.Vels;
+                gPress = slc.gPress;
+            }
         }
     }
     [XmlRoot("dictionary")]

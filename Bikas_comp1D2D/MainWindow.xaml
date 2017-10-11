@@ -14,7 +14,9 @@
         </Grid.RowDefinitions>
         <oxy:PlotView x:Name="tstPV" Model="{Binding vm.PM}" Grid.Row="0"/>
         <Button Content="InitAutodynDatas" Name="btn_autodynInit" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="106" Click="Button_Click"/>
-        <Button Content="CopyTest" x:Name="btn_autodynInit_fromXml" HorizontalAlignment="Left" Margin="143,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="106" Click="btn_autodynInit_fromXml_Click"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="349,5.333,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+        <Button Content="CopyTest" x:Name="btn_autodynInit_fromXml" HorizontalAlignment="Left" Margin="121,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="106" Click="btn_autodynInit_fromXml_Click"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="402,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+        <Button Content="SaveTest" x:Name="btn_autodynInit_fromXml_Copy" HorizontalAlignment="Left" Margin="232,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="59" Click="btn_autodynInit_fromXml_Copy_Click"/>
+        <Button Content="LoadTest" x:Name="btn_autodynInit_fromXml_Copy1" HorizontalAlignment="Left" Margin="296,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="62" Click="btn_autodynInit_fromXml_Copy1_Click"/>
     </Grid>
 </Window>

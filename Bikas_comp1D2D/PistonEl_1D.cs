@@ -1,4 +1,5 @@
-﻿using MiracleGun.ElasticPiston;
+﻿using Interpolator;
+using MiracleGun.ElasticPiston;
 using MiracleGun.IdealGas;
 using MiracleGun.Invariants;
 using System;
@@ -28,6 +29,7 @@ namespace Bikas_comp1D2D {
         public double max_x_elem { get; set; }
         public double x_l { get; set; } = 0.035;
         public double x_r { get; set; } = 0.098;
+        public double timeStepSave { get; set; } = 1E-7;
         public ElasticPistonConsts GetElasticPistonConsts() {
             var gp = new ElasticPistonConsts(gamma) {
                 c0 = this.c0,
@@ -82,7 +84,7 @@ namespace Bikas_comp1D2D {
             var v0 = prms.V0;
             initLayer.InitLayer(0d, layerOpts, CellFuncFactory(v0, gp, prms.rho, prms.p_podd), BoundFuncFactory(v0, gp));
             grid = new BikasGrid("ElasticP_bikas", initLayer, prms.m_podd, prms.m_elem,prms.p_podd,prms.p_elem,prms.max_x_elem);
-            grid.Slaver = new WBMemTacticTimeStep() { timeStepSave = 1E-6, OwnerGrid = grid };
+            grid.Slaver = new WBMemTacticTimeStep() { timeStepSave = prms.timeStepSave, OwnerGrid = grid };
             solver = new WBSolver(grid, WBProjectOptions.Default);
             return solver;
         }
@@ -155,10 +157,57 @@ namespace Bikas_comp1D2D {
                 return answ;
             };
         }
-        public static double[] GetGaugePar(GasLayer layer, Func<GasCell, double> paramF, List<double> xs) {
-            var res = new double[xs.Count];
-            throw new NotImplementedException();
 
+        public static InterpXY GetGaugeInterpData(GasLayer layer, Func<GasCell, double> paramF) {
+            //var res = new List<double>(xs.Count);
+            var interp = new InterpXY(layer.RealCells.Count) {
+                ET_left = ExtrapolType.etZero,
+                ET_right = ExtrapolType.etZero
+            };
+            foreach (var cell in layer.RealCells) {
+                interp.Add(cell.X, paramF(cell));
+            }
+            return interp;
+        }
+
+        public static Interp2D GetMegaInterp(IEnumerable<GasLayer> layers, Func<GasCell, double> paramF, double timemulty = 1e3) {
+            var int2D = new Interp2D();
+            foreach (var lr in layers) {
+                var interp = GetGaugeInterpData(lr, paramF);
+                int2D.AddElement(lr.Time*timemulty, interp);
+            }
+            return int2D;
+        }
+
+        public static IEnumerable<(double t, List<double> gauges)> GetGaugesmatrix(Interp2D megaInterp, List<double> ts, List<double> xs) {
+            foreach (var t in ts) {
+                var g = new List<double>(xs.Count);
+                foreach (var x in xs) {
+                    g.Add(megaInterp[x, t]);
+                }
+                yield return (t, g);
+            }
+        }
+
+        public static InterpXY GetSrez(Interp2D megaInterp, double x, List<double> ts=null) {
+            
+            if(ts == null) {
+                ts = megaInterp.Data.Keys.ToList();
+            }
+            var res = new InterpXY(ts.Count);
+            foreach (var t in ts) {
+                res.Add(t,megaInterp[x, t]);
+            }
+            return res;
+        }
+        public static (InterpXY poddV, InterpXY elV) GetPoddElV(IEnumerable<GasLayer> layers, double timemulty = 1e3) {
+            var poddV = new InterpXY();
+            var elV = new InterpXY();
+            foreach (var lr in layers) {
+                poddV.Add(lr.Time * timemulty, lr.RealBounds[0].V);
+                elV.Add(lr.Time * timemulty, lr.RealBoundsRev[0].V);
+            }
+            return (poddV, elV);
         }
     }
 }

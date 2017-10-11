@@ -251,6 +251,9 @@ namespace Interpolator {
         public InterpXY() : base() {
 
         }
+        public InterpXY(int capicity):base() {
+            _data.Capacity = capicity;
+        }
         public InterpXY(double[] ts, double[] vals) : this() {
             this.AddData(ts, vals);
         }
