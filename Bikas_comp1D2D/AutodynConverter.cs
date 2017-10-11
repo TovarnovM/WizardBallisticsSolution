@@ -71,7 +71,7 @@ namespace Bikas_comp1D2D {
 
             foreach (var f in flist) {
 
-                if (r2318.IsMatch(System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(f)))) {
+                if (r2318.IsMatch(System.IO.Path.GetFileName(f))){//r2318.IsMatch(System.IO.Path.GetFileName(System.IO.Path.GetDirectoryName(f)))) {
                     lst_.Add(f);
                 } else {
                     continue;

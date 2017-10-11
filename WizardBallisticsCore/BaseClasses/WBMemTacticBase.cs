@@ -40,21 +40,33 @@ namespace WizardBallistics.Core {
     }
 
     public class WBMemTacticTimeStep: WBMemTacticBase {
-        public double timeStemSave = 0.00001;
+        public double timeStepSave = 0.001;
         public override void StepWhatToDo() {
             double t0 = OwnerGrid.CurrLayer.Time;
+            if(t0 - lastGoodTime >= timeStepSave) {
+                lastGoodTime = t0;
+                var nnode = OwnerGrid.LayerList.First.Next;
+                if(nnode != null) {
+                    lastGoodTime = nnode.Value.Time;
+                }
+                return;
+            }
             var node = OwnerGrid.LayerList.First.Next;
-            while(node != null && node.Next != null) {                
-                if(t0 - node.Value.Time < timeStemSave) {
-                    node = node.Next;
-                    var tdel = node.Previous.Value.Time;
-                    node.List.Remove(node.Previous);
+            while(node != null) {             
+                if(node.Value.Time - lastGoodTime < timeStepSave && node.Value.Time > lastGoodTime) {
+                    var nextNode = node.Next;
+                    node.List.Remove(node);
+                    node = nextNode;
+                    //var tdel = node.Previous.Value.Time;
+
                 } else {
                     break;
                 }
             }
             
         }
+        public double lastGoodTime = 0d;
+
     }
 
     public class WBMemTacticDellAll : WBMemTacticBase {

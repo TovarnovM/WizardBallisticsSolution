@@ -82,6 +82,7 @@ namespace Bikas_comp1D2D {
             var v0 = prms.V0;
             initLayer.InitLayer(0d, layerOpts, CellFuncFactory(v0, gp, prms.rho, prms.p_podd), BoundFuncFactory(v0, gp));
             grid = new BikasGrid("ElasticP_bikas", initLayer, prms.m_podd, prms.m_elem,prms.p_podd,prms.p_elem,prms.max_x_elem);
+            grid.Slaver = new WBMemTacticTimeStep() { timeStepSave = 1E-6, OwnerGrid = grid };
             solver = new WBSolver(grid, WBProjectOptions.Default);
             return solver;
         }

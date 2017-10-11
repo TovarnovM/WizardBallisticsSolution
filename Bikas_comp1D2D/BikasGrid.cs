@@ -58,7 +58,7 @@ namespace Bikas_comp1D2D {
 
 
         public override double GetMaxTimeStep() {
-            double tau = 0.3* (CurrLayer as GasLayer).GetMaxTimeStep();
+            double tau = 0.4* (CurrLayer as GasLayer).GetMaxTimeStep();
             //tau = tau < 1E-6 ? 1E-6 : tau;
             //tau =  Math.Min(0.01, tau);
             return tau;
