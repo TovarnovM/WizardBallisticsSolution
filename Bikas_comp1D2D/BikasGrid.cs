@@ -8,7 +8,7 @@ namespace Bikas_comp1D2D {
         public double m_l, m_r;
         public double p_l, p_r;
         public double max_x_elem;
-        public int smooth = 2;
+        public int smooth = 1;
         public BikasGrid(string v, GasLayer initLayer, double m_l, double m_r, double p_l, double p_r, double max_x_elem, int smooth = 2):base(v,initLayer) {
             this.m_l = m_l;
             this.m_r = m_r;

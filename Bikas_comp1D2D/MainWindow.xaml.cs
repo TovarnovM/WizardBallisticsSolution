@@ -1,6 +1,9 @@
 ﻿using Interpolator;
 using MiracleGun.IdealGas;
+using MoreLinq;
 using Newtonsoft.Json;
+using OxyPlot;
+using OxyPlot.Series;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -28,10 +31,15 @@ namespace Bikas_comp1D2D {
     /// </summary>
     public partial class MainWindow : Window {
         public StandartVM vm { get; set; }
+
         SerializableDictionary<int, AutodynInfo> dict_2318_ai;
+        private SerializableDictionary<int, AutodynInfo> dict1d;
+        SettingsWindows windowSet;
+
         public MainWindow() {
             DataContext = this;
             vm = new StandartVM();
+            windowSet = new SettingsWindows();
             InitializeComponent();
         }
 
@@ -41,7 +49,7 @@ namespace Bikas_comp1D2D {
                 btn_autodynInit.IsEnabled = false;
                 btn_autodynInit.Content = "In process...";
                 var aconv = new AutodynConverter();
-                dict_2318_ai = await aconv.GetMegaDictAsync(@"C:\Users\User\Google Диск\autodyn_uhss", @"_2318_");//@"D:\расчетики\бикалиберный ствол\23 мм\comparison_1d",@"_2318_");
+                dict_2318_ai = await aconv.GetMegaDictAsync(windowSet.tb_ad_all.Text, @"_2318_");//@"D:\расчетики\бикалиберный ствол\23 мм\comparison_1d",@"_2318_");
                 var all_ts = dict_2318_ai.Values.SelectMany(vs => vs.gPress.Values.Select(vv => vv.Data.Keys.ToList()));
                 var all_dts = new List<double>();
                 foreach (var ts in all_ts) {
@@ -74,21 +82,44 @@ namespace Bikas_comp1D2D {
             return result;
         }
 
-        private void btn_autodynInit_fromXml_Click(object sender, RoutedEventArgs e) {
-            int countz = 1;
-            var lst = new List<SerializableDictionary<int, AutodynInfo>>(countz);
-            for (int i = 0; i < countz; i++) {
-                var cl = new SerializableDictionary<int, AutodynInfo>();
-                foreach (var d in dict_2318_ai) {
-                    cl.Add(d.Key, d.Value.Copy());
-                }
-                lst.Add(cl);
+        BicasStats ad, oneD;
+        private async void btn_autodynInit_fromXml_Click(object sender, RoutedEventArgs e) {
+            try {
+                btn_autodynInit_fromXml.IsEnabled = false;
+                Cursor = Cursors.Wait;
+                btn_autodynInit_fromXml.Content = "Loading...";
+                await LoadJSONz(sender, e);
+                lb.ItemsSource = ad.Keys.OrderBy(k=>k).ToList();
+                ad.GetMaxPress(1000);
+            } finally {
+                btn_autodynInit_fromXml.Content = "Done!";
+                Cursor = Cursors.Arrow;
             }
+
+            //int countz = 1;
+            //var lst = new List<SerializableDictionary<int, AutodynInfo>>(countz);
+            //for (int i = 0; i < countz; i++) {
+            //    var cl = new SerializableDictionary<int, AutodynInfo>();
+            //    foreach (var d in dict_2318_ai) {
+            //        cl.Add(d.Key, d.Value.Copy());
+            //    }
+            //    lst.Add(cl);
+            //}
+        }
+        public Task LoadJSONz(object sender, RoutedEventArgs e) {
+            return Task.Factory.StartNew(() => {
+                Parallel.ForEach(new Action[] {
+                () => btn_autodynInit_fromXml_Copy1_Click(sender, e),
+                () => Button_Click_2(sender, e)
+            }, a => a());
+                ad = new BicasStats(dict_2318_ai);
+                oneD = new BicasStats(dict1d);
+            });
         }
 
         private async void Button_Click_1(object sender, RoutedEventArgs e) {
-            var dict1d = await Get1DDictAsync(dict_2318_ai);
-            var dir = @"C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega_1D_.json";
+            dict1d = await Get1DDictAsync(dict_2318_ai);
+            var dir = windowSet.tb_one_mega.Text;//@"C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega_1D_.json";
             using (var jsw = new JsonTextWriter(new StreamWriter(dir))) {
                 var ser = JsonSerializer.Create();
                 ser.Serialize(jsw, dict1d);
@@ -113,12 +144,18 @@ namespace Bikas_comp1D2D {
         public SerializableDictionary<int, AutodynInfo> Get1DDict(SerializableDictionary<int, AutodynInfo> dict) {
             var locker = new object();
             var dict1d = new SerializableDictionary<int, AutodynInfo>();
-            Parallel.ForEach(dict, kw => {
-                var info1d = Get_1D_sol(kw.Value);
-                lock (locker) {
-                    dict1d.Add(kw.Key, info1d);
-                }
-            });
+            
+            Parallel.ForEach(
+                dict, 
+                new ParallelOptions() {
+                    MaxDegreeOfParallelism = 7
+                }, 
+                kw => {
+                    var info1d = Get_1D_sol(kw.Value);
+                    lock (locker) {
+                        dict1d.Add(kw.Key, info1d);
+                    }
+                });
             return dict1d;
         }
 
@@ -127,7 +164,7 @@ namespace Bikas_comp1D2D {
         }
 
         private void btn_autodynInit_fromXml_Copy_Click(object sender, RoutedEventArgs e) {
-            var dir = @"C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega.json";
+            var dir = windowSet.tb_ad_mega.Text;// @"C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega.json";
             using (var jsw = new JsonTextWriter(new StreamWriter(dir))) {
                 var ser = JsonSerializer.Create();
                 ser.Serialize(jsw, dict_2318_ai);
@@ -145,11 +182,13 @@ namespace Bikas_comp1D2D {
             }
 
         private void btn_autodynInit_fromXml_Copy1_Click(object sender, RoutedEventArgs e) {
-            var dir = @"C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega.json";
+            var dir = windowSet.tb_ad_mega.Text;//@"C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega.json";
             using (var jstr = new JsonTextReader(new StreamReader(dir))) {
-
                 var ser = JsonSerializer.Create();
                 dict_2318_ai = ser.Deserialize<SerializableDictionary<int, AutodynInfo>>(jstr);
+            }
+            foreach (var ai in dict_2318_ai.Values) {
+                ai.Reduce();
             }
         }
 
@@ -157,7 +196,7 @@ namespace Bikas_comp1D2D {
 
             var opts = new Piston_el_params() {
                 V0 = info.vel,
-                max_x_elem = 0.25
+                max_x_elem = 0.295
             };
             var p = new Piston_1D();
             var sol = p.GetSolverElastic(opts);
@@ -185,5 +224,375 @@ namespace Bikas_comp1D2D {
             return res;
         }
 
+        private void lb_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (rbV.IsChecked == true)
+                DrawVels(e);
+            else if (rbP.IsChecked == true)
+                DrawPress(e);
+            else if (rbP_x.IsChecked == true)
+                DrawPress_x(e);
+            else if (rbV_x.IsChecked == true)
+                DrawVels_x(e);
+            else if (rbI_x.IsChecked == true)
+                DrawI_x(e);
+        }
+
+        private void DrawVels(SelectionChangedEventArgs e) {
+            vm.PM.Series.Clear();
+
+            var ad_tup = ad.GetDataAtTime((int)e.AddedItems[0]);
+            vm.PM.Series.Add(new LineSeries() {
+                ItemsSource = ad_tup.el,
+                DataFieldX = "X",
+                DataFieldY = "Y",
+                Title = "2D - скорость элемента, м/с",
+                Color = OxyColors.Red
+            });
+            vm.PM.Series.Add(new LineSeries() {
+                ItemsSource = ad_tup.podd,
+                DataFieldX = "X",
+                DataFieldY = "Y",
+                Title = "2D - скорость поддона, м/с",
+                Color = OxyColors.Red,
+                LineStyle = LineStyle.Dash
+            });
+
+            var oneD_tup = oneD.GetDataAtTime((int)e.AddedItems[0]);
+            vm.PM.Series.Add(new LineSeries() {
+                ItemsSource = oneD_tup.el,
+                DataFieldX = "X",
+                DataFieldY = "Y",
+                Title = "1D - скорость элемента, м/с",
+                Color = OxyColors.Green
+            });
+            vm.PM.Series.Add(new LineSeries() {
+                ItemsSource = oneD_tup.podd,
+                DataFieldX = "X",
+                DataFieldY = "Y",
+                Title = "1D - скорость поддона, м/с",
+                Color = OxyColors.Green,
+                LineStyle = LineStyle.Dash
+            });
+            vm.PM.InvalidatePlot(true);
+        }
+        private void DrawPress(SelectionChangedEventArgs e) {
+            vm.PM.Series.Clear();
+
+            var ad_tup = ad.GetMaxPress((int)e.AddedItems[0],10000);
+            vm.PM.Series.Add(new LineSeries() {
+                ItemsSource = ad_tup,
+                DataFieldX = "X",
+                DataFieldY = "Y",
+                Title = "2D - Давление, кПа",
+                Color = OxyColors.Red
+            });
+
+
+            var oneD_tup = oneD.GetMaxPress((int)e.AddedItems[0], 10000);
+            vm.PM.Series.Add(new LineSeries() {
+                ItemsSource = oneD_tup,
+                DataFieldX = "X",
+                DataFieldY = "Y",
+                Title = "1D - Давление, кПа",
+                Color = OxyColors.Green
+            });
+
+            vm.PM.InvalidatePlot(true);
+        }
+        private void DrawVels_x(SelectionChangedEventArgs e) {
+            vm.PM.Series.Clear();
+
+            var ad_tup = ad.GetMaxVels_x((int)e.AddedItems[0], 10000);
+            vm.PM.Series.Add(new LineSeries() {
+                ItemsSource = ad_tup,
+                DataFieldX = "X",
+                DataFieldY = "Y",
+                Title = "2D - Давление, м/с",
+                Color = OxyColors.Red,
+                Smooth = true
+            });
+
+
+            var oneD_tup = oneD.GetMaxVels_x((int)e.AddedItems[0], 10000);
+            vm.PM.Series.Add(new LineSeries() {
+                ItemsSource = oneD_tup,
+                DataFieldX = "X",
+                DataFieldY = "Y",
+                Title = "1D - Скорость, м/с",
+                Color = OxyColors.Green,
+                Smooth = true
+            });
+
+            vm.PM.InvalidatePlot(true);
+        }
+        private void DrawPress_x(SelectionChangedEventArgs e) {
+            vm.PM.Series.Clear();
+
+            var ad_tup = ad.GetMaxPress_x((int)e.AddedItems[0], 10000);
+            vm.PM.Series.Add(new LineSeries() {
+                ItemsSource = ad_tup,
+                DataFieldX = "X",
+                DataFieldY = "Y",
+                Title = "2D - Давление, кПа",
+                Color = OxyColors.Red,
+                Smooth = true
+            });
+
+
+            var oneD_tup = oneD.GetMaxPress_x((int)e.AddedItems[0], 10000);
+            vm.PM.Series.Add(new LineSeries() {
+                ItemsSource = oneD_tup,
+                DataFieldX = "X",
+                DataFieldY = "Y",
+                Title = "1D - Давление, кПа",
+                Color = OxyColors.Green,
+                Smooth = true
+            });
+
+            vm.PM.InvalidatePlot(true);
+        }
+        private void DrawI_x(SelectionChangedEventArgs e) {
+            vm.PM.Series.Clear();
+
+            var ad_tup = ad.GetMaxI_x((int)e.AddedItems[0], 10000);
+            vm.PM.Series.Add(new LineSeries() {
+                ItemsSource = ad_tup,
+                DataFieldX = "X",
+                DataFieldY = "Y",
+                Title = "2D - Импульс, кПа*мс",
+                Color = OxyColors.Red,
+                Smooth = true
+            });
+
+
+            var oneD_tup = oneD.GetMaxI_x((int)e.AddedItems[0], 10000);
+            vm.PM.Series.Add(new LineSeries() {
+                ItemsSource = oneD_tup,
+                DataFieldX = "X",
+                DataFieldY = "Y",
+                Title = "1D - Импульс, кПа*мс",
+                Color = OxyColors.Green,
+                Smooth = true
+            });
+
+            vm.PM.InvalidatePlot(true);
+        }
+        private void btn_autodynInit_fromXml_Copy2_Click(object sender, RoutedEventArgs e) {
+            var keys = ad.Keys.Except(new int[] { 586, 890, 927 }).OrderBy(k => k).ToList();
+            var el_tup = keys
+                .Select(k => {
+                    var i1 = ad.dict[k].Vels["el"];
+                    var i2 = oneD.dict[k].Vels["el"];
+                    return (vel:(double)k, tup:BicasStats.GetMaxDiffs(i1, i2));
+                })
+                .ToList();
+            var podd_tup = keys
+               .Select(k => {
+                   var i1 = ad.dict[k].Vels["podd"];
+                   var i2 = oneD.dict[k].Vels["podd"];
+                   return (vel: (double)k, tup: BicasStats.GetMaxDiffs(i1, i2));
+               })
+               .ToList();
+            var el_abs = el_tup.Select(t => new DataP() { X = t.vel, Y = t.tup.maxAbsdiff }).ToList();
+            var el_perc = el_tup.Select(t => new DataP() { X = t.vel, Y = t.tup.maxPercDiff }).ToList();
+            var podd_abs = podd_tup.Select(t => new DataP() { X = t.vel, Y = t.tup.maxAbsdiff }).ToList();
+            var podd_perc = podd_tup.Select(t => new DataP() { X = t.vel, Y = t.tup.maxPercDiff }).ToList();
+
+            vm.PM.Series.Clear();
+
+            vm.PM.Series.Add(new LineSeries() {
+                ItemsSource = el_abs,
+                DataFieldX = "X",
+                DataFieldY = "Y",
+                Title = "Максимальное отличие скорости элемента, м/с",
+                Color = OxyColors.Red,
+                Smooth = true
+            });
+            vm.PM.Series.Add(new LineSeries() {
+                ItemsSource = podd_abs,
+                DataFieldX = "X",
+                DataFieldY = "Y",
+                Title = "Максимальное отличие скорости поддона, м/с",
+                Color = OxyColors.Red,
+                LineStyle = LineStyle.Dash,
+                Smooth = true
+            });
+            //vm.PM.Series.Add(new LineSeries() {
+            //    ItemsSource = el_perc,
+            //    DataFieldX = "X",
+            //    DataFieldY = "Y",
+            //    Title = "Максимальное отличие скорости элемента, %",
+            //    Color = OxyColors.Red
+            //});
+            //vm.PM.Series.Add(new LineSeries() {
+            //    ItemsSource = podd_perc,
+            //    DataFieldX = "X",
+            //    DataFieldY = "Y",
+            //    Title = "Максимальное отличие скорости поддона, %",
+            //    Color = OxyColors.Red,
+            //    LineStyle = LineStyle.Dash
+            //});
+            vm.PM.InvalidatePlot(true);
+        }
+
+        private void btn_autodynInit_fromXml_Copy3_Click(object sender, RoutedEventArgs e) {
+            var keys = ad.Keys.Except(new int[] { 586,890, 927 }).OrderBy(k => k).ToList();
+            var el_tup = keys
+                .Select(k => {
+                    var i1 = ad.dict[k].Vels["el"].Data.Values.Last().Value;
+                    var i2 = oneD.dict[k].Vels["el"].Data.Values.Last().Value;
+                    return (vel: (double)k, ad: i1, one: i2);
+                })
+                .ToList();
+            var podd_tup = keys
+               .Select(k => {
+                   var i1 = ad.dict[k].Vels["podd"].Data.Values.Last().Value;
+                   var i2 = oneD.dict[k].Vels["podd"].Data.Values.Last().Value;
+                   return (vel: (double)k, ad: i1, one: i2);
+               })
+               .ToList();
+            var el_abs = el_tup.Select(t => new DataP() { X = t.vel, Y = (t.one -t.ad) }).ToList();
+            var el_perc = el_tup.Select(t => new DataP() { X = t.vel, Y = (t.one - t.ad)/t.ad*100 }).ToList();
+            var podd_abs = podd_tup.Select(t => new DataP() { X = t.vel, Y = (t.one - t.ad) }).ToList();
+            var podd_perc = podd_tup.Select(t => new DataP() { X = t.vel, Y = (t.one - t.ad) / t.ad*100 }).ToList();
+
+            vm.PM.Series.Clear();
+
+            //vm.PM.Series.Add(new LineSeries() {
+            //    ItemsSource = el_abs,
+            //    DataFieldX = "X",
+            //    DataFieldY = "Y",
+            //    Title = "отличие дульной скорости элемента, м/с",
+            //    Color = OxyColors.Red
+            //});
+            //vm.PM.Series.Add(new LineSeries() {
+            //    ItemsSource = podd_abs,
+            //    DataFieldX = "X",
+            //    DataFieldY = "Y",
+            //    Title = "отличие конечной скорости поддона, м/с",
+            //    Color = OxyColors.Red,
+            //    LineStyle = LineStyle.Dash
+            //});
+            vm.PM.Series.Add(new LineSeries() {
+                ItemsSource = el_perc,
+                DataFieldX = "X",
+                DataFieldY = "Y",
+                Title = "отличие дульной скорости элемента, %",
+                Color = OxyColors.Red
+            });
+            vm.PM.Series.Add(new LineSeries() {
+                ItemsSource = podd_perc,
+                DataFieldX = "X",
+                DataFieldY = "Y",
+                Title = "отличие конечной скорости поддона, %",
+                Color = OxyColors.Red,
+                LineStyle = LineStyle.Dash
+            });
+            vm.PM.InvalidatePlot(true);
+        }
+
+        private void btn_autodynInit_fromXml_Copy4_Click(object sender, RoutedEventArgs e) {
+            var keys = ad.Keys.Except(new int[] { 586, 890, 927 }).OrderBy(k => k).Batch(3).SelectMany(b => b.Take(1)).ToList();
+            var palette = OxyPalettes.Jet(keys.Count);
+            vm.PM.Series.Clear();
+            foreach (var k in keys.Zip(MoreEnumerable.Generate(0, i => i + 1), (key, index) => (key: key, index: index))) {
+                var tup = GetP_x_tup(k.key);
+                var ser = new AreaSeries() {
+                    Title = $"[V_0 = {k.key} м/с] макс давление от координаты, кПа",
+                    Color = palette.Colors[k.index],
+                    Color2 = OxyColor.FromAColor(1, palette.Colors[k.index]),
+                    Fill = OxyColor.FromAColor(100, palette.Colors[k.index]),
+                    Smooth = true,
+                    MarkerType = MarkerType.Square
+                };
+                var ser2 = new LineSeries() {
+                    Color = palette.Colors[k.index],
+                    LineStyle = LineStyle.Dash,
+                    Smooth = true,
+                    MarkerType = MarkerType.Circle
+                };
+                ser.Points.Capacity = tup.p_x_ad.Count;
+                foreach (var dp in tup.p_x_ad) {
+                    ser.Points.Add(new DataPoint(dp.X, dp.Y));
+                }
+                ser.Points2.Capacity = tup.p_x_one.Count;
+                ser2.Points.Capacity = tup.p_x_one.Count;
+                foreach (var dp in tup.p_x_one) {
+                    ser.Points2.Add(new DataPoint(dp.X, dp.Y));
+                    ser2.Points.Add(new DataPoint(dp.X, dp.Y));
+                }
+                vm.PM.Series.Add(ser);
+                vm.PM.Series.Add(ser2);
+            }
+            vm.PM.InvalidatePlot(true);
+        }
+        (List<DataP> p_x_ad, List<DataP> p_x_one) GetP_x_tup(int key) {
+            return (ad.GetMaxPress_x(key, 10000), oneD.GetMaxPress_x(key, 10000));
+        }
+
+        private void btn_autodynInit_fromXml_Copy5_Click(object sender, RoutedEventArgs e) {
+            var keys = ad.Keys.Except(new int[] { 586, 890, 927 }).OrderBy(k => k).Batch(2).SelectMany(b=>b.Take(1)).ToList();
+            var palette = OxyPalettes.Jet(keys.Count);
+            vm.PM.Series.Clear();
+            foreach (var k in keys.Zip(MoreEnumerable.Generate(0,i=>i+1),(key, index) => (key:key, index:index))) {
+                var tup = GetV_t_tup(k.key);
+                var ser = new AreaSeries() {
+                    Title = $"[V_0 = {k.key} м/с] Прирост, относительно V_0, м/с",
+                    Color = palette.Colors[k.index],
+                    Color2 = OxyColor.FromAColor(1, palette.Colors[k.index]),
+                    Fill = OxyColor.FromAColor(100, palette.Colors[k.index]),
+                    Smooth = true,
+                    MarkerType = MarkerType.Square
+                };
+                var ser2 = new LineSeries() {
+                    Color = palette.Colors[k.index],
+                    LineStyle = LineStyle.Dash,
+                    Smooth = true,
+                    MarkerType = MarkerType.Circle
+                };
+                ser.Points.Capacity = tup.p_x_ad.Count;
+                foreach (var dp in tup.p_x_ad) {
+                    ser.Points.Add(new DataPoint(dp.X, dp.Y));
+                }
+                ser.Points2.Capacity = tup.p_x_one.Count;
+                ser2.Points.Capacity = tup.p_x_one.Count;
+                foreach (var dp in tup.p_x_one) {
+                    ser.Points2.Add(new DataPoint(dp.X, dp.Y));
+                    ser2.Points.Add(new DataPoint(dp.X, dp.Y));
+                }
+                vm.PM.Series.Add(ser);
+                vm.PM.Series.Add(ser2);
+            }
+            vm.PM.InvalidatePlot(true);
+        }
+        (List<DataP> p_x_ad, List<DataP> p_x_one) GetV_t_tup(int key) {
+            var p_x_ad = new List<DataP>(ad.dict[key].Vels["el"].Count);
+            var p_x_oneD = new List<DataP>(oneD.dict[key].Vels["el"].Count);
+            foreach (var it in ad.dict[key].Vels["el"].Data) {
+                p_x_ad.Add(new DataP() { X = it.Key, Y = it.Value.Value - key });
+            }
+            foreach (var it in oneD.dict[key].Vels["el"].Data) {
+                p_x_oneD.Add(new DataP() { X = it.Key, Y = it.Value.Value - key });
+            }
+            return (p_x_ad, p_x_oneD);
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e) {
+            windowSet.ShowDialog();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+            windowSet.Close();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e) {
+            var dir = windowSet.tb_one_mega.Text;// @"C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega_1D_.json";
+            using (var jstr = new JsonTextReader(new StreamReader(dir))) {
+
+                var ser = JsonSerializer.Create();
+                dict1d = ser.Deserialize<SerializableDictionary<int, AutodynInfo>>(jstr);
+            }
+
+        }
     }
 }

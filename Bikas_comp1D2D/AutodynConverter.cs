@@ -163,7 +163,7 @@ namespace Bikas_comp1D2D {
             return Task.Factory.StartNew(InitAut_gVels);
         }
         void InitAut_gPres() {
-            Parallel.ForEach(dict2318_gVels, f_v => {
+            Parallel.ForEach(dict2318_gPress, f_v => {
                 using (TextReader fs = new StreamReader(f_v.Value)) {
                     var vel = int.Parse(f_v.Key);
                     var ai = dict_ai[vel];

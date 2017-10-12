@@ -782,7 +782,7 @@ namespace Interpolator {
         public static double Get_MaxElem_T(this InterpXY who, double t0, double t1) {
             return who.Data
                 .SkipWhile(d => d.Key < t0)
-                .SkipWhile(d => d.Key <= t1)
+                .TakeWhile(d => d.Key <= t1)
                 .Max(d => d.Value.Value);
         }
         public static double Get_MinElem_T(this InterpXY who) {
@@ -791,7 +791,7 @@ namespace Interpolator {
         public static double Get_MinElem_T(this InterpXY who, double t0, double t1) {
             return who.Data
                 .SkipWhile(d => d.Key < t0)
-                .SkipWhile(d => d.Key <= t1)
+                .TakeWhile(d => d.Key <= t1)
                 .Min(d => d.Value.Value);
         }
         public static double Get_Integral(this InterpXY who) {

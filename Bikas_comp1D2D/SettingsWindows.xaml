@@ -1,0 +1,15 @@
+﻿<Window x:Class="Bikas_comp1D2D.SettingsWindows"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Bikas_comp1D2D"
+        mc:Ignorable="d"
+        Title="SettingsWindows" Height="300" Width="495.127">
+    <Grid>
+        <TextBox Name="tb_ad_all" Height="23" Margin="10,10,13,0" TextWrapping="Wrap" Text="C:\Users\User\Google Диск\autodyn_uhss" VerticalAlignment="Top"/>
+        <TextBox Name="tb_ad_mega" Height="23" Margin="10,38,13,0" TextWrapping="Wrap" Text="C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega.json" VerticalAlignment="Top"/>
+        <TextBox Name="tb_one_mega" Height="23" Margin="10,66,13,0" TextWrapping="Wrap" Text="C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega_1D_.json" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>

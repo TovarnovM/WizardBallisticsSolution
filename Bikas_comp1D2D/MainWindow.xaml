@@ -6,17 +6,35 @@
         xmlns:local="clr-namespace:Bikas_comp1D2D"
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="370.333" Width="589" Closing="Window_Closing">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="437*"/>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="73*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="273*"/>
-            <RowDefinition Height="46*"/>
+            <RowDefinition Height="240*"/>
+            <RowDefinition Height="79*"/>
         </Grid.RowDefinitions>
         <oxy:PlotView x:Name="tstPV" Model="{Binding vm.PM}" Grid.Row="0"/>
-        <Button Content="InitAutodynDatas" Name="btn_autodynInit" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="106" Click="Button_Click"/>
-        <Button Content="CopyTest" x:Name="btn_autodynInit_fromXml" HorizontalAlignment="Left" Margin="121,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="106" Click="btn_autodynInit_fromXml_Click"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="402,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
-        <Button Content="SaveTest" x:Name="btn_autodynInit_fromXml_Copy" HorizontalAlignment="Left" Margin="232,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="59" Click="btn_autodynInit_fromXml_Copy_Click"/>
-        <Button Content="LoadTest" x:Name="btn_autodynInit_fromXml_Copy1" HorizontalAlignment="Left" Margin="296,5,0,0" Grid.Row="1" VerticalAlignment="Top" Width="62" Click="btn_autodynInit_fromXml_Copy1_Click"/>
+        <Button Content="Загр. автодин Ориг" Name="btn_autodynInit" HorizontalAlignment="Left" Margin="0,19,0,0" Grid.Row="1" VerticalAlignment="Top" Width="130" Click="Button_Click" Height="20"/>
+        <Button Content="Init" x:Name="btn_autodynInit_fromXml" HorizontalAlignment="Left" Margin="333,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="104" Click="btn_autodynInit_fromXml_Click" Height="20"/>
+        <Button Content="Создать 1d JSON" HorizontalAlignment="Left" Margin="154,19,0,0" Grid.Row="1" VerticalAlignment="Top" Width="131" Click="Button_Click_1" Height="20"/>
+        <Button Content="Сохр автодин в JSON" x:Name="btn_autodynInit_fromXml_Copy" HorizontalAlignment="Left" Margin="0,39,0,0" Grid.Row="1" VerticalAlignment="Top" Width="130" Click="btn_autodynInit_fromXml_Copy_Click" Height="20"/>
+        <Button Content="Загр автодин из JSON" x:Name="btn_autodynInit_fromXml_Copy1" HorizontalAlignment="Left" Margin="0,59,0,0" Grid.Row="1" VerticalAlignment="Top" Width="130" Click="btn_autodynInit_fromXml_Copy1_Click" Height="20"/>
+        <Button Content="Загрузить 1d JSON" HorizontalAlignment="Left" Margin="154,39,0,0" Grid.Row="1" VerticalAlignment="Top" Width="131" Height="20" Click="Button_Click_2"/>
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Grid.RowSpan="2"/>
+        <ListBox Name="lb" Grid.Column="2" SelectionChanged="lb_SelectionChanged"/>
+        <Button Content="Vel Error" x:Name="btn_autodynInit_fromXml_Copy2" HorizontalAlignment="Left" Margin="333,20,0,0" Grid.Row="1" VerticalAlignment="Top" Width="104" Height="20" Click="btn_autodynInit_fromXml_Copy2_Click"/>
+        <Button Content="V1 Error" x:Name="btn_autodynInit_fromXml_Copy3" HorizontalAlignment="Left" Margin="333,40,0,0" Grid.Row="1" VerticalAlignment="Top" Width="104" Height="20" Click="btn_autodynInit_fromXml_Copy3_Click" />
+        <RadioButton Name="rbV"  Content="V(t)" Grid.Column="2" HorizontalAlignment="Left" Margin="5,0,0,0" Grid.Row="1" VerticalAlignment="Top" IsChecked="True"/>
+        <RadioButton Name="rbP" Content="P__max(t)" Grid.Column="2" HorizontalAlignment="Left" Margin="5,15,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <RadioButton x:Name="rbP_x" Content="P__max(x)" Grid.Column="2" HorizontalAlignment="Left" Margin="5,44,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <RadioButton x:Name="rbV_x"  Content="V__max(x)" Grid.Column="2" HorizontalAlignment="Left" Margin="4,30,0,0" Grid.Row="1" VerticalAlignment="Top" IsChecked="True"/>
+        <RadioButton x:Name="rbI_x" Content="I(x)" Grid.Column="2" HorizontalAlignment="Left" Margin="5,59,0,0" Grid.Row="1" VerticalAlignment="Top"/>
+        <Button Content="p(x)" ToolTip="Суммарный график по давлениям" x:Name="btn_autodynInit_fromXml_Copy4" HorizontalAlignment="Left" Margin="333,60,0,0" Grid.Row="1" VerticalAlignment="Top" Width="56" Height="20" Click="btn_autodynInit_fromXml_Copy4_Click" />
+        <Button Content="V(t)" ToolTip="Суммарный график по скоросям" x:Name="btn_autodynInit_fromXml_Copy5" HorizontalAlignment="Left" Margin="389,60,0,0" Grid.Row="1" VerticalAlignment="Top" Width="56" Height="20" Click="btn_autodynInit_fromXml_Copy5_Click" />
+        <Button Content="Settings" HorizontalAlignment="Left" Margin="154,59,0,0" Grid.Row="1" VerticalAlignment="Top" Width="131" Height="20" Click="Button_Click_3" />
     </Grid>
 </Window>
