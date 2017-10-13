@@ -40,6 +40,7 @@ namespace Bikas_comp1D2D {
             DataContext = this;
             vm = new StandartVM();
             windowSet = new SettingsWindows();
+            synchDirs();
             InitializeComponent();
         }
 
@@ -49,7 +50,7 @@ namespace Bikas_comp1D2D {
                 btn_autodynInit.IsEnabled = false;
                 btn_autodynInit.Content = "In process...";
                 var aconv = new AutodynConverter();
-                dict_2318_ai = await aconv.GetMegaDictAsync(windowSet.tb_ad_all.Text, @"_2318_");//@"D:\расчетики\бикалиберный ствол\23 мм\comparison_1d",@"_2318_");
+                dict_2318_ai = await aconv.GetMegaDictAsync(ad_all_dir, @"_2318_");//@"D:\расчетики\бикалиберный ствол\23 мм\comparison_1d",@"_2318_");
                 var all_ts = dict_2318_ai.Values.SelectMany(vs => vs.gPress.Values.Select(vv => vv.Data.Keys.ToList()));
                 var all_dts = new List<double>();
                 foreach (var ts in all_ts) {
@@ -83,6 +84,10 @@ namespace Bikas_comp1D2D {
         }
 
         BicasStats ad, oneD;
+        private string one_mega_dir;
+        private string ad_mega_dir;
+        private string ad_all_dir;
+
         private async void btn_autodynInit_fromXml_Click(object sender, RoutedEventArgs e) {
             try {
                 btn_autodynInit_fromXml.IsEnabled = false;
@@ -119,7 +124,7 @@ namespace Bikas_comp1D2D {
 
         private async void Button_Click_1(object sender, RoutedEventArgs e) {
             dict1d = await Get1DDictAsync(dict_2318_ai);
-            var dir = windowSet.tb_one_mega.Text;//@"C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega_1D_.json";
+            var dir = one_mega_dir;//@"C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega_1D_.json";
             using (var jsw = new JsonTextWriter(new StreamWriter(dir))) {
                 var ser = JsonSerializer.Create();
                 ser.Serialize(jsw, dict1d);
@@ -164,7 +169,7 @@ namespace Bikas_comp1D2D {
         }
 
         private void btn_autodynInit_fromXml_Copy_Click(object sender, RoutedEventArgs e) {
-            var dir = windowSet.tb_ad_mega.Text;// @"C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega.json";
+            var dir = ad_mega_dir;// @"C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega.json";
             using (var jsw = new JsonTextWriter(new StreamWriter(dir))) {
                 var ser = JsonSerializer.Create();
                 ser.Serialize(jsw, dict_2318_ai);
@@ -182,7 +187,7 @@ namespace Bikas_comp1D2D {
             }
 
         private void btn_autodynInit_fromXml_Copy1_Click(object sender, RoutedEventArgs e) {
-            var dir = windowSet.tb_ad_mega.Text;//@"C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega.json";
+            var dir = ad_mega_dir;//@"C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega.json";
             using (var jstr = new JsonTextReader(new StreamReader(dir))) {
                 var ser = JsonSerializer.Create();
                 dict_2318_ai = ser.Deserialize<SerializableDictionary<int, AutodynInfo>>(jstr);
@@ -579,14 +584,22 @@ namespace Bikas_comp1D2D {
 
         private void Button_Click_3(object sender, RoutedEventArgs e) {
             windowSet.ShowDialog();
+            synchDirs();
+        }
+
+        void synchDirs() {
+            one_mega_dir = windowSet.tb_one_mega.Text;
+            ad_mega_dir = windowSet.tb_ad_mega.Text;
+            ad_all_dir = windowSet.tb_ad_all.Text;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
             windowSet.Close();
+
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e) {
-            var dir = windowSet.tb_one_mega.Text;// @"C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega_1D_.json";
+            var dir = one_mega_dir;// @"C:\Users\User\Google Диск\autodyn_uhss\1d_2318\2318_mega_1D_.json";
             using (var jstr = new JsonTextReader(new StreamReader(dir))) {
 
                 var ser = JsonSerializer.Create();
