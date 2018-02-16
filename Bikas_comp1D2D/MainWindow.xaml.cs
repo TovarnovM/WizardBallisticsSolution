@@ -229,6 +229,124 @@ namespace Bikas_comp1D2D {
             return res;
         }
 
+        IEnumerable<double> Arange(double start, int count) {
+            return Enumerable.Range((int)start, count).Select(v => (double)v);
+        }
+
+
+        IEnumerable<double> LinSpace(double start, double stop, int num, bool endpoint = true) {
+            var result = new List<double>();
+            if (num <= 0) {
+                return result;
+            }
+
+            if (endpoint) {
+                if (num == 1) {
+                    return new List<double>() { start };
+                }
+
+                var step = (stop - start) / ((double)num - 1.0d);
+                result = Arange(0, num).Select(v => (v * step) + start).ToList();
+            } else {
+                var step = (stop - start) / (double)num;
+                result = Arange(0, num).Select(v => (v * step) + start).ToList();
+            }
+
+            return result;
+        }
+
+        Task<List<DataP>> Get_resarch_async() {
+            return Task.Factory.StartNew(() => Get_resarch());
+        }
+
+        List<DataP> Get_resarch() {
+            var v0 = 900.0;
+            var m_el = 20 * 1E-3;
+            var m_summ = 86 * 1E-3;
+            var start = 0.3;
+            var end = 0.7;
+            int num = 40;
+            //t = m_porsh / (m_porsh+m_podd)
+            var ts = LinSpace(start, end, num);
+            var tups = ts.Select(t => {
+                var m_porsh = (m_summ - m_el) * t;
+                var m_podd = m_summ - m_el - m_porsh;
+                return (m_elem: m_el, m_porsh: m_porsh, m_podd: m_podd);
+            }).ToList();
+
+            var locker = new object();
+            var lst = new List<(double m_porsh, AutodynInfo ai)>(tups.Count);
+            Parallel.ForEach(
+                tups,
+                new ParallelOptions() {
+                    MaxDegreeOfParallelism = 5
+                },
+                tup => {
+                    var (m_elem, m_porsh, m_podd) = tup;
+                    try {
+                        var info1d = Get1d_research(m_podd, m_porsh, m_elem, v0);
+                        lock (locker) {
+                            lst.Add((m_porsh,info1d));
+                        }
+                    } catch (Exception) {
+
+                    }
+
+                });
+            return lst.OrderBy(tp => tp.m_porsh).Select(tp => {
+                var (m_porsh, ai) = tp;
+                var v1 = ai.Vels["el"].Data.Values.Last().Value;
+                return new DataP() { X = m_porsh, Y = v1 };
+            }).ToList();
+
+
+        }
+
+        AutodynInfo Get1d_research(double m_podd, double m_porsh, double m_elem, double v0) {
+            var opts = new Piston_el_params() {
+                V0 = v0,
+                m_elem = m_elem,
+                m_podd = m_podd,
+                max_x_elem = 0.25
+            };
+
+            var p = new Piston_1D();
+
+            var s = p.d0 * p.d0 * Math.PI * 0.25;
+            var l = m_porsh / opts.rho / s;
+            opts.x_l = opts.x_r - l;
+
+            var sol = p.GetSolverElastic(opts);
+            try {
+                sol.RunCalc();
+            } catch (Exception) {
+
+            }
+
+            var gr = (BikasGrid)sol.Grids.Values.First();
+            var res = new AutodynInfo() {
+                vel = v0
+            };
+            var megaInterp_v = Piston_1D.GetMegaInterp(gr.LayerList.Cast<GasLayer>(), c => c.u);
+            var megaInterp_p = Piston_1D.GetMegaInterp(gr.LayerList.Cast<GasLayer>(), c => c.p / 1000);
+            var tupV = Piston_1D.GetPoddElV(gr.LayerList.Cast<GasLayer>());
+
+            var gauges = Enumerable.Range(1, 21)
+                .Select(i => (name: $"Gauge#  {i}", x_coord: 0.1 + (i - 1) * 0.01))
+                .ToList();
+            foreach (var g in gauges) {
+                res.gVels.Add(g.name, Piston_1D.GetSrez(megaInterp_v, g.x_coord));
+            }
+            foreach (var g in gauges) {
+                res.gPress.Add(g.name, Piston_1D.GetSrez(megaInterp_p, g.x_coord));
+            }
+            res.Vels.Add("el", tupV.elV);
+            res.Vels.Add("podd", tupV.poddV);
+
+            return res;
+        }
+
+
         private void lb_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             if (rbV.IsChecked == true)
                 DrawVels(e);
@@ -596,6 +714,19 @@ namespace Bikas_comp1D2D {
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
             windowSet.Close();
 
+        }
+
+        private async void Button_Click_4(object sender, RoutedEventArgs e) {
+            var lst = await Get_resarch_async();
+            vm.PM.Series.Clear();
+            vm.PM.Series.Add(new LineSeries() {
+                ItemsSource = lst,
+                DataFieldX = "X",
+                DataFieldY = "Y",
+                Title = "Максимальная скорость от массы ПДП",
+                MarkerType = MarkerType.Circle
+            });
+            vm.PM.InvalidatePlot(true);
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e) {

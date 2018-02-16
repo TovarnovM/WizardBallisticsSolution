@@ -44,6 +44,7 @@ namespace Bikas_comp1D2D {
             return gp;
         }
     }
+
     public class Piston_el_params_shock: Piston_el_params {
         public double Grun = 1.55,
             C_1 = 2.486000e+003,
