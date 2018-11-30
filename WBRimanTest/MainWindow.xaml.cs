@@ -25,6 +25,8 @@ using OxyPlot.Wpf;
 using System.Windows.Threading;
 using MiracleGun.IdealGas.optimiz1;
 using Bikas_comp1D2D;
+using Newtonsoft.Json;
+using MoreLinq;
 
 namespace SolverDrawTsts {
     /// <summary>
@@ -115,7 +117,29 @@ namespace SolverDrawTsts {
                     FileName = "testy"
                 };
                 if (sd.ShowDialog() == true) {
-                    solver.SaveToFile(sd.FileName);
+
+                    //solver.SaveToFile(sd.FileName);
+                    var lrs = solver.Grids[gridname].LayerList.Cast<GasLayer>();
+
+                    var  slc = new {
+                        list = lrs.Batch(100)
+                            .Select(b => b.First())
+                            .Select(
+                                lr => {
+                                return new {
+                                    t = lr.Time,
+                                    xs = lr.RealCells.Select(c => c.X).ToArray(),
+                                    ps = lr.RealCells.Select(c => c.p).ToArray(),
+                                    us = lr.RealCells.Select(c => c.u).ToArray()
+                                };
+                            })
+                            .ToArray()
+                    };
+
+                    using (var jsw = new JsonTextWriter(new StreamWriter(sd.FileName))) {
+                        var ser = JsonSerializer.Create();
+                        ser.Serialize(jsw, slc);
+                    }
                 }
 
 

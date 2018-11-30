@@ -11,16 +11,16 @@ namespace MiracleGun.ElasticPiston {
     [SolversFactory]
     public class ElasticPistonFabric {
         static ElasticPistonConsts gp = new ElasticPistonConsts(1.63098);
-        static double v0 = 700;
+        static double v0 = 576;
 
         [SolverGeneratorMethod("ElasticPiston по инерции")]
         public static WBSolver GetNewSolver(WBProjectOptions options) {
             var layerOpts = StandartOpts;
             var geom = new GunShape();
-            geom.AddPoint(layerOpts.X_left - 10, 0.2);
-            geom.AddPoint(layerOpts.X_right + 0.1, 0.2);
-            geom.AddPoint(layerOpts.X_right + 2.4, 0.05);
-            geom.AddPoint(layerOpts.X_right + 1000, 0.05);
+            geom.AddPoint(layerOpts.X_left - 10, 0.23);
+            geom.AddPoint(layerOpts.X_right + 0.01, 0.23);
+            geom.AddPoint(layerOpts.X_right + 0.01+0.1, 0.16);
+            geom.AddPoint(layerOpts.X_right + 1000, 0.16);
             var initLayer = new GasLayer();
             initLayer.Geom = geom;
             initLayer.InitLayer(0d, layerOpts, InitIdealPCell, InitElasticPBound);
@@ -34,8 +34,8 @@ namespace MiracleGun.ElasticPiston {
                     LeftNodesCount = 1,
                     RightNodesCount = 1,
                     X_left = 0,
-                    X_right = 1,
-                    RealNodesCount = GasLayer.GetNumOfRealNodes(300),
+                    X_right = 0.1,
+                    RealNodesCount = GasLayer.GetNumOfRealNodes(150),
                 };
                 lo.SynchH();
                 return lo;
