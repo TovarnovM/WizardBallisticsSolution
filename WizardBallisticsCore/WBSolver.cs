@@ -210,9 +210,19 @@ namespace WizardBallistics.Core {
             foreach (var gr in Grids.Values) {
                 slc.GridObj.Add(gr.Name,gr.GetSaveObj());
             }
+
+            var res = Grids
+                .Values
+                .SelectMany(gr => gr.LayerList)
+                .Select(gr => new
+                        {
+                            t = gr.Time
+                            //xs = (gr as GasLayer).ToString()
+                        })
+                .ToList();
             using (var jsw = new JsonTextWriter(new StreamWriter(filePath))) {              
-                var ser = JsonSerializer.Create(JsonSerSettings);
-                ser.Serialize(jsw, slc);
+                var ser = JsonSerializer.Create();
+                ser.Serialize(jsw, res);
             }
         }
 

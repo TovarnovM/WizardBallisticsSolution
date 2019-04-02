@@ -8,7 +8,7 @@ using WizardBallistics.Core;
 
 namespace MiracleGun.IdealPiston {
     public class PistonGrid : WBGridBase {
-        public double m1 = 15, m2 = 8;
+        public double m1 = 0.0395, m2 = 0.0219;
        
 
         public int smooth = 2;

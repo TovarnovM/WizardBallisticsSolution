@@ -11,16 +11,17 @@ namespace MiracleGun.ElasticPiston {
     [SolversFactory]
     public class ElasticPistonFabric {
         static ElasticPistonConsts gp = new ElasticPistonConsts(1.63098);
-        static double v0 = 700;
+        static double v0 = 576;
 
         [SolverGeneratorMethod("ElasticPiston по инерции")]
         public static WBSolver GetNewSolver(WBProjectOptions options) {
             var layerOpts = StandartOpts;
             var geom = new GunShape();
-            geom.AddPoint(layerOpts.X_left - 10, 0.2);
-            geom.AddPoint(layerOpts.X_right + 0.1, 0.2);
-            geom.AddPoint(layerOpts.X_right + 2.4, 0.05);
-            geom.AddPoint(layerOpts.X_right + 1000, 0.05);
+            double d0 = 0.023, d1 = 0.016, l0 = 0.1, l1 = 0.1;
+            geom.AddPoint(layerOpts.X_left - 10, d0);
+            geom.AddPoint(l0, d0);
+            geom.AddPoint(l0+l1, d1);
+            geom.AddPoint(l0 + l1 + 1000, d1);
             var initLayer = new GasLayer();
             initLayer.Geom = geom;
             initLayer.InitLayer(0d, layerOpts, InitIdealPCell, InitElasticPBound);
@@ -33,9 +34,9 @@ namespace MiracleGun.ElasticPiston {
                 var lo = new WBOneDemLayerOptions() {
                     LeftNodesCount = 1,
                     RightNodesCount = 1,
-                    X_left = 0,
-                    X_right = 1,
-                    RealNodesCount = GasLayer.GetNumOfRealNodes(300),
+                    X_left = 0.09 - 0.0251/(3.14*0.023*0.023*0.25*921.0),
+                    X_right = 0.09,
+                    RealNodesCount = GasLayer.GetNumOfRealNodes(100),
                 };
                 lo.SynchH();
                 return lo;

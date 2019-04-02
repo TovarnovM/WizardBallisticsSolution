@@ -23,6 +23,7 @@ using MiracleGun;
 using System.IO;
 using OxyPlot.Wpf;
 using System.Windows.Threading;
+using Newtonsoft.Json;
 
 namespace SolverDrawTsts {
     /// <summary>
@@ -113,7 +114,24 @@ namespace SolverDrawTsts {
                     FileName = "testy"
                 };
                 if (sd.ShowDialog() == true) {
-                    solver.SaveToFile(sd.FileName);
+
+                    var res = solver
+                            .Grids
+                            .Values
+                            .SelectMany(gr => gr.LayerList)
+                            .Select(gr => new
+                            {
+                                t = gr.Time,
+                                xs = (gr as GasLayer).GetRealCells().Select(rc => rc.X).ToList(),
+                                ps = (gr as GasLayer).GetRealCells().Select(rc => rc.p).ToList(),
+                                us = (gr as GasLayer).GetRealCells().Select(rc => rc.u).ToList()
+                            })
+                            .ToList();
+                    using (var jsw = new JsonTextWriter(new StreamWriter(sd.FileName)))
+                    {
+                        var ser = JsonSerializer.Create();
+                        ser.Serialize(jsw, res);
+                    }
                 }
 
 
